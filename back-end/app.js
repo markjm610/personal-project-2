@@ -16,11 +16,16 @@ const connection = mongoose.connection;
 connection.once('open', () => {
     console.log('Connected to MongoDB')
 })
+
 app = express();
 
 
 app.use(express.json());
 app.use(cors({ origin: true }));
+
+const usersRouter = require('./routes/users');
+
+app.use(usersRouter)
 
 const port = process.env.PORT;
 
