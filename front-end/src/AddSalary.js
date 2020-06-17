@@ -54,14 +54,30 @@ const AddSalary = () => {
     }
 
     const amountPerYearChange = (e) => {
-        setAmountPerYear(parseFloat(e.target.value))
+
+        const amountPerYearFloat = parseFloat(e.target.value)
+        setAmountPerYear(amountPerYearFloat)
         setAmountPerYearInput(e.target.value)
+        if (taxRate && e.target.value) {
+            console.log(amountPerYear)
+            console.log(taxRate)
+            setAfterTaxAmount(amountPerYearFloat - amountPerYearFloat * taxRate)
+        } else {
+            setAfterTaxAmount('')
+        }
+
+
     }
 
     const taxChange = (e) => {
         setTaxRateInput(e.target.value)
         const taxRateToDecimal = parseFloat(e.target.value) / 100
         setTaxRate(taxRateToDecimal)
+        if (amountPerYear && e.target.value) {
+            setAfterTaxAmount(amountPerYear - amountPerYear * taxRateToDecimal)
+        } else {
+            setAfterTaxAmount('')
+        }
 
     }
 
