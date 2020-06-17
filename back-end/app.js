@@ -2,16 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-// const MongoClient = require('mongodb').MongoClient;
-// const client = new MongoClient(uri, { useNewUrlParser: true });
-// client.connect(err => {
-//     const collection = client.db("test").collection("devices");
-//     // perform actions on the collection object
-//     client.close();
-// });
-
 const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true },);
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },);
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log('Connected to MongoDB')
@@ -19,13 +11,17 @@ connection.once('open', () => {
 
 app = express();
 
-
 app.use(express.json());
 app.use(cors({ origin: true }));
 
 const usersRouter = require('./routes/users');
-
+const plansRouter = require('./routes/plans');
+const salariesRouter = require('./routes/salaries');
+const expensesRouter = require('./routes/expenses');
 app.use(usersRouter)
+app.use(plansRouter)
+app.use(salariesRouter)
+app.use(expensesRouter)
 
 const port = process.env.PORT;
 

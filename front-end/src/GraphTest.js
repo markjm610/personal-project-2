@@ -4,85 +4,86 @@ import _ from 'underscore';
 
 const GraphTest = () => {
 
-    const [dataState, setDataState] = useState([
-        { x: 1, y: 2 },
-        { x: 2, y: 4 },
-        { x: 3, y: 3 },
-        { x: 4, y: 5 },
-        { x: 5, y: 7 },
-    ])
-    const [bool, setBool] = useState(true)
+    // const [dataState, setDataState] = useState([
+    //     { x: 1, y: 2 },
+    //     { x: 2, y: 4 },
+    //     { x: 3, y: 3 },
+    //     { x: 4, y: 5 },
+    //     { x: 5, y: 7 },
+    // ])
+    // const [bool, setBool] = useState(true)
 
-    function changeData() {
-        if (bool) {
-            setDataState([
-                { x: 1, y: 30 },
-                { x: 2, y: 40 },
-                { x: 3, y: 30 },
-                { x: 4, y: 50 },
-                { x: 5, y: 10 },
-            ])
-            setBool(false)
-        } else {
-            setDataState([
-                { x: 1, y: 2 },
-                { x: 2, y: 4 },
-                { x: 3, y: 3 },
-                { x: 4, y: 5 },
-                { x: 5, y: 7 },
-            ])
-            setBool(true)
-        }
-    }
+    // function changeData() {
+    //     if (bool) {
+    //         setDataState([
+    //             { x: 1, y: 30 },
+    //             { x: 2, y: 40 },
+    //             { x: 3, y: 30 },
+    //             { x: 4, y: 50 },
+    //             { x: 5, y: 10 },
+    //         ])
+    //         setBool(false)
+    //     } else {
+    //         setDataState([
+    //             { x: 1, y: 2 },
+    //             { x: 2, y: 4 },
+    //             { x: 3, y: 3 },
+    //             { x: 4, y: 5 },
+    //             { x: 5, y: 7 },
+    //         ])
+    //         setBool(true)
+    //     }
+    // }
 
-    useEffect(() => {
-        setTimeout(changeData, 1000)
-    }, [dataState])
+    // useEffect(() => {
+    //     setTimeout(changeData, 1000)
+    // }, [dataState])
 
-    const data = [[
-        { x: 1, y: 20 },
-        { x: 2, y: 4 },
-        { x: 3, y: 3 },
-        { x: 4, y: 5 },
-        { x: 5, y: 100 },
-    ],
-    [
-        { x: 1, y: 30 },
-        { x: 2, y: 40 },
-        { x: 3, y: 30 },
-        { x: 4, y: 50 },
-        { x: 5, y: 10 },
-    ]]
+    const salary = { amountPerYear: 10000 }
+
+    // const salaryPerMonth = salary.amountPerYear / 12
+    // const data = []
+    // for (let i = 1; i <= 12; i++) {
+    //     data.push({ x: i, y: salaryPerMonth * i })
+    // }
+
+    const data = [
+        { x: 1, y: -1 },
+        { x: 2, y: 1 },
+        { x: 3, y: 1 },
+        { x: 4, y: 1 },
+        { x: 5, y: 1 },
+    ]
 
     const data2 = [
-        { x: 1, y: 50 },
-        { x: 2, y: 50 },
-        { x: 3, y: 50 },
-        { x: 4, y: 50 },
-        { x: 5, y: 50 },
+        { x: 1, y: 1 },
+        { x: 2, y: 1 },
+        { x: 3, y: 1 },
+        { x: 4, y: 1 },
+        { x: 5, y: 1 },
     ]
 
     const data3 = [
-        { x: 1, y: 70 },
-        { x: 2, y: 30 },
-        { x: 3, y: 20 },
-        { x: 4, y: 80 },
-        { x: 5, y: 60 },
+        { x: 1, y: -1 },
+        { x: 2, y: 1 },
+        { x: 3, y: 1 },
+        { x: 4, y: 1 },
+        { x: 5, y: -1 },
     ]
 
     return (
         <div className='graph-test'>
             <VictoryChart
                 theme={VictoryTheme.material}
-                animate={{ duration: 1000 }}
+            // animate={{ duration: 1000 }}
             >
-                {dataState && <VictoryStack
+                <VictoryStack
                     colorScale={"blue"}
                 >
 
                     <VictoryArea
                         // key={i}
-                        data={dataState}
+                        data={data}
                         interpolation={"basis"}
                     />
                     <VictoryArea
@@ -96,7 +97,7 @@ const GraphTest = () => {
                         interpolation={"basis"}
                     />
 
-                </VictoryStack>}
+                </VictoryStack>
             </VictoryChart>
         </div>
     );

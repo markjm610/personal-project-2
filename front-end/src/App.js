@@ -1,9 +1,9 @@
 import React from 'react';
-import GraphTest from './GraphTest';
+// import GraphTest from './GraphTest';
 
 function App() {
   return (
-    <GraphTest></GraphTest>
+    <h1>Hello World</h1>
   );
 }
 
