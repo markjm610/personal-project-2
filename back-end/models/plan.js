@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const planSchema = new Schema({
     name: { type: String, required: true, unique: true },
-    startDate: { type: Number, required: true },
+    startDate: { type: Date, required: true },
     userId: {
         type: mongoose.Types.ObjectId,
         // required: true, 

@@ -1,5 +1,7 @@
 const express = require('express');
 const Plan = require('../models/plan');
+const Salary = require('../models/salary')
+const Expense = require('../models/expense')
 
 const router = express.Router();
 
@@ -16,6 +18,16 @@ router.post('/plans', asyncHandler(async (req, res) => {
 
 router.get('/users/:userId/plans', asyncHandler(async (req, res) => {
 
+
+}))
+
+router.get('/plans/:planId', asyncHandler(async (req, res) => {
+    const planId = req.params.planId
+
+    const plans = await Plan.find()
+    const salaries = await Salary.find({ planId })
+    const expenses = await Expense.find({ planId })
+    res.json({ plans, salaries, expenses })
 
 }))
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { VictoryChart, VictoryStack, VictoryTheme, VictoryArea } from 'victory';
-import _ from 'underscore';
 
 const GraphTest = () => {
 

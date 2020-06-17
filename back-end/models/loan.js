@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const loanSchema = new Schema({
     name: { type: String, required: true },
-    day: { type: Number, required: true },
+    date: { type: Date, required: true },
     amount: { type: Number, required: true },
     interestRate: { type: Number, required: true },
     paydownAmount: { type: Number, required: true },

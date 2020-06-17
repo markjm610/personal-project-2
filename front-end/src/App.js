@@ -1,9 +1,14 @@
 import React from 'react';
 // import GraphTest from './GraphTest';
+import LineGraph from './LineGraph';
+import AddSalary from './AddSalary';
 
 function App() {
   return (
-    <h1>Hello World</h1>
+    <>
+      <LineGraph />
+      <AddSalary />
+    </>
   );
 }
 
