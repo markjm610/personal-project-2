@@ -21,7 +21,7 @@ Plan ID, foreign key
 ## Salary
 
 Name
-Amount
+Amount per year
 Tax
 Plan ID, foreign key
 
