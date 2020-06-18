@@ -13,15 +13,15 @@ const LineGraph = () => {
         const fetchData = async () => {
             // Will have to change this when users exist
 
-            const res = await fetch(`${apiBaseUrl}/plans/5eea33997d4f345b506cd65c`)
-            const parsedRes = await res.json()
-            const salary = parsedRes.salaries[0]
-            const expenses = parsedRes.expenses
-            console.log(salary)
-            console.log(expenses)
+            // const res = await fetch(`${apiBaseUrl}/plans/5eea33997d4f345b506cd65c`)
+            // const parsedRes = await res.json()
+            // const salary = parsedRes.salaries[0]
+            // const expenses = parsedRes.expenses
+            // console.log(salary)
+            // console.log(expenses)
 
         }
-        fetchData()
+        // fetchData()
 
     }, [])
 

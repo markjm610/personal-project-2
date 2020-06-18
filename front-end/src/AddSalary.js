@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import apiBaseUrl from './config';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -20,13 +20,13 @@ const AddSalary = () => {
     const { displayedPlan } = useContext(Context)
 
     const [name, setName] = useState('')
-    const [amountPerYear, setAmountPerYear] = useState('')
+    const [amountPerYear, setAmountPerYear] = useState(null)
     const [amountPerYearInput, setAmountPerYearInput] = useState('')
-    const [taxRate, setTaxRate] = useState('')
+    const [taxRate, setTaxRate] = useState(null)
     const [taxRateInput, setTaxRateInput] = useState('')
     const [afterTaxAmount, setAfterTaxAmount] = useState('')
-    const [startDate, setStartDate] = useState('')
-    const [endDate, setEndDate] = useState('')
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
     const [startDateInput, setStartDateInput] = useState('')
     const [endDateInput, setEndDateInput] = useState('')
 
@@ -101,15 +101,18 @@ const AddSalary = () => {
     }
 
     return (
-        <form className={classes.root} noValidate autoComplete="off">
-            <TextField id="name" label="Name" value={name} onChange={nameChange} />
-            <TextField type='number' id="amount-per-year" label="Amount Per Year" value={amountPerYearInput} onChange={amountPerYearChange} />
-            <TextField type='number' id="tax" label="Tax Rate" value={taxRateInput} onChange={taxChange} />
-            <TextField type='number' id="after-tax-amount" label="Amount After Taxes" value={afterTaxAmount} />
-            <TextField type='date' id="start-date" value={startDateInput} onChange={startDateChange} />
-            <TextField type='date' id="end-date" value={endDateInput} onChange={endDateChange} />
-            <Button variant="contained" onClick={addSalarySubmit}>Submit</Button>
-        </form>
+        <>
+            <div>Add Salary</div>
+            <form className={classes.root} noValidate autoComplete="off">
+                <TextField id="name" label="Name" value={name} onChange={nameChange} />
+                <TextField type='number' id="amount-per-year" label="Amount Per Year" value={amountPerYearInput} onChange={amountPerYearChange} />
+                <TextField type='number' id="tax" label="Tax Rate" value={taxRateInput} onChange={taxChange} />
+                <TextField type='number' id="after-tax-amount" label="Amount After Taxes" value={afterTaxAmount} />
+                <TextField type='date' id="start-date" value={startDateInput} onChange={startDateChange} />
+                <TextField type='date' id="end-date" value={endDateInput} onChange={endDateChange} />
+                <Button variant="contained" onClick={addSalarySubmit}>Submit</Button>
+            </form>
+        </>
     );
 }
 
