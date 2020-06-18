@@ -48,7 +48,7 @@ const LineGraph = () => {
 
                 }
             >
-                {selectedPlan.graphData && console.log(typeof selectedPlan.graphData[0].x)}
+
                 <VictoryLine
                     style={{
                         data: { stroke: "tomato" }

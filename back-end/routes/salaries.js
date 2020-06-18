@@ -27,17 +27,24 @@ router.post('/salaries', asyncHandler(async (req, res) => {
     const endMilliseconds = new Date(endDate[0], endDate[1], endDate[2]).getTime()
 
     const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+
     let daysPassed = 0
-    for (let i = firstDayIndex; i <= firstDayIndex + dayDifference; i++) {
+    for (let i = firstDayIndex; i < graphDataArr.length; i++) {
 
-        daysPassed++
+        if (i <= firstDayIndex + dayDifference) {
+            daysPassed++
 
-        const amountToAdd = afterTaxAmount / dayDifference * daysPassed
+            const amountToAdd = afterTaxAmount / dayDifference * daysPassed
 
-        graphDataArr[i].y += amountToAdd
+            graphDataArr[i].y += amountToAdd
+        } else {
+            graphDataArr[i].y += afterTaxAmount
+        }
+
+
     }
 
-    await plan.update({ graphData: graphDataArr })
+    await plan.updateOne({ graphData: graphDataArr })
 
     const newSalary = new Salary({ name, startDate, endDate, amountPerYear, taxRate, afterTaxAmount, planId })
 

@@ -42,9 +42,6 @@ const PlanNav = () => {
     }
 
 
-
-
-
     return (
         <>
             <button onClick={newPlan}>New Plan</button>
