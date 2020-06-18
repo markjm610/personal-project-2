@@ -28,7 +28,7 @@ router.post('/plans', asyncHandler(async (req, res) => {
         })
 
     }
-    console.log(graphData)
+
 
     const newPlan = new Plan({ name, startDate, endDate, graphData })
     await newPlan.save()
@@ -44,10 +44,9 @@ router.get('/users/:userId/plans', asyncHandler(async (req, res) => {
 router.get('/plans/:planId', asyncHandler(async (req, res) => {
     const planId = req.params.planId
 
-    const plans = await Plan.find()
-    const salaries = await Salary.find({ planId })
-    const expenses = await Expense.find({ planId })
-    res.json({ plans, salaries, expenses })
+    const plan = await Plan.findById(planId)
+
+    res.json(plan)
 
 }))
 

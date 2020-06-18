@@ -12,13 +12,13 @@ const ContextWrapper = () => {
         startDate: [2020, 5, 20],
         endDate: [2025, 3, 10]
     })
-    const [graphData, setGraphData] = useState([])
+    const [selectedPlan, setSelectedPlan] = useState({})
     return (
         <Context.Provider value={
             {
                 displayedData, setDisplayedData,
                 displayedPlan, setDisplayedPlan,
-                graphData, setGraphData
+                selectedPlan, setSelectedPlan
             }
         } >
             <App />

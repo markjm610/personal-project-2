@@ -5,7 +5,7 @@ import Context from './Context';
 
 const PlanNav = () => {
 
-    const { graphData, setGraphData, displayedPlan } = useContext(Context);
+    const { graphData, setGraphData, displayedPlan, setSelectedPlan } = useContext(Context);
 
 
     const newPlan = async () => {
@@ -27,70 +27,17 @@ const PlanNav = () => {
 
 
 
-        const res = await fetch(`${apiBaseUrl}/plans/5eea33997d4f345b506cd65c`)
-        const parsedRes = await res.json()
-        const salaries = parsedRes.salaries
-        const expenses = parsedRes.expenses
-        // console.log(salaries)
-        let salaryDisplayArray = []
-        salaries.forEach(salary => {
+        const res = await fetch(`${apiBaseUrl}/plans/${displayedPlan.id}`)
+        const plan = await res.json()
 
-            // (End year - start year) * 12 + (end month - start month)
-
-            const numberOfMonths = (salary.endDate[0] - salary.startDate[0]) * 12 + (salary.endDate[1] - salary.startDate[1])
-
-            const startMilliseconds = new Date(salary.startDate[0], salary.startDate[1], salary.startDate[2]).getTime()
-
-            const endMilliseconds = new Date(salary.endDate[0], salary.endDate[1], salary.endDate[2]).getTime()
-
-            const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
-
-            const startYear = salary.startDate[0]
-            const startMonth = salary.startDate[1]
-            const startDay = salary.startDate[2]
-
-            // for (let i = 1; i <= dayDifference; i++) {
-
-            //     const y = salary.afterTaxAmount / dayDifference * i
-
-            //     salaryDisplayArray.push({
-            //         x: new Date(startYear, startMonth, i + startDay), y: y
-            //     })
-            // }
-
-
-            // for (let i = 1; i <= dayDifference; i++) {
-
-            //     const date = new Date(startYear, startMonth, i + startDay)
-            //     displayedPlanArray.forEach((datapoint, i) => {
-            //         console.log(i)
-            //         if (date === datapoint.x) {
-            //             console.log('date === datapoint.x')
-            //         }
-            //     })
-
-            // }
-
-
-            // let currentYear = salary.startDate[0]
-
-
-            // for (let i = startMonth + 1; i <= startMonth + numberOfMonths; i++) {
-
-            //     const y = salary.afterTaxAmount / numberOfMonths * (i - startMonth)
-
-            //     // Handle end date day compared to start date day somehow
-
-            //     salaryDisplayArray.push({
-            //         x: new Date(currentYear, i, salary.startDate[2]), y: y
-            //     })
-            // }
-
+        // console.log(typeof plan.graphData[0].x)
+        const dateObjData = plan.graphData.map(datapoint => {
+            return { x: new Date(datapoint.x), y: datapoint.y }
         })
 
-        // setGraphData(salaryDisplayArray)
-        // console.log(expenses)
-        // On the date of each expense, subtract expense amount from total y value
+        plan.graphData = dateObjData
+
+        setSelectedPlan(plan)
 
     }
 
