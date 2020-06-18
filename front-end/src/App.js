@@ -3,10 +3,12 @@ import React from 'react';
 import LineGraph from './LineGraph';
 import AddSalary from './AddSalary';
 import AddExpense from './AddExpense';
+import PlanNav from './PlanNav';
 
 function App() {
   return (
     <>
+      <PlanNav />
       <LineGraph />
       <AddSalary />
       <AddExpense />
