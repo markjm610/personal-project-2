@@ -71,11 +71,14 @@ const AddExpense = () => {
     const dateChange = e => {
         setDateInput(e.target.value)
         const stringDateArr = e.target.value.split('-')
-        const numDateArr = stringDateArr.map(number => {
+        const numDateArr = stringDateArr.map((number, i) => {
+            if (i === 1) {
+                return parseInt(number) - 1
+            }
             return parseInt(number)
         })
-        setDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
-
+        // setDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
+        setDate(numDateArr)
     }
 
     const checkChange = e => {

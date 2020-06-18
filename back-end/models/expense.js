@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const expenseSchema = new Schema({
     description: { type: String, required: true },
-    date: { type: Date, required: true },
+    date: { type: [Number], required: true },
     amount: { type: Number, required: true },
     repeatingInterval: { type: String },
     planId: { type: mongoose.Types.ObjectId, required: true, ref: 'Plan' }

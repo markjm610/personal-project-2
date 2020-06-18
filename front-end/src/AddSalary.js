@@ -84,20 +84,27 @@ const AddSalary = () => {
     const startDateChange = e => {
         setStartDateInput(e.target.value)
         const stringDateArr = e.target.value.split('-')
-        const numDateArr = stringDateArr.map(number => {
+        const numDateArr = stringDateArr.map((number, i) => {
+            if (i === 1) {
+                return parseInt(number) - 1
+            }
             return parseInt(number)
         })
-        setStartDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
-
+        // setStartDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
+        setStartDate(numDateArr)
     }
 
     const endDateChange = e => {
         setEndDateInput(e.target.value)
         const stringDateArr = e.target.value.split('-')
-        const numDateArr = stringDateArr.map(number => {
+        const numDateArr = stringDateArr.map((number, i) => {
+            if (i === 1) {
+                return parseInt(number) - 1
+            }
             return parseInt(number)
         })
-        setEndDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
+        // setEndDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
+        setEndDate(numDateArr)
     }
 
     return (
