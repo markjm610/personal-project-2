@@ -21,28 +21,32 @@ const LineGraph = () => {
             const parsedRes = await res.json()
             const salaries = parsedRes.salaries
             const expenses = parsedRes.expenses
-            console.log(salaries)
-
-            const salaryDisplayArray = salaries.map(salary => {
-                // Have to get number of months, then loop over each month probably with regular for loop
+            // console.log(salaries)
+            let salaryDisplayArray = []
+            salaries.forEach(salary => {
+                // Have to get number of months, then loop over each month with regular for loop
                 // (End year - start year) * 12 + (end month - start month)
+                const startingMonth = salary.startDate[1]
+                const numberOfMonths = (salary.endDate[0] - salary.startDate[0]) * 12 + (salary.endDate[1] - salary.startDate[1])
 
-                return {
-                    // x: every month from start date to end date, y: (salary.afterTaxAmount / number of months) * (i + 1)
+
+                let currentYear = salary.startDate[0]
+
+                for (let i = startingMonth + 1; i <= startingMonth + numberOfMonths; i++) {
+
+                    const y = salary.afterTaxAmount / numberOfMonths * (i - startingMonth)
+
+                    // Handle end date somehow
+
+                    salaryDisplayArray.push({
+                        x: new Date(currentYear, i, salary.startDate[2]), y: y
+                    })
                 }
+
             })
 
             setGraphData(salaryDisplayArray)
-            // afterTaxAmount: 24000
-            // amountPerYear: 30000
-            // endDate: "2021-06-17T04:00:00.000Z"
-            // name: "Salary"
-            // planId: "5eea33997d4f345b506cd65c"
-            // startDate: "2020-07-17T04:00:00.000Z"
-            // taxRate: 0.2
 
-            console.log(expenses)
-            // setGraphData(salary.afterTaxAmount)
         }
         fetchData()
 
