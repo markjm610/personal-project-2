@@ -30,7 +30,7 @@ const AddExpense = () => {
 
     const { displayedPlan } = useContext(Context)
 
-    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
     const [amount, setAmount] = useState(null)
     const [amountInput, setAmountInput] = useState('')
     const [date, setDate] = useState(null)
@@ -41,28 +41,22 @@ const AddExpense = () => {
 
     const addExpenseSubmit = async (e) => {
         e.preventDefault()
-        // const res = await fetch(`${apiBaseUrl}/salaries`, {
-        //     method: 'POST',
-        //     body: JSON.stringify({
-        //         name, startDate, endDate, amountPerYear, taxRate, afterTaxAmount, planId: displayedPlan.id
-        //     }),
-        //     headers: {
-        //         "Content-Type": 'application/json',
-        //     }
-        // })
+        const res = await fetch(`${apiBaseUrl}/expenses`, {
+            method: 'POST',
+            body: JSON.stringify({
+                description, date, amount, repeatingInterval, planId: displayedPlan.id
+            }),
+            headers: {
+                "Content-Type": 'application/json',
+            }
+        })
 
-        // const parsedRes = await res.json()
-        // console.log(parsedRes)
-        //     name: { type: String, required: true },
-        //     date: { type: Date, required: true },
-        //     amount: { type: Number, required: true },
-        //     repeatingInterval: { type: Number, required: true },
-        //     planId: { type: mongoose.Types.ObjectId, required: true, ref: 'Plan' }
-        // })
+        const parsedRes = await res.json()
+        console.log(parsedRes)
     }
 
-    const nameChange = (e) => {
-        setName(e.target.value)
+    const descriptionChange = (e) => {
+        setDescription(e.target.value)
     }
 
     const amountChange = (e) => {
@@ -101,7 +95,7 @@ const AddExpense = () => {
         <>
             <div>Add Expense</div>
             <form className={classes.root} noValidate autoComplete="off">
-                <TextField id="name" label="Name" value={name} onChange={nameChange} />
+                <TextField id="name" label="Description" value={description} onChange={descriptionChange} />
                 <TextField type='date' id="date" value={dateInput} onChange={dateChange} />
                 <TextField type='number' id="amount" label="Amount" value={amountInput} onChange={amountChange} />
                 <FormControlLabel
@@ -121,7 +115,7 @@ const AddExpense = () => {
                         <Select
                             labelId="repeating-interval"
                             id="repeating-interval"
-                            value={repeatingInterval}
+                            value={repeatingInterval || ''}
                             onChange={repeatingIntervalChange}
                         >
                             <MenuItem value={'Daily'}>Daily</MenuItem>

@@ -7,9 +7,9 @@ const asyncHandler = handler => (req, res, next) => handler(req, res, next).catc
 
 router.post('/expenses', asyncHandler(async (req, res) => {
 
-    const { name, date, amount, repeatingInterval, planId } = req.body
+    const { description, date, amount, repeatingInterval, planId } = req.body
 
-    const newExpense = new Expense({ name, date, amount, repeatingInterval, planId })
+    const newExpense = new Expense({ description, date, amount, repeatingInterval, planId })
 
     await newExpense.save()
 
