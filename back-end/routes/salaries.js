@@ -14,7 +14,6 @@ router.post('/salaries', asyncHandler(async (req, res) => {
 
     const graphDataArr = plan.graphData
     const startDateObj = new Date(startDate[0], startDate[1], startDate[2])
-    const endDateObj = new Date(endDate[0], endDate[1], endDate[2])
 
     let firstDayIndex;
 
@@ -24,20 +23,11 @@ router.post('/salaries', asyncHandler(async (req, res) => {
         }
     })
 
-    // let lastDayIndex;
-
-    // graphDataArr.forEach((datapoint, i) => {
-    //     if (datapoint.x.getTime() === endDateObj.getTime()) {
-    //         lastDayIndex = i
-    //     }
-    // })
-
-
     const startMilliseconds = new Date(startDate[0], startDate[1], startDate[2]).getTime()
     const endMilliseconds = new Date(endDate[0], endDate[1], endDate[2]).getTime()
 
     const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
-    const daysPassed = 0
+    let daysPassed = 0
     for (let i = firstDayIndex; i <= firstDayIndex + dayDifference; i++) {
 
         daysPassed++
@@ -47,15 +37,13 @@ router.post('/salaries', asyncHandler(async (req, res) => {
         graphDataArr[i].y += amountToAdd
     }
 
-
+    await plan.update({ graphData: graphDataArr })
 
     const newSalary = new Salary({ name, startDate, endDate, amountPerYear, taxRate, afterTaxAmount, planId })
 
     await newSalary.save()
 
-    // res.json(plan)
-
-    res.json(newSalary)
+    res.json(plan)
 
 }))
 
