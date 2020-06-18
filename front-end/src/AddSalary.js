@@ -87,7 +87,7 @@ const AddSalary = () => {
         const numDateArr = stringDateArr.map(number => {
             return parseInt(number)
         })
-        setStartDate(new Date(numDateArr[0], numDateArr[1], numDateArr[2]))
+        setStartDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
 
     }
 
