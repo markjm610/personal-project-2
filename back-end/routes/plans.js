@@ -62,16 +62,26 @@ router.put('/plans/:planId', asyncHandler(async (req, res) => {
 
     const dateObj = new Date(numArr[0], numArr[1] - 1, numArr[2])
     const dateMilliseconds = dateObj.getTime()
-    const matchedSalaries = await Salary.find({ planId })
+    const planSalaries = await Salary.find({ planId })
 
     let salaries = []
-    matchedSalaries.forEach(salary => {
+    planSalaries.forEach(salary => {
         if (salary.startDateMilliseconds <= dateMilliseconds && salary.endDateMilliseconds >= dateMilliseconds) {
             salaries.push(salary)
         }
     })
 
-    res.json({ salaries })
+    const planExpenses = await Expense.find({ planId })
+
+    let expenses = []
+    planExpenses.forEach(expense => {
+        if (expense.dateMilliseconds <= dateMilliseconds) {
+            expenses.push(expense)
+        }
+    })
+
+
+    res.json({ salaries, expenses })
 
 }))
 

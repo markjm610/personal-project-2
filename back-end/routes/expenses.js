@@ -14,11 +14,12 @@ router.post('/expenses', asyncHandler(async (req, res) => {
 
     const graphDataArr = plan.graphData
     const dateObj = new Date(date[0], date[1], date[2])
+    const dateMilliseconds = dateObj.getTime()
 
     let firstDayIndex;
 
     graphDataArr.forEach((datapoint, i) => {
-        if (datapoint.x.getTime() === dateObj.getTime()) {
+        if (datapoint.x.getTime() === dateMilliseconds) {
             firstDayIndex = i
         }
     })
@@ -52,7 +53,7 @@ router.post('/expenses', asyncHandler(async (req, res) => {
 
     await plan.updateOne({ graphData: graphDataArr })
 
-    const newExpense = new Expense({ description, date, amount, repeatingInterval, planId })
+    const newExpense = new Expense({ description, date, amount, repeatingInterval, dateMilliseconds, planId })
 
     await newExpense.save()
 
