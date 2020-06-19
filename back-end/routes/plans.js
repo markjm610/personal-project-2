@@ -74,8 +74,9 @@ router.put('/plans/:planId', asyncHandler(async (req, res) => {
     const planExpenses = await Expense.find({ planId })
 
     let expenses = []
+    const thirtyDaysInMilliseconds = 2592000000
     planExpenses.forEach(expense => {
-        if (expense.dateMilliseconds <= dateMilliseconds) {
+        if (expense.dateMilliseconds <= dateMilliseconds && (expense.dateMilliseconds + thirtyDaysInMilliseconds) >= dateMilliseconds) {
             expenses.push(expense)
         }
     })

@@ -21,6 +21,9 @@ function createRowSalary(name, amountPerYear, taxRate, afterTaxAmount) {
     return { name, amountPerYear, taxRate, afterTaxAmount };
 }
 
+function createRowExpense(description, amount, repeatingInterval) {
+    return { description, amount, repeatingInterval };
+}
 
 
 const InfoDisplay = () => {
@@ -30,6 +33,7 @@ const InfoDisplay = () => {
     // `${hoverData[0].x}`
     const [infoState, setInfoState] = useState({})
     const [salaryState, setSalaryState] = useState([])
+    const [expenseState, setExpenseState] = useState([])
 
     useEffect(() => {
         if (hoverData[0]) {
@@ -45,7 +49,7 @@ const InfoDisplay = () => {
                 })
 
                 const info = await res.json()
-                console.log(info)
+
                 setInfoState(info)
             }
             fetchData()
@@ -61,9 +65,19 @@ const InfoDisplay = () => {
             })
             setSalaryState(salaryRows)
         }
-        console.log(salaryState)
+
     }, [infoState])
 
+    useEffect(() => {
+        if (infoState.expenses) {
+            let expenseRows = []
+            infoState.expenses.forEach(expense => {
+                expenseRows.push(createRowExpense(expense.description, expense.amount, expense.repeatingInterval))
+            })
+            setExpenseState(expenseRows)
+        }
+
+    }, [infoState])
 
     return (
         <>
@@ -87,6 +101,28 @@ const InfoDisplay = () => {
                                 <TableCell align="right">${salary.amountPerYear}</TableCell>
                                 <TableCell align="right">{salary.taxRate * 100}%</TableCell>
                                 <TableCell align="right">${salary.afterTaxAmount}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>}
+            {expenseState.length !== 0 && <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Expenses (last 30 days)</TableCell>
+                            <TableCell align="right">Amount</TableCell>
+                            <TableCell align="right">Repeats?</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {expenseState.map((expense) => (
+                            <TableRow key={expense.description}>
+                                <TableCell component="th" scope="row">
+                                    {expense.description}
+                                </TableCell>
+                                <TableCell align="right">${expense.amount}</TableCell>
+                                <TableCell align="right">{expense.repeatingInterval ? expense.repeatingInterval : 'No'}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
