@@ -45,7 +45,7 @@ const InfoDisplay = () => {
                 })
 
                 const info = await res.json()
-                // console.log(info)
+                console.log(info)
                 setInfoState(info)
             }
             fetchData()
@@ -61,13 +61,14 @@ const InfoDisplay = () => {
             })
             setSalaryState(salaryRows)
         }
+        console.log(salaryState)
     }, [infoState])
 
 
     return (
         <>
             {/* {hoverData[0] && <h1 className='info'>{hoverData[0].x.toString().slice(0, 15)}</h1>} */}
-            <TableContainer component={Paper}>
+            {salaryState.length !== 0 && <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                         <TableRow>
@@ -90,7 +91,7 @@ const InfoDisplay = () => {
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </TableContainer>}
         </>
     )
 }
