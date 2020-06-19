@@ -34,12 +34,21 @@ router.post('/expenses', asyncHandler(async (req, res) => {
             graphDataArr[i].y -= (amount * daysPassed)
         }
     }
-    // else if (repeatingInterval === 'Monthly') {
-
-
-    // } else if (repeatingInterval === 'Yearly') {
-
+    else if (repeatingInterval === 'Monthly') {
+        console.log(graphDataArr[0].x)
+        // Only works for first of every month. Doesn't keep track of day
+        let currentMonth = 'some way to get month'
+        if ('month value' !== currentMonth) {
+            currentMonth = 'month value'
+            // subtract expense accumulation from total
+        } else {
+            // keep looping but don't subtract expense from total
+        }
+    }
+    // else if (repeatingInterval === 'Yearly') {
+    // same as month but for year
     // }
+
 
     await plan.updateOne({ graphData: graphDataArr })
 

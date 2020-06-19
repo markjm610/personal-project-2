@@ -30,10 +30,8 @@ const PlanNav = () => {
         const res = await fetch(`${apiBaseUrl}/plans/${displayedPlan.id}`)
         const plan = await res.json()
 
-        // console.log(typeof plan.graphData[0].x)
-        console.log(plan)
+
         const dateObjData = plan.graphData.map(datapoint => {
-            console.log(datapoint)
             return { x: new Date(datapoint.x), y: datapoint.y }
         })
 
