@@ -6,6 +6,8 @@ const salarySchema = new Schema({
     name: { type: String, required: true },
     startDate: { type: [Number], required: true },
     endDate: { type: [Number], required: true },
+    startDateMilliseconds: { type: Number },
+    endDateMilliseconds: { type: Number },
     amountPerYear: { type: Number, required: true },
     taxRate: { type: Number },
     afterTaxAmount: { type: Number },

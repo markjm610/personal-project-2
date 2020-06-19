@@ -46,7 +46,17 @@ router.post('/salaries', asyncHandler(async (req, res) => {
 
     await plan.updateOne({ graphData: graphDataArr })
 
-    const newSalary = new Salary({ name, startDate, endDate, amountPerYear, taxRate, afterTaxAmount, planId })
+    const newSalary = new Salary({
+        name,
+        startDate,
+        endDate,
+        startDateMilliseconds: startMilliseconds,
+        endDateMilliseconds: endMilliseconds,
+        amountPerYear,
+        taxRate,
+        afterTaxAmount,
+        planId
+    })
 
     await newSalary.save()
 

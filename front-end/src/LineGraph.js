@@ -104,10 +104,10 @@ const LineGraph = () => {
 
 
             </VictoryChart>
-            <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
+            {open && <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
                 <InfoDisplay />
                 {/* <CircularProgress color="inherit" /> */}
-            </Backdrop>
+            </Backdrop>}
         </div >
     );
 
