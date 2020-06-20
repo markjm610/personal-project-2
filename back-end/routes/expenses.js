@@ -36,28 +36,47 @@ router.post('/expenses', asyncHandler(async (req, res) => {
         }
     }
     else if (repeatingInterval === 'Monthly') {
-        console.log(graphDataArr[0].x)
-        // Only works for first of every month. Doesn't keep track of day
-        let currentMonth = 'some way to get month'
-        if ('month value' !== currentMonth) {
-            currentMonth = 'month value'
-            // subtract expense accumulation from total
-        } else {
-            // keep looping but don't subtract expense from total
+        // console.log(graphDataArr[0].x)
+
+        // Subtracts on date and first of every following month. Doesn't keep track of day. 
+        // Could add conditional statements for day, but would have to take into account 31, 30, 29, and 28
+
+        let currentMonth = dateObj.getMonth()
+
+        let monthsPassed = 0
+        for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+            if (i === firstDayIndex) {
+                monthsPassed++
+                console.log(monthsPassed)
+                graphDataArr[i].y -= (amount * monthsPassed)
+            }
+
+            if (graphDataArr[i].x.getMonth() !== currentMonth) {
+
+                currentMonth = graphDataArr[i].x.getMonth()
+                monthsPassed++
+
+                graphDataArr[i].y -= (amount * monthsPassed)
+            }
         }
+
     }
+
     // else if (repeatingInterval === 'Yearly') {
     // same as month but for year
     // }
 
 
-    await plan.updateOne({ graphData: graphDataArr })
+    // await plan.updateOne({ graphData: graphDataArr })
 
-    const newExpense = new Expense({ description, date, amount, repeatingInterval, dateMilliseconds, planId })
+    // const newExpense = new Expense({ description, date, amount, repeatingInterval, dateMilliseconds, planId })
 
-    await newExpense.save()
+    // await newExpense.save()
 
-    res.json(plan)
+    // res.json(plan)
+
+    res.json('res')
 
 }))
 
