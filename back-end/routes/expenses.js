@@ -41,22 +41,27 @@ router.post('/expenses', asyncHandler(async (req, res) => {
         // Subtracts on date and first of every following month. Doesn't keep track of day. 
         // Could add conditional statements for day, but would have to take into account 31, 30, 29, and 28
 
-        let currentMonth = dateObj.getMonth()
+        // When amount is subtracted, flip boolean value
+        // If you're on the last day of a month and haven't subtracted expense yet, you know you've run out 
+        // of days and have to subtract the expense
 
+        let currentMonth = dateObj.getMonth()
+        let day = dateObj.getDay()
         let monthsPassed = 0
         for (let i = firstDayIndex; i < graphDataArr.length; i++) {
 
-            if (i === firstDayIndex) {
-                monthsPassed++
-                console.log(monthsPassed)
-                graphDataArr[i].y -= (amount * monthsPassed)
-            }
+            // if (i === firstDayIndex) {
+            //     monthsPassed++
+            //     graphDataArr[i].y -= (amount * monthsPassed)
+            // }
 
             if (graphDataArr[i].x.getMonth() !== currentMonth) {
-
+                // Update month
                 currentMonth = graphDataArr[i].x.getMonth()
-                monthsPassed++
+            }
 
+            if (graphDataArr[i].x.getMonth() === currentMonth && graphDataArr[i].getDay() === day) {
+                monthsPassed++
                 graphDataArr[i].y -= (amount * monthsPassed)
             }
         }
