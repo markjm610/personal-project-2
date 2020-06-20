@@ -75,14 +75,19 @@ router.put('/plans/:planId', asyncHandler(async (req, res) => {
 
     let expenses = []
     const thirtyDaysInMilliseconds = 2592000000
+
+    // Gets expenses from last month
     planExpenses.forEach(expense => {
         if (expense.dateMilliseconds <= dateMilliseconds) {
             if (!expense.repeatingInterval && (expense.dateMilliseconds + thirtyDaysInMilliseconds) >= dateMilliseconds) {
                 expenses.push(expense)
             } else if (expense.repeatingInterval === 'Daily') {
                 expenses.push(expense)
+            } else if (expense.repeatingInterval === 'Monthly') {
+                expenses.push(expense)
+            } else if (expense.repeatingInterval === 'Yearly') {
+                // if day of year is within last month
             }
-            // add monthly and yearly
         }
     })
 

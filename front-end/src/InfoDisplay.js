@@ -110,7 +110,7 @@ const InfoDisplay = () => {
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Expenses (last 30 days)</TableCell>
+                            <TableCell>Expenses (last month)</TableCell>
                             <TableCell align="right">Amount</TableCell>
                             <TableCell align="right">Repeats?</TableCell>
                         </TableRow>

@@ -57,12 +57,10 @@ router.post('/expenses', asyncHandler(async (req, res) => {
             if (graphDataArr[i].x.getMonth() === currentMonth && graphDataArr[i].x.getDate() === day) {
                 monthsPassed++
                 foundDayInMonth = true;
-                // graphDataArr[i].y -= (amount * monthsPassed)
             }
 
             if (graphDataArr[i + 1] && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth() && !foundDayInMonth) {
                 monthsPassed++
-                // graphDataArr[i].y -= (amount * monthsPassed)
             }
 
             graphDataArr[i].y -= (amount * monthsPassed)
