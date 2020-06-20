@@ -36,15 +36,8 @@ router.post('/expenses', asyncHandler(async (req, res) => {
         }
     }
     else if (repeatingInterval === 'Monthly') {
-        // console.log(graphDataArr[0].x)
 
-        // Subtracts on date and first of every following month. Doesn't keep track of day. 
-        // Could add conditional statements for day, but would have to take into account 31, 30, 29, and 28
-
-        // When amount is subtracted, flip boolean value
-        // If you're on the last day of a month and haven't subtracted expense yet, you know you've run out 
-        // of days and have to subtract the expense
-
+        // Need to subtract expense every day, only increase the amount subtracted every month
 
         const day = dateObj.getDate()
 
@@ -64,14 +57,18 @@ router.post('/expenses', asyncHandler(async (req, res) => {
             if (graphDataArr[i].x.getMonth() === currentMonth && graphDataArr[i].x.getDate() === day) {
                 monthsPassed++
                 foundDayInMonth = true;
-                graphDataArr[i].y -= (amount * monthsPassed)
+                // graphDataArr[i].y -= (amount * monthsPassed)
             }
 
             if (graphDataArr[i + 1] && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth() && !foundDayInMonth) {
                 monthsPassed++
-                graphDataArr[i].y -= (amount * monthsPassed)
+                // graphDataArr[i].y -= (amount * monthsPassed)
             }
+
+            graphDataArr[i].y -= (amount * monthsPassed)
+
         }
+
     }
 
     // else if (repeatingInterval === 'Yearly') {
@@ -79,15 +76,15 @@ router.post('/expenses', asyncHandler(async (req, res) => {
     // }
 
 
-    // await plan.updateOne({ graphData: graphDataArr })
+    await plan.updateOne({ graphData: graphDataArr })
 
-    // const newExpense = new Expense({ description, date, amount, repeatingInterval, dateMilliseconds, planId })
+    const newExpense = new Expense({ description, date, amount, repeatingInterval, dateMilliseconds, planId })
 
-    // await newExpense.save()
+    await newExpense.save()
 
-    // res.json(plan)
+    res.json(plan)
 
-    res.json('res')
+    // res.json('res')
 
 }))
 

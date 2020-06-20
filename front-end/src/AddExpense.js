@@ -51,16 +51,16 @@ const AddExpense = () => {
             }
         })
 
-        // const plan = await res.json()
+        const plan = await res.json()
 
-        // const dateObjData = plan.graphData.map(datapoint => {
+        const dateObjData = plan.graphData.map(datapoint => {
 
-        //     return { x: new Date(datapoint.x), y: datapoint.y }
-        // })
+            return { x: new Date(datapoint.x), y: datapoint.y }
+        })
 
-        // plan.graphData = dateObjData
+        plan.graphData = dateObjData
 
-        // setSelectedPlan(plan)
+        setSelectedPlan(plan)
 
     }
 
