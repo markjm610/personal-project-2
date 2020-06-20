@@ -45,31 +45,37 @@ router.post('/expenses', asyncHandler(async (req, res) => {
         // If you're on the last day of a month and haven't subtracted expense yet, you know you've run out 
         // of days and have to subtract the expense
 
-        let currentMonth = dateObj.getMonth()
-        let day = dateObj.getDay()
-        let monthsPassed = 0
-        for (let i = firstDayIndex; i < graphDataArr.length; i++) {
 
-            // if (i === firstDayIndex) {
-            //     monthsPassed++
-            //     graphDataArr[i].y -= (amount * monthsPassed)
-            // }
+        const day = dateObj.getDate()
+
+        let monthsPassed = 0
+        let currentMonth = dateObj.getMonth()
+        let foundDayInMonth = false
+
+        for (let i = firstDayIndex; i < graphDataArr.length; i++) {
 
             if (graphDataArr[i].x.getMonth() !== currentMonth) {
                 // Update month
+
                 currentMonth = graphDataArr[i].x.getMonth()
+                foundDayInMonth = false
             }
 
-            if (graphDataArr[i].x.getMonth() === currentMonth && graphDataArr[i].getDay() === day) {
+            if (graphDataArr[i].x.getMonth() === currentMonth && graphDataArr[i].x.getDate() === day) {
+                monthsPassed++
+                foundDayInMonth = true;
+                graphDataArr[i].y -= (amount * monthsPassed)
+            }
+
+            if (graphDataArr[i + 1] && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth() && !foundDayInMonth) {
                 monthsPassed++
                 graphDataArr[i].y -= (amount * monthsPassed)
             }
         }
-
     }
 
     // else if (repeatingInterval === 'Yearly') {
-    // same as month but for year
+    // same as month but for year maybe
     // }
 
 
