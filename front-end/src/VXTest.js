@@ -61,7 +61,7 @@ const Graph = () => {
                 <AxisBottom
                     scale={xScale}
                     top={yMax}
-                    label={'Years'}
+                    label={'Time'}
                     stroke={'#1b1a1e'}
                     tickTextFill={'#1b1a1e'}
                 />
@@ -69,7 +69,7 @@ const Graph = () => {
                     scale={yScale}
                     top={0}
                     left={0}
-                    label={'Close Price ($)'}
+                    label={'Total ($)'}
                     stroke={'#1b1a1e'}
                     tickTextFill={'#1b1a1e'}
                 />
