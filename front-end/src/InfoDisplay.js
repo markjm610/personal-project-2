@@ -36,12 +36,12 @@ const InfoDisplay = () => {
     const [expenseState, setExpenseState] = useState([])
 
     useEffect(() => {
-        if (hoverData[0]) {
+        if (hoverData) {
             const fetchData = async () => {
                 const res = await fetch(`${apiBaseUrl}/plans/${displayedPlan.id}`, {
                     method: 'PUT',
                     body: JSON.stringify({
-                        date: hoverData[0].x
+                        date: hoverData.x
                     }),
                     headers: {
                         "Content-Type": 'application/json',

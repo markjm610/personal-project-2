@@ -1,21 +1,42 @@
 import React, { useState, useContext } from 'react'
-import { XYPlot, LineSeries, XAxis, YAxis, Highlight, Voronoi, Crosshair } from 'react-vis';
+import { XYPlot, LineSeries, XAxis, YAxis, Highlight, Crosshair } from 'react-vis';
 import '../node_modules/react-vis/dist/style.css';
 import Context from './Context';
+import Backdrop from '@material-ui/core/Backdrop';
+import AddOrView from './AddOrView';
+import { makeStyles } from '@material-ui/core/styles';
+import Layer from './Layer'
+
+
+const useStyles = makeStyles((theme) => ({
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
+}));
 
 const ReactVisTest = () => {
+    const classes = useStyles();
 
-    const { selectedPlan, setHoverData } = useContext(Context)
+    const { setDisableLayer, selectedPlan, setHoverData, showLayer, setShowLayer } = useContext(Context)
     const [lastDrawLocation, setLastDrawLocation] = useState(null)
+    const [crosshair, setCrosshair] = useState([])
 
     const handleNearestX = (nearestX) => {
         setHoverData(nearestX)
-        return
+        setCrosshair([nearestX])
     }
 
+    const handleToggle = () => {
+        setShowLayer(!showLayer);
+    };
+
+    const handleMouseLeave = () => {
+        setCrosshair([])
+    }
 
     return (
-        <div className="App">
+        <div className='graph-container'>
             <XYPlot
                 animation={true}
                 height={700}
@@ -34,7 +55,9 @@ const ReactVisTest = () => {
                         lastDrawLocation.top
                     ]
                 }
-            // onClick={e => console.log(e)}
+                onClick={handleToggle}
+                onMouseLeave={handleMouseLeave}
+                onMouseDown={() => setDisableLayer(false)}
 
             >
                 <XAxis
@@ -54,30 +77,19 @@ const ReactVisTest = () => {
                     onNearestX={handleNearestX}
                 />
                 <Highlight
+                    onBrush={() => setDisableLayer(true)}
                     onBrushEnd={area => {
                         if (area) {
                             setLastDrawLocation(area)
                         }
-
-                    }}
-                    onDrag={area => {
-                        setLastDrawLocation({
-                            bottom: lastDrawLocation.bottom + (area.top - area.bottom),
-                            left: lastDrawLocation.left - (area.right - area.left),
-                            right: lastDrawLocation.right - (area.right - area.left),
-                            top: lastDrawLocation.top + (area.top - area.bottom)
-                        })
                     }}
                 />
-                {/* <Voronoi
-                    // extent={[[0, 0], [200, 200]]}
-                    nodes={selectedPlan.graphData}
-                    onHover={(e) => console.log(e)}
-                // x={d => x(d.x)}
-                // y={d => y(d.y)}
-                /> */}
-
+                <Crosshair
+                    values={crosshair}
+                    className={'test-class-name'}
+                />
             </XYPlot>
+            <Layer />
         </div>
     );
 }
