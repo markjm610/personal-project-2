@@ -67,11 +67,25 @@ router.post('/expenses', asyncHandler(async (req, res) => {
 
         }
 
-    }
+    } else if (repeatingInterval === 'Yearly') {
 
-    // else if (repeatingInterval === 'Yearly') {
-    // same as month but for year maybe
-    // }
+
+
+        const day = dateObj.getDate()
+        const month = dateObj.getMonth()
+        let yearsPassed = 0
+        for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+            if (graphDataArr[i].x.getMonth() === month && graphDataArr[i].x.getDate() === day) {
+                yearsPassed++
+                graphDataArr[i].y -= (amount * yearsPassed)
+            }
+
+
+            // if ()
+
+        }
+    }
 
 
     await plan.updateOne({ graphData: graphDataArr })

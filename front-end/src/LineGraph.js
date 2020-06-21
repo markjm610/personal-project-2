@@ -5,6 +5,8 @@ import Context from './Context';
 import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles } from '@material-ui/core/styles';
 import InfoDisplay from './InfoDisplay';
+import AddOrView from './AddOrView';
+
 // import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -17,7 +19,7 @@ const VictoryZoomVoronoiContainer = createContainer("zoom", "voronoi");
 
 const LineGraph = () => {
 
-    const { setHoverData, selectedPlan, displayedData, setDisplayedData, displayedPlan, currentPlan } = useContext(Context)
+    const { showLayer, setShowLayer, setHoverData, selectedPlan, displayedData, setDisplayedData, displayedPlan, currentPlan } = useContext(Context)
 
     const [zoomDomain, setZoomDomain] = useState()
     // const [graphData, setGraphData] = useState([])
@@ -45,12 +47,12 @@ const LineGraph = () => {
     }
 
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    // const [open, setOpen] = React.useState(false);
     const handleClose = () => {
-        setOpen(false);
+        setShowLayer(false);
     };
     const handleToggle = () => {
-        setOpen(!open);
+        setShowLayer(!showLayer);
     };
 
     return (
@@ -69,13 +71,12 @@ const LineGraph = () => {
                 ]}
                 containerComponent={
                     <VictoryZoomVoronoiContainer
-                        name='Voronoi'
                         labels={({ datum }) => `${parseDate(datum.x)}`}
                         zoomDimension="x"
-                        zoomDomain={zoomDomain}
+                        // zoomDomain={zoomDomain}
                         voronoiDimension='x'
                         onActivated={(datum) => setHoverData(datum)}
-
+                    // minimumZoom={{ x: 0.01, y: 0.01 }}
                     // onClick={points => setHoverData(points)}
                     />
 
@@ -104,8 +105,9 @@ const LineGraph = () => {
 
 
             </VictoryChart>
-            {open && <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
-                <InfoDisplay />
+            {showLayer && <Backdrop className={classes.backdrop} open={showLayer} >
+                {/* <InfoDisplay /> */}
+                <AddOrView />
                 {/* <CircularProgress color="inherit" /> */}
             </Backdrop>}
         </div >

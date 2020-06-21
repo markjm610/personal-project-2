@@ -14,7 +14,7 @@ const ContextWrapper = () => {
     })
     const [selectedPlan, setSelectedPlan] = useState({ graphData: [] })
     const [hoverData, setHoverData] = useState([])
-
+    const [showLayer, setShowLayer] = useState(false)
 
     return (
         <Context.Provider value={
@@ -22,7 +22,8 @@ const ContextWrapper = () => {
                 displayedData, setDisplayedData,
                 displayedPlan, setDisplayedPlan,
                 selectedPlan, setSelectedPlan,
-                hoverData, setHoverData
+                hoverData, setHoverData,
+                showLayer, setShowLayer
             }
         } >
             <App />
