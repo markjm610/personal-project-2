@@ -69,7 +69,8 @@ router.post('/expenses', asyncHandler(async (req, res) => {
 
     } else if (repeatingInterval === 'Yearly') {
 
-
+        // Might be able to check for February 29, and if so then add an extra day
+        // to prevent being off by one the rest of the year
 
         const day = dateObj.getDate()
         const month = dateObj.getMonth()
