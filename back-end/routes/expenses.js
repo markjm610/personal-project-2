@@ -34,8 +34,13 @@ router.post('/expenses', asyncHandler(async (req, res) => {
             daysPassed++
             graphDataArr[i].y -= (amount * daysPassed)
         }
-    }
-    else if (repeatingInterval === 'Monthly') {
+    } else if (repeatingInterval === 'Weekly') {
+        let weeksPassed = 0
+        for (let i = firstDayIndex; i < graphDataArr.length; i += 7) {
+            weeksPassed++
+            graphDataArr[i].y -= (amount * weeksPassed)
+        }
+    } else if (repeatingInterval === 'Monthly') {
 
         // Need to subtract expense every day, only increase the amount subtracted every month
 

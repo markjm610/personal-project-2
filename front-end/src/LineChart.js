@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ReactVisTest = () => {
+const LineChart = () => {
     const classes = useStyles();
 
     const { setDisableLayer, selectedPlan, setHoverData, showLayer, setShowLayer } = useContext(Context)
@@ -94,4 +94,4 @@ const ReactVisTest = () => {
     );
 }
 
-export default ReactVisTest
+export default LineChart

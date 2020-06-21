@@ -131,6 +131,7 @@ const AddExpense = () => {
                             onChange={repeatingIntervalChange}
                         >
                             <MenuItem value={'Daily'}>Daily</MenuItem>
+                            <MenuItem value={'Weekly'}>Weekly</MenuItem>
                             <MenuItem value={'Monthly'}>Monthly</MenuItem>
                             <MenuItem value={'Yearly'}>Yearly</MenuItem>
                         </Select>

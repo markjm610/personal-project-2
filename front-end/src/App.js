@@ -6,7 +6,7 @@ import AddExpense from './AddExpense';
 import PlanNav from './PlanNav';
 import PageWrapper from './PageWrapper';
 import Graph from './VXTest'
-import ReactVisTest from './ReactVisTest'
+import LineChart from './LineChart'
 function App() {
   return (
     <>
@@ -14,7 +14,7 @@ function App() {
 
       <PageWrapper />
       <PlanNav />
-      <ReactVisTest />
+      <LineChart />
       {/* <LineGraph /> */}
       {/* <AddSalary /> */}
       {/* <AddExpense /> */}
