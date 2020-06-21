@@ -16,8 +16,8 @@ function App() {
       <PlanNav />
       <ReactVisTest />
       {/* <LineGraph /> */}
-      {/* <AddSalary />
-      <AddExpense /> */}
+      {/* <AddSalary /> */}
+      {/* <AddExpense /> */}
     </>
   );
 }
