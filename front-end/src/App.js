@@ -11,10 +11,11 @@ function App() {
   return (
     <>
 
-      <Graph></Graph>
-      {/* <PageWrapper />
+
+      {/* <PageWrapper /> */}
       <PlanNav />
-      <LineGraph /> */}
+      <Graph />
+      {/* <LineGraph /> */}
       {/* <AddSalary />
       <AddExpense /> */}
     </>
