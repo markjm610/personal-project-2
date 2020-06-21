@@ -1,22 +1,45 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import { Zoom } from '@vx/zoom';
 import { LinearGradient } from '@vx/gradient';
 import { AreaClosed } from '@vx/shape';
 import { scaleTime, scaleLinear } from '@vx/scale';
 import { extent, max } from 'd3-array';
-import { appleStock } from '@vx/mock-data';
 import { Group } from '@vx/group';
 import { AxisLeft, AxisBottom } from '@vx/axis';
+import { RectClipPath } from '@vx/clip-path';
+import { localPoint } from '@vx/event';
+import { useTooltip, TooltipWithBounds } from '@vx/tooltip';
 import Context from './Context';
 
 const Graph = () => {
 
     // const data = appleStock;
+    const [showMiniMap, setShowMiniMap] = useState(true);
+
+    const {
+        tooltipData,
+        tooltipLeft,
+        tooltipTop,
+        tooltipOpen,
+        showTooltip,
+        hideTooltip,
+    } = useTooltip();
+
+    const handleMouseOver = (event, datum) => {
+        const coords = localPoint(event.target.ownerSVGElement, event);
+        console.log(event)
+        showTooltip({
+            tooltipLeft: coords.x,
+            tooltipTop: coords.y,
+            tooltipData: datum
+        });
+    };
 
 
     const { selectedPlan } = useContext(Context)
 
-    const width = 750;
-    const height = 400;
+    const width = 1400;
+    const height = 700;
 
     const margin = {
         top: 60,
@@ -44,9 +67,24 @@ const Graph = () => {
     });
 
 
-    const chart = (
+
+    const initialTransform = {
+        scaleX: 1.27,
+        scaleY: 1.27,
+        translateX: -211.62,
+        translateY: 162.59,
+        skewX: 0,
+        skewY: 0,
+    };
+
+    const bg = '#0a0a0a';
+
+    return (
+
         <svg width={width} height={height}>
-            <Group top={margin.top} left={margin.left}>
+
+
+            <Group>
                 <AreaClosed
                     data={selectedPlan.graphData}
                     yScale={yScale}
@@ -57,6 +95,17 @@ const Graph = () => {
                     y={d => yScale(y(d))}
 
                     fill={"url(#gradient)"}
+
+                    // onMouseMove={(event) => {
+                    //     const point = localPoint(event) || { x: 0, y: 0 };
+                    //     console.log(point)
+                    // }}
+
+                    onMouseMove={handleMouseOver}
+                    // onMouseOver={handleMouseOver}
+                    onMouseOut={hideTooltip}
+
+
                 />
                 <AxisBottom
                     scale={xScale}
@@ -78,10 +127,12 @@ const Graph = () => {
                     to='#a6c1ee'
                     id='gradient'
                 />
+
+
             </Group>
         </svg>
+
     )
-    return chart
 }
 
 export default Graph
