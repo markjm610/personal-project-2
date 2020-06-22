@@ -6,7 +6,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import AddOrView from './AddOrView';
 import { makeStyles } from '@material-ui/core/styles';
 import Layer from './Layer'
-
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
 const LineChart = () => {
     const classes = useStyles();
 
-    const { setDisableLayer, selectedPlan, setHoverData, showLayer, setShowLayer } = useContext(Context)
-    const [lastDrawLocation, setLastDrawLocation] = useState(null)
+    const { lastDrawLocation, setLastDrawLocation, setDisableLayer, selectedPlan, setHoverData, showLayer, setShowLayer } = useContext(Context)
+    // const [lastDrawLocation, setLastDrawLocation] = useState(null)
     const [crosshair, setCrosshair] = useState([])
 
     const handleNearestX = (nearestX) => {

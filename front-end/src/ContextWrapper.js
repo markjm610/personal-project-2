@@ -18,6 +18,7 @@ const ContextWrapper = () => {
     const [disableLayer, setDisableLayer] = useState(false)
     const [openAddSalary, setOpenAddSalary] = useState(false);
     const [openAddExpense, setOpenAddExpense] = useState(false);
+    const [lastDrawLocation, setLastDrawLocation] = useState(null)
 
     return (
         <Context.Provider value={
@@ -29,7 +30,8 @@ const ContextWrapper = () => {
                 showLayer, setShowLayer,
                 disableLayer, setDisableLayer,
                 openAddSalary, setOpenAddSalary,
-                openAddExpense, setOpenAddExpense
+                openAddExpense, setOpenAddExpense,
+                lastDrawLocation, setLastDrawLocation
             }
         } >
             <App />
