@@ -84,23 +84,33 @@ router.post('/expenses', asyncHandler(async (req, res) => {
 
             if (graphDataArr[i].x.getMonth() === month && graphDataArr[i].x.getDate() === day) {
                 yearsPassed++
-                graphDataArr[i].y -= (amount * yearsPassed)
+
             }
 
+            if (month === 1 && day === 29 && graphDataArr[i].x.getMonth() === 1) {
 
-            // if ()
+                if (graphDataArr[i + 1]
+                    && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth()
+                    && graphDataArr[i].x.getDate() === 28) {
+
+                    yearsPassed++
+                }
+            }
+
+            graphDataArr[i].y -= (amount * yearsPassed)
 
         }
+
     }
 
 
-    await plan.updateOne({ graphData: graphDataArr })
+    // await plan.updateOne({ graphData: graphDataArr })
 
-    const newExpense = new Expense({ description, date, amount, repeatingInterval, dateMilliseconds, planId })
+    // const newExpense = new Expense({ description, date, amount, repeatingInterval, dateMilliseconds, planId })
 
-    await newExpense.save()
+    // await newExpense.save()
 
-    res.json(plan)
+    // res.json(plan)
 
     // res.json('res')
 

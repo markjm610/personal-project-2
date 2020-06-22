@@ -17,7 +17,7 @@ function App() {
       <LineChart />
       {/* <LineGraph /> */}
       {/* <AddSalary /> */}
-      {/* <AddExpense /> */}
+      <AddExpense />
     </>
   );
 }

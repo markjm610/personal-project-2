@@ -29,15 +29,18 @@ router.post('/salaries', asyncHandler(async (req, res) => {
     const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
 
     let daysPassed = 0
+
     for (let i = firstDayIndex; i < graphDataArr.length; i++) {
 
         if (i <= firstDayIndex + dayDifference) {
+            // For every day in salary period, add that day's proportion of salary to total
             daysPassed++
 
             const amountToAdd = afterTaxAmount / dayDifference * daysPassed
 
             graphDataArr[i].y += amountToAdd
         } else {
+            // Once salary period is over, add full amount every day to total
             graphDataArr[i].y += afterTaxAmount
         }
 
