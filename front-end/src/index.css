@@ -14,7 +14,7 @@
 }
 
 .crosshair {
-    background-color: rgb(41, 40, 40);
+    background-color: rgb(49, 48, 48);
     color: white;
     font-size: 20px;
     border-radius: 5px;
@@ -24,3 +24,4 @@
     white-space: nowrap;
     padding: 5px;
 }
+
