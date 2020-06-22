@@ -29,6 +29,7 @@ const LineChart = () => {
 
     const handleToggle = () => {
         setShowLayer(!showLayer);
+        console.log('click')
     };
 
     const handleMouseLeave = () => {
@@ -57,7 +58,10 @@ const LineChart = () => {
                 }
                 onClick={handleToggle}
                 onMouseLeave={handleMouseLeave}
-                onMouseDown={() => setDisableLayer(false)}
+                onMouseDown={() => {
+                    setDisableLayer(false)
+                    setShowLayer(false)
+                }}
 
             >
                 <XAxis
@@ -77,7 +81,10 @@ const LineChart = () => {
                     onNearestX={handleNearestX}
                 />
                 <Highlight
-                    onBrush={() => setDisableLayer(true)}
+                    onBrush={() => {
+                        console.log('on brush')
+                        setDisableLayer(true)
+                    }}
                     onBrushEnd={area => {
                         if (area) {
                             setLastDrawLocation(area)
