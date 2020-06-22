@@ -97,19 +97,16 @@ router.post('/expenses', asyncHandler(async (req, res) => {
             graphDataArr[i].y -= (amount * yearsPassed)
 
         }
-        console.log(yearsPassed)
     }
 
 
-    // await plan.updateOne({ graphData: graphDataArr })
+    await plan.updateOne({ graphData: graphDataArr })
 
-    // const newExpense = new Expense({ description, date, amount, repeatingInterval, dateMilliseconds, planId })
+    const newExpense = new Expense({ description, date, amount, repeatingInterval, dateMilliseconds, planId })
 
-    // await newExpense.save()
+    await newExpense.save()
 
-    // res.json(plan)
-
-    // res.json('res')
+    res.json(plan)
 
 }))
 
