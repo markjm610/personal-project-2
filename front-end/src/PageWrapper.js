@@ -17,8 +17,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import AddSalaryNav from './AddSalaryNav';
+import AddExpenseNav from './AddExpenseNav';
 
-const drawerWidth = 240;
+const drawerWidth = 'auto';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -116,7 +118,7 @@ const PageWrapper = () => {
             </AppBar>
             <Drawer
                 className={classes.drawer}
-                variant="persistent"
+                // variant="persistent"
                 anchor="left"
                 open={open}
                 classes={{
@@ -130,21 +132,17 @@ const PageWrapper = () => {
                 </div>
                 <Divider />
                 <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                    {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                         <ListItem button key={text}>
                             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+
+                    ))} */}
+                    <ListItem>
+                        <AddSalaryNav />
+                        <AddExpenseNav />
+                    </ListItem>
                 </List>
             </Drawer>
             <main

@@ -7,17 +7,14 @@ import PlanNav from './PlanNav';
 import PageWrapper from './PageWrapper';
 import Graph from './VXTest'
 import LineChart from './LineChart'
+import TopBar from './TopBar'
+
 function App() {
   return (
     <>
-
-
-      <PageWrapper />
+      <TopBar />
       <PlanNav />
       <LineChart />
-      {/* <LineGraph /> */}
-      {/* <AddSalary /> */}
-      <AddExpense />
     </>
   );
 }

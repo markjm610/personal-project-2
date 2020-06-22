@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { XYPlot, LineSeries, XAxis, YAxis, Highlight, Crosshair } from 'react-vis';
+import { XYPlot, LineSeries, XAxis, YAxis, Highlight, Crosshair, AreaSeries } from 'react-vis';
 import '../node_modules/react-vis/dist/style.css';
 import Context from './Context';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -59,9 +59,15 @@ const LineChart = () => {
                 onClick={handleToggle}
                 onMouseLeave={handleMouseLeave}
                 onMouseDown={() => {
+                    console.log('mouseDown')
                     setDisableLayer(false)
                     setShowLayer(false)
                 }}
+            // onMouseUp={() => {
+            //     console.log('mouseUp')
+            //     setDisableLayer(false)
+            //     // setShowLayer(false)
+            // }}
 
             >
                 <XAxis
@@ -76,7 +82,7 @@ const LineChart = () => {
                         userSelect: 'none'
                     }}
                 />
-                <LineSeries
+                <AreaSeries
                     data={selectedPlan.graphData}
                     onNearestX={handleNearestX}
                 />
