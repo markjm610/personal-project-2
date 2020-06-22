@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AddSalary = () => {
 
-    const { displayedPlan, setSelectedPlan } = useContext(Context)
+    const { displayedPlan, setSelectedPlan, setOpenAddSalary } = useContext(Context)
 
     const [name, setName] = useState('')
     const [amountPerYear, setAmountPerYear] = useState(null)
@@ -43,15 +43,18 @@ const AddSalary = () => {
                 "Content-Type": 'application/json',
             }
         })
+        if (res.ok) {
+            setOpenAddSalary(false)
+            const plan = await res.json()
+            const dateObjData = plan.graphData.map(datapoint => {
+                return { x: new Date(datapoint.x), y: datapoint.y }
+            })
 
-        const plan = await res.json()
-        const dateObjData = plan.graphData.map(datapoint => {
-            return { x: new Date(datapoint.x), y: datapoint.y }
-        })
+            plan.graphData = dateObjData
 
-        plan.graphData = dateObjData
+            setSelectedPlan(plan)
+        }
 
-        setSelectedPlan(plan)
 
     }
 

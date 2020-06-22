@@ -16,6 +16,8 @@ const ContextWrapper = () => {
     const [hoverData, setHoverData] = useState([])
     const [showLayer, setShowLayer] = useState(false)
     const [disableLayer, setDisableLayer] = useState(false)
+    const [openAddSalary, setOpenAddSalary] = useState(false);
+    const [openAddExpense, setOpenAddExpense] = useState(false);
 
     return (
         <Context.Provider value={
@@ -25,7 +27,9 @@ const ContextWrapper = () => {
                 selectedPlan, setSelectedPlan,
                 hoverData, setHoverData,
                 showLayer, setShowLayer,
-                disableLayer, setDisableLayer
+                disableLayer, setDisableLayer,
+                openAddSalary, setOpenAddSalary,
+                openAddExpense, setOpenAddExpense
             }
         } >
             <App />

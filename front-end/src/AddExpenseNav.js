@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AddExpense from './AddExpense';
 import MenuItem from '@material-ui/core/MenuItem';
+import Context from './Context';
 
 const useStyles = makeStyles({
     list: {
@@ -16,14 +17,10 @@ const useStyles = makeStyles({
 
 const AddExpenseNav = () => {
     const classes = useStyles();
-    const [openDrawer, setOpenDrawer] = useState(false);
+    const { openAddExpense, setOpenAddExpense } = useContext(Context)
 
-    const toggleDrawer = (anchor, open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
-
-        setOpenDrawer(open);
+    const toggleDrawer = () => {
+        setOpenAddExpense(!openAddExpense);
     };
 
     const list = (anchor) => (
@@ -32,8 +29,6 @@ const AddExpenseNav = () => {
                 [classes.fullList]: anchor === 'top' || anchor === 'bottom',
             })}
             role="presentation"
-            onClick={toggleDrawer(anchor, false)}
-            onKeyDown={toggleDrawer(anchor, false)}
         >
             <AddExpense />
         </div>
@@ -41,8 +36,8 @@ const AddExpenseNav = () => {
 
     return (
         <div>
-            <MenuItem onClick={toggleDrawer('top', true)}>Add Expense</MenuItem>
-            <Drawer anchor='top' open={openDrawer} onClose={toggleDrawer('top', false)}>
+            <MenuItem onClick={toggleDrawer}>Add Expense</MenuItem>
+            <Drawer anchor='top' open={openAddExpense} onClose={toggleDrawer}>
                 {list('top')}
             </Drawer>
         </div>
