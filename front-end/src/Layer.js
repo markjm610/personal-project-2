@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import Context from './Context'
-import AddOrView from './AddOrView'
 import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles } from '@material-ui/core/styles';
+import InfoDisplay from './InfoDisplay';
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -15,14 +15,23 @@ const useStyles = makeStyles((theme) => ({
 const Layer = () => {
     const classes = useStyles();
 
-    const { disableLayer, showLayer } = useContext(Context)
+    const { disableLayer, showLayer, setShowLayer } = useContext(Context)
+
+    const handleToggle = () => {
+        setShowLayer(false)
+    }
 
     return (
         <>
             {
-                !disableLayer && showLayer && <Backdrop className={classes.backdrop} open={showLayer} >
+                !disableLayer && showLayer &&
+                <Backdrop
+                    className={classes.backdrop}
+                    open={showLayer}
+                    onClick={handleToggle}
+                >
 
-                    <AddOrView />
+                    <InfoDisplay />
 
                 </Backdrop>
             }
