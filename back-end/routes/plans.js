@@ -60,8 +60,8 @@ router.put('/plans/:planId', asyncHandler(async (req, res) => {
         return parseInt(num)
     })
 
-    const dateObj = new Date(numArr[0], numArr[1] - 1, numArr[2])
-    const dateMilliseconds = dateObj.getTime()
+    const clickedDate = new Date(numArr[0], numArr[1] - 1, numArr[2])
+    const dateMilliseconds = clickedDate.getTime()
     const planSalaries = await Salary.find({ planId })
 
     let salaries = []
@@ -77,8 +77,7 @@ router.put('/plans/:planId', asyncHandler(async (req, res) => {
     const thirtyDaysInMilliseconds = 2592000000
 
     // Gets expenses from last month
-    // Will have to change once expenses have end dates
-    // Maybe should be last 30 days
+    // Will have to update once expenses have end dates
     planExpenses.forEach(expense => {
         if (expense.dateMilliseconds <= dateMilliseconds) {
             if (!expense.repeatingInterval && (expense.dateMilliseconds + thirtyDaysInMilliseconds) >= dateMilliseconds) {
@@ -88,37 +87,49 @@ router.put('/plans/:planId', asyncHandler(async (req, res) => {
                 || expense.repeatingInterval === 'Monthly') {
                 expenses.push(expense)
             } else if (expense.repeatingInterval === 'Yearly') {
-                // If starting date of expense is within last 30 days, you don't have to do anything else
-                if ((expense.dateMilliseconds + thirtyDaysInMilliseconds) >= dateMilliseconds) {
-                    expenses.push(expense)
-                } else {
-                    // Get most recent repetition of the expense before the clicked date 
-                    // Compare that to clicked date (dateMilliseconds)
-                    let lastRepetition = expense.dateMilliseconds + 'one year later'
-                    let currentRepetition = expense.dateMilliseconds + 'two years later'
-                    // Time complexity? Way to get it back down to n?
-                    while (lastRepetition < dateMilliseconds) {
-                        if (currentRepetition = dateMilliseconds) {
-                            expenses.push(expense)
-                        } else if (currentRepetition > dateMilliseconds) {
-                            if ((lastRepetition + thirtyDaysInMilliseconds) >= dateMilliseconds) {
-                                expenses.push(expense)
-                            }
-                        } else {
-                            lastRepetition = currentRepetition
-                            currentRepetition += 'year'
-                        }
+                const expenseDate = new Date(expense.dateMilliseconds)
+                if (expenseDate.getMonth() === clickedDate.getMonth()) {
+                    if (expenseDate.getDate() <= clickedDate.getDate()) {
+                        expenses.push(expense)
                     }
-
-
+                } else if (expenseDate.getMonth() === clickedDate.getMonth() - 1) {
+                    if (expenseDate.getDate() > clickedDate.getDate()) {
+                        expenses.push(expense)
+                    }
                 }
-
             }
+
         }
+
     })
 
 
     res.json({ salaries, expenses })
+
+    // User-specified repetition
+    // If starting date of expense is within last input number of days, you don't have to do anything else
+    // if ((expense.dateMilliseconds + thirtyDaysInMilliseconds) >= dateMilliseconds) {
+    //     expenses.push(expense)
+    // } else {
+    //     // Get most recent repetition of the expense before the clicked date 
+    //     // Compare that to clicked date (dateMilliseconds)
+    //     let lastRepetition = expense.dateMilliseconds + 'one year later'
+    //     let currentRepetition = expense.dateMilliseconds + 'two years later'
+    //     // Time complexity? Way to get it back down to n?
+    //     // Something similar to merge sort? Store arrays of repetitions in database in order to check middle repetition first? Binary search tree?
+    //     while (lastRepetition < dateMilliseconds) {
+    //         if (currentRepetition = dateMilliseconds) {
+    //             expenses.push(expense)
+    //         } else if (currentRepetition > dateMilliseconds) {
+    //             if ((lastRepetition + thirtyDaysInMilliseconds) >= dateMilliseconds) {
+    //                 expenses.push(expense)
+    //             }
+    //         } else {
+    //             lastRepetition = currentRepetition
+    //             currentRepetition += 'year'
+    //         }
+    //     }
+
 
 }))
 
