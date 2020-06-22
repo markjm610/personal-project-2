@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 const AddExpense = () => {
     const classes = useStyles();
 
-    const { displayedPlan, setSelectedPlan } = useContext(Context)
+    const { displayedPlan, setSelectedPlan, setOpenAddExpense } = useContext(Context)
 
     const [description, setDescription] = useState('')
     const [amount, setAmount] = useState(null)
@@ -50,17 +50,21 @@ const AddExpense = () => {
                 "Content-Type": 'application/json',
             }
         })
+        if (res.ok) {
+            setOpenAddExpense(false)
 
-        const plan = await res.json()
+            const plan = await res.json()
 
-        const dateObjData = plan.graphData.map(datapoint => {
+            const dateObjData = plan.graphData.map(datapoint => {
 
-            return { x: new Date(datapoint.x), y: datapoint.y }
-        })
+                return { x: new Date(datapoint.x), y: datapoint.y }
+            })
 
-        plan.graphData = dateObjData
+            plan.graphData = dateObjData
 
-        setSelectedPlan(plan)
+            setSelectedPlan(plan)
+        }
+
 
     }
 
