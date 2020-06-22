@@ -74,8 +74,6 @@ router.post('/expenses', asyncHandler(async (req, res) => {
 
     } else if (repeatingInterval === 'Yearly') {
 
-        // Might be able to check for February 29, and if so then add an extra day
-        // to prevent being off by one the rest of the year
 
         const day = dateObj.getDate()
         const month = dateObj.getMonth()
@@ -84,7 +82,6 @@ router.post('/expenses', asyncHandler(async (req, res) => {
 
             if (graphDataArr[i].x.getMonth() === month && graphDataArr[i].x.getDate() === day) {
                 yearsPassed++
-
             }
 
             if (month === 1 && day === 29 && graphDataArr[i].x.getMonth() === 1) {
@@ -100,7 +97,7 @@ router.post('/expenses', asyncHandler(async (req, res) => {
             graphDataArr[i].y -= (amount * yearsPassed)
 
         }
-
+        console.log(yearsPassed)
     }
 
 

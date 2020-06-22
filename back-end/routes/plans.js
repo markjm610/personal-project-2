@@ -77,16 +77,42 @@ router.put('/plans/:planId', asyncHandler(async (req, res) => {
     const thirtyDaysInMilliseconds = 2592000000
 
     // Gets expenses from last month
+    // Will have to change once expenses have end dates
+    // Maybe should be last 30 days
     planExpenses.forEach(expense => {
         if (expense.dateMilliseconds <= dateMilliseconds) {
             if (!expense.repeatingInterval && (expense.dateMilliseconds + thirtyDaysInMilliseconds) >= dateMilliseconds) {
                 expenses.push(expense)
-            } else if (expense.repeatingInterval === 'Daily') {
-                expenses.push(expense)
-            } else if (expense.repeatingInterval === 'Monthly') {
+            } else if (expense.repeatingInterval === 'Daily'
+                || expense.repeatingInterval === 'Weekly'
+                || expense.repeatingInterval === 'Monthly') {
                 expenses.push(expense)
             } else if (expense.repeatingInterval === 'Yearly') {
-                // if day of year is within last month
+                // If starting date of expense is within last 30 days, you don't have to do anything else
+                if ((expense.dateMilliseconds + thirtyDaysInMilliseconds) >= dateMilliseconds) {
+                    expenses.push(expense)
+                } else {
+                    // Get most recent repetition of the expense before the clicked date 
+                    // Compare that to clicked date (dateMilliseconds)
+                    let lastRepetition = expense.dateMilliseconds + 'one year later'
+                    let currentRepetition = expense.dateMilliseconds + 'two years later'
+                    // Time complexity? Way to get it back down to n?
+                    while (lastRepetition < dateMilliseconds) {
+                        if (currentRepetition = dateMilliseconds) {
+                            expenses.push(expense)
+                        } else if (currentRepetition > dateMilliseconds) {
+                            if ((lastRepetition + thirtyDaysInMilliseconds) >= dateMilliseconds) {
+                                expenses.push(expense)
+                            }
+                        } else {
+                            lastRepetition = currentRepetition
+                            currentRepetition += 'year'
+                        }
+                    }
+
+
+                }
+
             }
         }
     })
