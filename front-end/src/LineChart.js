@@ -97,10 +97,15 @@ const LineChart = () => {
                         }
                     }}
                 />
-                <Crosshair
+
+                {crosshair.length !== 0 && <Crosshair
                     values={crosshair}
-                    className={'test-class-name'}
-                />
+                >
+                    <div className='crosshair'>
+                        <div>{crosshair[0].x.toString().slice(0, 15)}</div>
+                        <div>${crosshair[0].y.toFixed(2)}</div>
+                    </div>
+                </Crosshair>}
             </XYPlot>
             <Layer />
         </div>

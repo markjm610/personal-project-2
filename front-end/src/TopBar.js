@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     fullList: {
         width: 'auto',
     },
+    appBar: {
+        backgroundColor: 'rgb(41, 40, 40)'
+    }
 }));
 
 const TopBar = () => {
@@ -49,7 +52,7 @@ const TopBar = () => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar position="static" className={classes.appBar}>
                 <Toolbar>
                     <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <MenuIcon onClick={handleMenu} />

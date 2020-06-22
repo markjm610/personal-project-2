@@ -13,6 +13,14 @@
     color: white;
 }
 
-/* .x-axis {
-    height: 1000
-} */
+.crosshair {
+    background-color: rgb(41, 40, 40);
+    color: white;
+    font-size: 20px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px gray;
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+    padding: 5px;
+}
