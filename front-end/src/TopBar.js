@@ -14,7 +14,7 @@ import { useAuth0 } from "./react-auth0-spa";
 import { Link } from "react-router-dom";
 import NewPlanNav from './NewPlanNav';
 import PlanNav from './PlanNav';
-
+import apiBaseUrl from './config';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 const TopBar = () => {
     const classes = useStyles();
 
-    const { setLastDrawLocation } = useContext(Context)
+    const { setLastDrawLocation, currentUserPlans, setCurrentUserPlans, currentUser } = useContext(Context)
     const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -56,8 +56,18 @@ const TopBar = () => {
     }
 
     useEffect(() => {
-        console.log(user)
-    }, [user])
+        if (currentUser) {
+            const getPlans = async () => {
+                const res = await fetch(`${apiBaseUrl}/users/${currentUser._id}/plans`)
+
+                const plans = await res.json()
+
+                setCurrentUserPlans(plans)
+            }
+            getPlans()
+        }
+
+    }, [currentUser, currentUserPlans])
 
     return (
         <div className={classes.root}>
@@ -92,7 +102,9 @@ const TopBar = () => {
                         Top Bar
                     </Typography>
                     <NewPlanNav />
-                    <PlanNav />
+                    {currentUserPlans.map(plan => {
+                        return <PlanNav key={plan._id} id={plan._id} name={plan.name} />
+                    })}
                     <Button color="inherit" onClick={zoomOut}>Zoom Out</Button>
                     <div>
                         {!isAuthenticated && (

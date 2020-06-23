@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 const AddExpense = () => {
     const classes = useStyles();
 
-    const { displayedPlan, setSelectedPlan, setOpenAddExpense } = useContext(Context)
+    const { selectedPlan, setSelectedPlan, setOpenAddExpense } = useContext(Context)
 
     const [description, setDescription] = useState('')
     const [amount, setAmount] = useState(null)
@@ -44,7 +44,7 @@ const AddExpense = () => {
         const res = await fetch(`${apiBaseUrl}/expenses`, {
             method: 'POST',
             body: JSON.stringify({
-                description, date, amount, repeatingInterval, planId: displayedPlan.id
+                description, date, amount, repeatingInterval, planId: selectedPlan._id
             }),
             headers: {
                 "Content-Type": 'application/json',

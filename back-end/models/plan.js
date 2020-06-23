@@ -6,8 +6,7 @@ const planSchema = new Schema({
     name: { type: String, required: true, unique: true },
     userId: {
         type: mongoose.Types.ObjectId,
-        // required: true, 
-        unique: true, ref: 'User'
+        ref: 'User'
     },
     startDate: { type: [Number], required: true },
     endDate: { type: [Number], required: true },

@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import PlanNav from './PlanNav';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 const NewPlan = () => {
     const classes = useStyles();
 
-    const { currentUser } = useContext(Context)
+    const { currentUser, setOpenNewPlan } = useContext(Context)
 
     const [name, setName] = useState('')
     const [startDate, setStartDate] = useState(null)
@@ -41,8 +42,9 @@ const NewPlan = () => {
                 "Content-Type": 'application/json',
             }
         })
-
-        const plan = await res.json()
+        if (res.ok) {
+            setOpenNewPlan(false)
+        }
     }
 
 

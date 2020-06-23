@@ -37,7 +37,16 @@ router.post('/plans', asyncHandler(async (req, res) => {
 }))
 
 router.get('/users/:userId/plans', asyncHandler(async (req, res) => {
+    const userId = req.params.userId
+    const plans = await Plan.find({ userId })
+    const namesAndIds = plans.map(plan => {
+        return {
+            name: plan.name,
+            _id: plan._id
+        }
+    })
 
+    res.json(namesAndIds)
 
 }))
 

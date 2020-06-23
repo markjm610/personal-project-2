@@ -5,16 +5,16 @@ import Context from './Context';
 import Button from '@material-ui/core/Button';
 
 
-const PlanNav = () => {
+const PlanNav = ({ id, name }) => {
 
-    const { graphData, setGraphData, displayedPlan, setSelectedPlan, currentUser } = useContext(Context);
+    const { graphData, setGraphData, setSelectedPlan, currentUser } = useContext(Context);
 
     const getPlan = async () => {
         // await fetch(`${apiBaseUrl}/users/userId/plans`)
 
 
 
-        const res = await fetch(`${apiBaseUrl}/plans/${displayedPlan.id}`)
+        const res = await fetch(`${apiBaseUrl}/plans/${id}`)
         const plan = await res.json()
 
 
@@ -31,7 +31,7 @@ const PlanNav = () => {
 
     return (
         <>
-            <Button color="inherit" onClick={getPlan}>Get Plan</Button>
+            <Button color="inherit" onClick={getPlan}>{name}</Button>
 
         </>
     )

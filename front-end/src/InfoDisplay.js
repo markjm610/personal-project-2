@@ -29,7 +29,7 @@ function createRowExpense(description, amount, repeatingInterval) {
 const InfoDisplay = () => {
     const classes = useStyles();
 
-    const { hoverData, displayedPlan } = useContext(Context)
+    const { hoverData, selectedPlan } = useContext(Context)
     // `${hoverData[0].x}`
     const [infoState, setInfoState] = useState({})
     const [salaryState, setSalaryState] = useState([])
@@ -38,7 +38,7 @@ const InfoDisplay = () => {
     useEffect(() => {
         if (hoverData) {
             const fetchData = async () => {
-                const res = await fetch(`${apiBaseUrl}/plans/${displayedPlan.id}`, {
+                const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}`, {
                     method: 'PUT',
                     body: JSON.stringify({
                         date: hoverData.x

@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AddSalary = () => {
 
-    const { displayedPlan, setSelectedPlan, setOpenAddSalary } = useContext(Context)
+    const { selectedPlan, setSelectedPlan, setOpenAddSalary } = useContext(Context)
 
     const [name, setName] = useState('')
     const [amountPerYear, setAmountPerYear] = useState(null)
@@ -37,7 +37,7 @@ const AddSalary = () => {
         const res = await fetch(`${apiBaseUrl}/salaries`, {
             method: 'POST',
             body: JSON.stringify({
-                name, startDate, endDate, amountPerYear, taxRate, afterTaxAmount, planId: displayedPlan.id
+                name, startDate, endDate, amountPerYear, taxRate, afterTaxAmount, planId: selectedPlan._id
             }),
             headers: {
                 "Content-Type": 'application/json',

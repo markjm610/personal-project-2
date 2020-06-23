@@ -41,6 +41,7 @@ const LineChart = () => {
     return (
         <div className='graph-container'>
             <XYPlot
+                // dontCheckIfEmpty
                 animation={true}
                 height={700}
                 width={1400}
@@ -67,12 +68,14 @@ const LineChart = () => {
                 }}
             >
                 <XAxis
+                    // hideTicks
                     animation
                     style={{
                         userSelect: 'none'
                     }}
                 />
                 <YAxis
+                    // hideTicks
                     animation
                     style={{
                         userSelect: 'none'
