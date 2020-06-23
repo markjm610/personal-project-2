@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -48,11 +48,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const LandingPage = () => {
+const LandingPage = ({ history }) => {
     const classes = useStyles();
 
     const { isAuthenticated, loginWithRedirect } = useAuth0();
 
+    useEffect(() => {
+        if (isAuthenticated) {
+            history.push('/main')
+        }
+    }, [isAuthenticated])
 
     return (
         <Container component="main" maxWidth="xs">

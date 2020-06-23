@@ -36,6 +36,8 @@ const LineChart = () => {
         setCrosshair([])
     }
 
+    const [brushCounter, setBrushCounter] = useState(0)
+
     return (
         <div className='graph-container'>
             <XYPlot
@@ -89,9 +91,16 @@ const LineChart = () => {
                 <Highlight
                     onBrush={() => {
                         console.log('on brush')
-                        setDisableLayer(true)
+                        if (brushCounter < 1) {
+                            setBrushCounter(brushCounter + 1)
+                        } else {
+                            setDisableLayer(true)
+                        }
+
+
                     }}
                     onBrushEnd={area => {
+                        setBrushCounter(0)
                         if (area) {
                             setLastDrawLocation(area)
                         }
