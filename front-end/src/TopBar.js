@@ -10,6 +10,8 @@ import Menu from '@material-ui/core/Menu';
 import AddSalaryNav from './AddSalaryNav';
 import AddExpenseNav from './AddExpenseNav';
 import Context from './Context'
+import { useAuth0 } from "./react-auth0-spa";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,6 +35,7 @@ const TopBar = () => {
     const classes = useStyles();
 
     const { setLastDrawLocation } = useContext(Context)
+    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -83,6 +86,19 @@ const TopBar = () => {
                         Top Bar
                     </Typography>
                     <Button color="inherit" onClick={zoomOut}>Zoom Out</Button>
+                    <div>
+                        {!isAuthenticated && (
+                            <button onClick={() => loginWithRedirect({})}>Log in</button>
+                        )}
+
+                        {isAuthenticated && <button onClick={() => logout()}>Log out</button>}
+                    </div>
+                    {isAuthenticated && (
+                        <span>
+                            <Link to="/">Home</Link>&nbsp;
+                            <Link to="/profile">Profile</Link>
+                        </span>
+                    )}
                 </Toolbar>
             </AppBar>
         </div>
