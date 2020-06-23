@@ -18,6 +18,7 @@ const ContextWrapper = () => {
     const [disableLayer, setDisableLayer] = useState(false)
     const [openAddSalary, setOpenAddSalary] = useState(false);
     const [openAddExpense, setOpenAddExpense] = useState(false);
+    const [openNewPlan, setOpenNewPlan] = useState(false);
     const [lastDrawLocation, setLastDrawLocation] = useState(null)
     const [currentUser, setCurrentUser] = useState(null)
 
@@ -34,7 +35,8 @@ const ContextWrapper = () => {
                 openAddSalary, setOpenAddSalary,
                 openAddExpense, setOpenAddExpense,
                 lastDrawLocation, setLastDrawLocation,
-                currentUser, setCurrentUser
+                currentUser, setCurrentUser,
+                openNewPlan, setOpenNewPlan
             }
         } >
             <App />

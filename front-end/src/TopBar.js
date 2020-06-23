@@ -12,7 +12,9 @@ import AddExpenseNav from './AddExpenseNav';
 import Context from './Context'
 import { useAuth0 } from "./react-auth0-spa";
 import { Link } from "react-router-dom";
+import NewPlanNav from './NewPlanNav';
 import PlanNav from './PlanNav';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -89,6 +91,7 @@ const TopBar = () => {
                     <Typography variant="h6" className={classes.title}>
                         Top Bar
                     </Typography>
+                    <NewPlanNav />
                     <PlanNav />
                     <Button color="inherit" onClick={zoomOut}>Zoom Out</Button>
                     <div>

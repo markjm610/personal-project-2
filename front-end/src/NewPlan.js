@@ -2,19 +2,40 @@ import React, { useState, useEffect, useContext } from 'react';
 import apiBaseUrl from './config';
 import Context from './Context';
 import Button from '@material-ui/core/Button';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 
 
-
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& > *': {
+            margin: theme.spacing(1),
+            width: '25ch',
+        },
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
+}));
 
 const NewPlan = () => {
+    const classes = useStyles();
 
     const { currentUser } = useContext(Context)
 
-    const newPlanClick = async () => {
+    const [name, setName] = useState('')
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
+    const [startDateInput, setStartDateInput] = useState('')
+    const [endDateInput, setEndDateInput] = useState('')
+
+    const newPlanSubmit = async () => {
         const res = await fetch(`${apiBaseUrl}/plans`, {
             method: 'POST',
             body: JSON.stringify({
-                name: 'Test Plan', startDate: [2020, 1, 1], endDate: [2024, 1, 1], userId: currentUser._id
+                name, startDate, endDate, userId: currentUser._id
             }),
             headers: {
                 "Content-Type": 'application/json',
@@ -24,9 +45,48 @@ const NewPlan = () => {
         const plan = await res.json()
     }
 
+
+    const nameChange = (e) => {
+        setName(e.target.value)
+    }
+
+    const startDateChange = e => {
+        setStartDateInput(e.target.value)
+        const stringDateArr = e.target.value.split('-')
+        const numDateArr = stringDateArr.map((number, i) => {
+            if (i === 1) {
+                return parseInt(number) - 1
+            }
+            return parseInt(number)
+        })
+
+        setStartDate(numDateArr)
+    }
+
+    const endDateChange = e => {
+        setEndDateInput(e.target.value)
+        const stringDateArr = e.target.value.split('-')
+        const numDateArr = stringDateArr.map((number, i) => {
+            if (i === 1) {
+                return parseInt(number) - 1
+            }
+            return parseInt(number)
+        })
+
+        setEndDate(numDateArr)
+    }
+
     return (
-        <Button color="inherit" onClick={newPlanClick}>New Plan</Button>
-    )
+        <>
+            <div>New Plan</div>
+            <form className={classes.root} noValidate autoComplete="off">
+                <TextField id="name" label="Name" value={name} onChange={nameChange} />
+                <TextField type='date' id="start-date" value={startDateInput} onChange={startDateChange} />
+                <TextField type='date' id="end-date" value={endDateInput} onChange={endDateChange} />
+                <Button variant="contained" onClick={newPlanSubmit}>Submit</Button>
+            </form>
+        </>
+    );
 }
 
 export default NewPlan
