@@ -10,7 +10,6 @@ const MainPage = () => {
     return (
         <>
             <TopBar />
-            <PlanNav />
             <LineChart />
         </>
     )

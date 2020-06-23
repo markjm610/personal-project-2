@@ -65,12 +65,6 @@ const LineChart = () => {
                     setDisableLayer(false)
                     setShowLayer(false)
                 }}
-            // onMouseUp={() => {
-            //     console.log('mouseUp')
-            //     setDisableLayer(false)
-            //     // setShowLayer(false)
-            // }}
-
             >
                 <XAxis
                     animation
@@ -87,6 +81,7 @@ const LineChart = () => {
                 <AreaSeries
                     data={selectedPlan.graphData}
                     onNearestX={handleNearestX}
+                    color='rgb(110, 211, 43)'
                 />
                 <Highlight
                     onBrush={() => {
@@ -106,7 +101,6 @@ const LineChart = () => {
                         }
                     }}
                 />
-
                 {crosshair.length !== 0 && <Crosshair
                     values={crosshair}
                 >

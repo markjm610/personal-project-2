@@ -2,28 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { VictoryChart, VictoryLine, VictoryZoomContainer } from 'victory';
 import apiBaseUrl from './config';
 import Context from './Context';
+import Button from '@material-ui/core/Button';
+
 
 const PlanNav = () => {
 
     const { graphData, setGraphData, displayedPlan, setSelectedPlan, currentUser } = useContext(Context);
 
-    useEffect(() => {
-        console.log(currentUser)
-    }, [currentUser])
-    const newPlan = async () => {
-        const res = await fetch(`${apiBaseUrl}/plans`, {
-            method: 'POST',
-            body: JSON.stringify({
-                name: 'Test Plan', startDate: [2020, 1, 1], endDate: [2024, 1, 1]
-            }),
-            headers: {
-                "Content-Type": 'application/json',
-            }
-        })
-
-        const parsedRes = await res.json()
-        console.log(parsedRes)
-    }
     const getPlan = async () => {
         // await fetch(`${apiBaseUrl}/users/userId/plans`)
 
@@ -46,8 +31,8 @@ const PlanNav = () => {
 
     return (
         <>
-            <button onClick={newPlan}>New Plan</button>
-            <button onClick={getPlan}>Get Plan</button>
+            <Button color="inherit" onClick={getPlan}>Get Plan</Button>
+
         </>
     )
 }

@@ -8,7 +8,7 @@ const router = express.Router();
 const asyncHandler = handler => (req, res, next) => handler(req, res, next).catch(next);
 
 router.post('/plans', asyncHandler(async (req, res) => {
-    const { name, startDate, endDate } = req.body;
+    const { name, startDate, endDate, userId } = req.body;
 
     const startMilliseconds = new Date(startDate[0], startDate[1], startDate[2]).getTime()
 
@@ -30,7 +30,7 @@ router.post('/plans', asyncHandler(async (req, res) => {
     }
 
 
-    const newPlan = new Plan({ name, startDate, endDate, graphData })
+    const newPlan = new Plan({ name, startDate, endDate, graphData, userId })
     await newPlan.save()
     res.json(newPlan)
 
