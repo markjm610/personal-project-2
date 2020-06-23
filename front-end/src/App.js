@@ -1,12 +1,11 @@
 import React from 'react';
-import PlanNav from './PlanNav';
-import LineChart from './LineChart'
-import TopBar from './TopBar'
 import { useAuth0 } from "./react-auth0-spa";
 import { Router, Route, Switch } from "react-router-dom";
 import Profile from "./Profile";
 import history from "./utils/history";
 import PrivateRoute from "./PrivateRoute";
+import MainPage from './MainPage';
+import LandingPage from './LandingPage'
 
 
 function App() {
@@ -21,11 +20,9 @@ function App() {
 
   return (
     <Router history={history}>
-      <TopBar />
-      <PlanNav />
-      <LineChart />
       <Switch>
-        <Route path="/" exact />
+        <Route path="/" exact component={LandingPage} />
+        <PrivateRoute path="/main" component={MainPage} />
         {/* <Route path="/profile" component={Profile} /> */}
         <PrivateRoute path="/profile" component={Profile} />
       </Switch>

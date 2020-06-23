@@ -88,17 +88,11 @@ const TopBar = () => {
                     <Button color="inherit" onClick={zoomOut}>Zoom Out</Button>
                     <div>
                         {!isAuthenticated && (
-                            <button onClick={() => loginWithRedirect({})}>Log in</button>
+                            <Button color='inherit' onClick={() => loginWithRedirect({})}>Log in</Button>
                         )}
 
-                        {isAuthenticated && <button onClick={() => logout()}>Log out</button>}
+                        {isAuthenticated && <Button color='inherit' onClick={() => logout()}>Log out</Button>}
                     </div>
-                    {isAuthenticated && (
-                        <span>
-                            <Link to="/">Home</Link>&nbsp;
-                            <Link to="/profile">Profile</Link>
-                        </span>
-                    )}
                 </Toolbar>
             </AppBar>
         </div>
