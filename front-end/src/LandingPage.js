@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useAuth0 } from "./react-auth0-spa";
+
 
 function Copyright() {
     return (
@@ -49,21 +51,25 @@ const useStyles = makeStyles((theme) => ({
 const LandingPage = () => {
     const classes = useStyles();
 
+    const { isAuthenticated, loginWithRedirect } = useAuth0();
+
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <form className={classes.form} noValidate>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Sign In
-                    </Button>
-                </form>
+                {/* <form className={classes.form} noValidate> */}
+                {!isAuthenticated && <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={() => loginWithRedirect({})}
+                >
+                    Sign In
+                    </Button>}
+                {/* </form> */}
             </div>
             <Box mt={8}>
                 <Copyright />
