@@ -9,25 +9,8 @@ import history from "./utils/history";
 import * as serviceWorker from './serviceWorker';
 
 
-const onRedirectCallback = appState => {
-  history.push(
-    appState && appState.targetUrl
-      ? appState.targetUrl
-      : window.location.pathname
-  );
-};
-
 ReactDOM.render(
-  <Auth0Provider
-    domain={config.domain}
-    client_id={config.clientId}
-    redirect_uri={window.location.origin}
-    onRedirectCallback={onRedirectCallback}
-  >
-    <BrowserRouter>
-      <ContextWrapper />
-    </BrowserRouter>
-  </Auth0Provider>,
+  <ContextWrapper />,
   document.getElementById('root')
 );
 

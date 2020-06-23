@@ -5,6 +5,8 @@ import TopBar from './TopBar'
 
 
 const MainPage = () => {
+
+
     return (
         <>
             <TopBar />

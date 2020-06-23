@@ -67,7 +67,7 @@ const LandingPage = () => {
                     className={classes.submit}
                     onClick={() => loginWithRedirect({})}
                 >
-                    Sign In
+                    Log In or Sign Up
                     </Button>}
                 {/* </form> */}
             </div>

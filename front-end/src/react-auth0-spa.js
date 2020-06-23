@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
+import apiBaseUrl from './config';
+import Context from './Context'
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
     window.history.replaceState({}, document.title, window.location.pathname);
@@ -16,6 +18,7 @@ export const Auth0Provider = ({
     const [auth0Client, setAuth0] = useState();
     const [loading, setLoading] = useState(true);
     const [popupOpen, setPopupOpen] = useState(false);
+    const { setCurrentUser } = useContext(Context)
 
     useEffect(() => {
         const initAuth0 = async () => {
@@ -35,6 +38,17 @@ export const Auth0Provider = ({
             if (isAuthenticated) {
                 const user = await auth0FromHook.getUser();
                 setUser(user);
+                const res = await fetch(`${apiBaseUrl}/users`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        name: user.name, email: user.email
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                const userRes = await res.json()
+                setCurrentUser(userRes)
             }
 
             setLoading(false);

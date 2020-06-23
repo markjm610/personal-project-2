@@ -10,11 +10,14 @@ const asyncHandler = handler => (req, res, next) => handler(req, res, next).catc
 router.post('/users', asyncHandler(async (req, res) => {
     const { name, email } = req.body;
 
-    const newUser = new User({ name, email })
+    let user = await User.findOne({ email })
 
-    newUser.save()
+    if (!user) {
+        user = new User({ name, email })
+        await user.save()
+    }
 
-    res.json(newUser)
+    res.json(user)
 
 }))
 

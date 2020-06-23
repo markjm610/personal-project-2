@@ -5,9 +5,11 @@ import Context from './Context';
 
 const PlanNav = () => {
 
-    const { graphData, setGraphData, displayedPlan, setSelectedPlan } = useContext(Context);
+    const { graphData, setGraphData, displayedPlan, setSelectedPlan, currentUser } = useContext(Context);
 
-
+    useEffect(() => {
+        console.log(currentUser)
+    }, [currentUser])
     const newPlan = async () => {
         const res = await fetch(`${apiBaseUrl}/plans`, {
             method: 'POST',

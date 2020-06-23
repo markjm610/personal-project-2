@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -35,7 +35,7 @@ const TopBar = () => {
     const classes = useStyles();
 
     const { setLastDrawLocation } = useContext(Context)
-    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+    const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -52,6 +52,9 @@ const TopBar = () => {
         setLastDrawLocation(null)
     }
 
+    useEffect(() => {
+        console.log(user)
+    }, [user])
 
     return (
         <div className={classes.root}>
