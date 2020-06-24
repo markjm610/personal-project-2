@@ -22,6 +22,8 @@ import Paper from '@material-ui/core/Paper';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
+import Button from '@material-ui/core/Button';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -166,6 +168,12 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
         setEndDateArr(numDateArr)
     }
 
+    const handleSave = async () => {
+
+    }
+
+
+
     const labelId = `checkbox-list-secondary-label-${name}`;
 
     return (
@@ -202,9 +210,15 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                 </div>
                                             </TableCell>
                                         </>
-                                        : <TableCell align="right">
-                                            <TextField type='number' id="edit-amountPerYear" value={amountPerYearInput} onChange={amountPerYearChange} />
-                                        </TableCell>}
+                                        :
+                                        <>
+                                            <TableCell align="right">
+                                                <TextField type='number' id="edit-amountPerYear" value={amountPerYearInput} onChange={amountPerYearChange} />
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <Button onClick={handleSave}>Save</Button>
+                                            </TableCell>
+                                        </>}
                                 </TableRow>
                                 <TableRow key={taxRate}>
                                     <TableCell component="th" scope="row">
@@ -218,9 +232,15 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                 </div>
                                             </TableCell>
                                         </>
-                                        : <TableCell align="right">
-                                            <TextField type='number' id="edit-taxRate" value={taxRateInput} onChange={taxRateChange} />
-                                        </TableCell>}
+                                        :
+                                        <>
+                                            <TableCell align="right">
+                                                <TextField type='number' id="edit-taxRate" value={taxRateInput} onChange={taxRateChange} />
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <Button onClick={handleSave}>Save</Button>
+                                            </TableCell>
+                                        </>}
                                 </TableRow>
                                 <TableRow key={afterTaxAmount}>
                                     <TableCell component="th" scope="row">
@@ -243,9 +263,15 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                 </div>
                                             </TableCell>
                                         </>
-                                        : <TableCell align="right">
-                                            <TextField type='date' id="edit-startDate" value={startDateInput} onChange={startDateChange} />
-                                        </TableCell>}
+                                        :
+                                        <>
+                                            <TableCell align="right">
+                                                <TextField type='date' id="edit-startDate" value={startDateInput} onChange={startDateChange} />
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <Button onClick={handleSave}>Save</Button>
+                                            </TableCell>
+                                        </>}
                                 </TableRow>
                                 <TableRow key={endDateDisplay}>
                                     <TableCell component="th" scope="row">
@@ -260,9 +286,15 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                 </div>
                                             </TableCell>
                                         </>
-                                        : <TableCell align="right">
-                                            <TextField type='date' id="edit-endDate" value={endDateInput} onChange={endDateChange} />
-                                        </TableCell>}
+                                        :
+                                        <>
+                                            <TableCell align="right">
+                                                <TextField type='date' id="edit-endDate" value={endDateInput} onChange={endDateChange} />
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <Button onClick={handleSave}>Save</Button>
+                                            </TableCell>
+                                        </>}
                                 </TableRow>
                             </TableBody>
                         </ExpansionPanelDetails>
