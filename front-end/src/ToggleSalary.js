@@ -95,53 +95,60 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
         //         </>
         //     }
         // </>
-
-        <div className={classes.root}>
-            <ExpansionPanel>
-                <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    <Typography className={classes.heading}>{name}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <TableBody>
-                        <TableRow key={amountPerYear}>
-                            <TableCell component="th" scope="row">
-                                Amount Per Year
+        <div className='side-list-container'>
+            <Checkbox
+                edge="end"
+                onChange={handleToggle}
+                checked={checked}
+                inputProps={{ 'aria-labelledby': labelId }}
+                style={{ marginRight: 10 }}
+            />
+            <div className={classes.root}>
+                <ExpansionPanel>
+                    <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                    >
+                        <Typography className={classes.heading}>{name}</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <TableBody>
+                            <TableRow key={amountPerYear}>
+                                <TableCell component="th" scope="row">
+                                    Amount Per Year
                         </TableCell>
-                            <TableCell align="right">${amountPerYear}</TableCell>
-                        </TableRow>
-                        <TableRow key={afterTaxAmount}>
-                            <TableCell component="th" scope="row">
-                                Amount After Taxes
+                                <TableCell align="right">${amountPerYear}</TableCell>
+                            </TableRow>
+                            <TableRow key={afterTaxAmount}>
+                                <TableCell component="th" scope="row">
+                                    Amount After Taxes
                         </TableCell>
-                            <TableCell align="right">${afterTaxAmount}</TableCell>
-                        </TableRow>
-                        <TableRow key={taxRate}>
-                            <TableCell component="th" scope="row">
-                                Tax Rate
+                                <TableCell align="right">${afterTaxAmount}</TableCell>
+                            </TableRow>
+                            <TableRow key={taxRate}>
+                                <TableCell component="th" scope="row">
+                                    Tax Rate
                         </TableCell>
-                            <TableCell align="right">{taxRate * 100}%</TableCell>
-                        </TableRow>
-                        <TableRow key={startDateDisplay}>
-                            <TableCell component="th" scope="row">
-                                Start Date
+                                <TableCell align="right">{taxRate * 100}%</TableCell>
+                            </TableRow>
+                            <TableRow key={startDateDisplay}>
+                                <TableCell component="th" scope="row">
+                                    Start Date
                         </TableCell>
-                            <TableCell align="right">{startDateDisplay}</TableCell>
-                        </TableRow>
-                        <TableRow key={endDateDisplay}>
-                            <TableCell component="th" scope="row">
-                                End Date
+                                <TableCell align="right">{startDateDisplay}</TableCell>
+                            </TableRow>
+                            <TableRow key={endDateDisplay}>
+                                <TableCell component="th" scope="row">
+                                    End Date
                         </TableCell>
-                            <TableCell align="right">{endDateDisplay}</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
+                                <TableCell align="right">{endDateDisplay}</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+            </div>
         </div>
-
     )
 }
 

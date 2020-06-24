@@ -84,38 +84,47 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
         //         />
         //     </ListItemSecondaryAction>
         // </ListItem>
-        <div className={classes.root}>
-            <ExpansionPanel>
-                <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    <Typography className={classes.heading}>{description}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <TableBody>
-                        <TableRow key={amount}>
-                            <TableCell component="th" scope="row">
-                                Amount
+        <div className='side-list-container'>
+            <Checkbox
+                edge="end"
+                onChange={handleToggle}
+                checked={checked}
+                inputProps={{ 'aria-labelledby': labelId }}
+                style={{ marginRight: 10 }}
+            />
+            <div className={classes.root}>
+                <ExpansionPanel>
+                    <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                    >
+                        <Typography className={classes.heading}>{description}</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <TableBody>
+                            <TableRow key={amount}>
+                                <TableCell component="th" scope="row">
+                                    Amount
                         </TableCell>
-                            <TableCell align="right">${amount}</TableCell>
-                        </TableRow>
-                        <TableRow key={dateDisplay}>
-                            <TableCell component="th" scope="row">
-                                Date
+                                <TableCell align="right">${amount}</TableCell>
+                            </TableRow>
+                            <TableRow key={dateDisplay}>
+                                <TableCell component="th" scope="row">
+                                    Date
                         </TableCell>
-                            <TableCell align="right">{dateDisplay}</TableCell>
-                        </TableRow>
-                        <TableRow key={repeatingInterval}>
-                            <TableCell component="th" scope="row">
-                                Repeats?
+                                <TableCell align="right">{dateDisplay}</TableCell>
+                            </TableRow>
+                            <TableRow key={repeatingInterval}>
+                                <TableCell component="th" scope="row">
+                                    Repeats?
                         </TableCell>
-                            <TableCell align="right">{repeatingInterval ? repeatingInterval : 'No'}</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
+                                <TableCell align="right">{repeatingInterval ? repeatingInterval : 'No'}</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+            </div>
         </div>
     )
 }
