@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
@@ -15,6 +15,17 @@ import { Link } from "react-router-dom";
 import NewPlanNav from './NewPlanNav';
 import PlanNav from './PlanNav';
 import apiBaseUrl from './config';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import clsx from 'clsx';
+import Drawer from '@material-ui/core/Drawer';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import List from '@material-ui/core/List';
+
+
+const drawerWidth = 'auto';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,14 +42,57 @@ const useStyles = makeStyles((theme) => ({
     },
     appBar: {
         backgroundColor: 'rgb(49, 48, 48)'
-    }
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        marginLeft: -drawerWidth,
+    },
+    contentShift: {
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginLeft: 0,
+    },
 }));
 
 const TopBar = () => {
     const classes = useStyles();
+    const theme = useTheme();
 
     const { setLastDrawLocation, currentUserPlans, setCurrentUserPlans, currentUser } = useContext(Context)
     const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+
+    const handleDrawerOpen = () => {
+        setDrawerOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setDrawerOpen(false);
+    };
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -71,12 +125,14 @@ const TopBar = () => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" className={classes.appBar}>
+            <AppBar position="static" className={clsx(classes.appBar, {
+                [classes.appBarShift]: open,
+            })}>
                 <Toolbar>
                     <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                        <MenuIcon onClick={handleMenu} />
+                        <MenuIcon onClick={handleDrawerOpen} />
                     </IconButton>
-                    <Menu
+                    {/* <Menu
                         id="menu-appbar"
                         anchorEl={anchorEl}
                         anchorOrigin={{
@@ -97,7 +153,7 @@ const TopBar = () => {
                         <div onClick={handleClose}>
                             <AddExpenseNav />
                         </div>
-                    </Menu>
+                    </Menu> */}
                     <Typography variant="h6" className={classes.title}>
                         Top Bar
                     </Typography>
@@ -115,6 +171,35 @@ const TopBar = () => {
                     </div>
                 </Toolbar>
             </AppBar>
+            <Drawer
+                className={classes.drawer}
+                // variant="persistent"
+                anchor="left"
+                open={drawerOpen}
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+            >
+                <div className={classes.drawerHeader}>
+                    <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                    </IconButton>
+                </div>
+                <Divider />
+                <List>
+                    {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                        <ListItem button key={text}>
+                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                            <ListItemText primary={text} />
+                        </ListItem>
+
+                    ))} */}
+                    <ListItem>
+                        {/* <AddSalaryNav />
+                        <AddExpenseNav /> */}
+                    </ListItem>
+                </List>
+            </Drawer>
         </div>
     );
 }

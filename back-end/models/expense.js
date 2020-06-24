@@ -10,6 +10,7 @@ const expenseSchema = new Schema({
     repeatingInterval: { type: String },
     endDate: { type: [Number] },
     endDateMilliseconds: { type: Number },
+    displayed: { type: Boolean, required: true },
     planId: { type: mongoose.Types.ObjectId, required: true, ref: 'Plan' }
 })
 

@@ -4,13 +4,21 @@ import LineChart from './LineChart'
 import TopBar from './TopBar'
 import apiBaseUrl from './config';
 import Context from './Context';
+import AddSalaryNav from './AddSalaryNav';
+import BelowGraph from './BelowGraph';
+import Sidebar from './Sidebar';
 
 const MainPage = () => {
 
     return (
         <>
             <TopBar />
-            <LineChart />
+            <div className='middle'>
+                <Sidebar />
+                <LineChart />
+            </div>
+            <BelowGraph />
+
         </>
     )
 }

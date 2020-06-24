@@ -58,6 +58,7 @@ router.post('/salaries', asyncHandler(async (req, res) => {
         amountPerYear,
         taxRate,
         afterTaxAmount,
+        displayed: true,
         planId
     })
 
@@ -76,5 +77,60 @@ router.get('/plans/:planId/salaries', asyncHandler(async (req, res) => {
 
 }))
 
+router.put('plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) => {
+    const planId = req.params.planId
+    const salaryId = req.params.salaryId
+    const { displayed } = req.body
+    const salary = await Salary.findById(salaryId)
+
+    const plan = await Plan.findById(planId)
+
+    const graphDataArr = plan.graphData
+
+    const startMilliseconds = salary.startDateMilliseconds
+    const endMilliseconds = salary.endDateMilliseconds
+
+    let firstDayIndex;
+
+    graphDataArr.forEach((datapoint, i) => {
+        if (datapoint.x.getTime() === startMilliseconds) {
+            firstDayIndex = i
+        }
+    })
+
+    const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+
+    let daysPassed = 0
+
+    for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+        if (i <= firstDayIndex + dayDifference) {
+
+            daysPassed++
+
+            const amountToAdd = salary.afterTaxAmount / dayDifference * daysPassed
+            if (displayed) {
+                graphDataArr[i].y += amountToAdd
+            } else {
+                graphDataArr[i].y -= amountToAdd
+            }
+
+        } else {
+            if (displayed) {
+                graphDataArr[i].y += salary.afterTaxAmount
+            } else {
+                graphDataArr[i].y -= salary.afterTaxAmount
+            }
+
+        }
+
+
+    }
+    await salary.updateOne({ displayed: displayed })
+    await plan.updateOne({ graphData: graphDataArr })
+
+    res.json(plan)
+
+}))
 
 module.exports = router;

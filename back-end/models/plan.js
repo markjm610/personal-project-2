@@ -10,7 +10,7 @@ const planSchema = new Schema({
     },
     startDate: { type: [Number], required: true },
     endDate: { type: [Number], required: true },
-    graphData: { type: Array }
+    graphData: { type: Array },
 
 })
 

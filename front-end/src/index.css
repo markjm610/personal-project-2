@@ -25,3 +25,12 @@
     padding: 5px;
 }
 
+.below-graph {
+    display: flex;
+    justify-content: center;
+}
+
+.middle {
+    display: flex;
+    
+}

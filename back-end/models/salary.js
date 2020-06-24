@@ -11,6 +11,7 @@ const salarySchema = new Schema({
     amountPerYear: { type: Number, required: true },
     taxRate: { type: Number },
     afterTaxAmount: { type: Number },
+    displayed: { type: Boolean, required: true },
     planId: { type: mongoose.Types.ObjectId, required: true, ref: 'Plan' }
 })
 

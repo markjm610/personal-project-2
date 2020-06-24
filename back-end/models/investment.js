@@ -7,6 +7,7 @@ const investmentSchema = new Schema({
     date: { type: Date, required: true },
     amount: { type: Number, required: true },
     interestRate: { type: Number, required: true },
+    sellDate: { type: Number },
     planId: { type: mongoose.Types.ObjectId, required: true, ref: 'Plan' }
 })
 

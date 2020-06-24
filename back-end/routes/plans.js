@@ -142,5 +142,17 @@ router.put('/plans/:planId', asyncHandler(async (req, res) => {
 
 }))
 
+router.get('/plans/:planId/items', asyncHandler(async (req, res) => {
+    const planId = req.params.planId
+
+    const salaries = await Salary.find({ planId })
+    const expenses = await Expense.find({ planId })
+
+    res.json({ salaries, expenses })
+
+}))
+
+
+
 
 module.exports = router;

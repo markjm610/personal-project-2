@@ -47,7 +47,7 @@ const LineChart = () => {
         <div className='graph-container'>
             {selectedPlan && <XYPlot
                 // dontCheckIfEmpty
-                animation={true}
+                margin={{ left: 100, right: 100 }}
                 height={700}
                 width={1400}
                 xType='time'
@@ -73,14 +73,14 @@ const LineChart = () => {
                 }}
             >
                 <XAxis
-                    // hideTicks
                     animation
                     style={{
                         userSelect: 'none'
                     }}
+                    tickLabelAngle={15}
+                    tickPadding={20}
                 />
                 <YAxis
-                    // hideTicks
                     animation
                     style={{
                         userSelect: 'none'
