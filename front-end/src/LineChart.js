@@ -93,7 +93,7 @@ const LineChart = () => {
                 />
                 <Highlight
                     onBrush={() => {
-                        console.log('on brush')
+
                         if (brushCounter < 1) {
                             setBrushCounter(brushCounter + 1)
                         } else {

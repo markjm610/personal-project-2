@@ -70,12 +70,27 @@ const Sidebar = () => {
     return (
         <div className='sidebar-container'>
             {selectedPlan._id && <List dense className={classes.root}>
-                {salaries.map((salary) => {
-                    return <ToggleSalary key={salary.name} id={salary._id} name={salary.name} displayed={salary.displayed} />
+                {salaries.map(({ _id, name, displayed, amountPerYear, afterTaxAmount, taxRate, startDate, endDate }) => {
+                    return <ToggleSalary
+                        key={name}
+                        id={_id}
+                        name={name}
+                        displayed={displayed}
+                        amountPerYear={amountPerYear}
+                        afterTaxAmount={afterTaxAmount}
+                        taxRate={taxRate}
+                        startDate={startDate}
+                        endDate={endDate} />
                 })}
-                {expenses.map((expense) => {
-                    const labelId = `checkbox-list-secondary-label-${expense}`;
-                    return <ToggleExpense key={expense.description} id={expense._id} description={expense.description} displayed={expense.displayed} />
+                {expenses.map(({ description, _id, displayed, date, repeatingInterval, amount }) => {
+                    return <ToggleExpense
+                        key={description}
+                        id={_id}
+                        description={description}
+                        displayed={displayed}
+                        date={date}
+                        repeatingInterval={repeatingInterval}
+                        amount={amount} />
                 })}
             </List>}
         </div>
