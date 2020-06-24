@@ -138,11 +138,11 @@ router.put('/plans/:planId/expenses/:expenseId', asyncHandler(async (req, res) =
         }
     })
 
-    if (!repeatingInterval) {
+    if (!expense.repeatingInterval) {
         for (let i = firstDayIndex; i < graphDataArr.length; i++) {
             graphDataArr[i].y += expense.amount
         }
-    } else if (repeatingInterval === 'Daily') {
+    } else if (expense.repeatingInterval === 'Daily') {
         let daysPassed = 0
         for (let i = firstDayIndex; i < graphDataArr.length; i++) {
             daysPassed++
@@ -153,7 +153,7 @@ router.put('/plans/:planId/expenses/:expenseId', asyncHandler(async (req, res) =
             }
 
         }
-    } else if (repeatingInterval === 'Weekly') {
+    } else if (expense.repeatingInterval === 'Weekly') {
         let weeksPassed = 0
         for (let i = firstDayIndex; i < graphDataArr.length; i += 7) {
             weeksPassed++
@@ -164,7 +164,7 @@ router.put('/plans/:planId/expenses/:expenseId', asyncHandler(async (req, res) =
             }
 
         }
-    } else if (repeatingInterval === 'Monthly') {
+    } else if (expense.repeatingInterval === 'Monthly') {
 
         // Need to subtract expense every day, only increase the amount subtracted every month
         const dateObj = new Date(expense.dateMilliseconds)
@@ -201,7 +201,7 @@ router.put('/plans/:planId/expenses/:expenseId', asyncHandler(async (req, res) =
 
         }
 
-    } else if (repeatingInterval === 'Yearly') {
+    } else if (expense.repeatingInterval === 'Yearly') {
 
         const dateObj = new Date(expense.dateMilliseconds)
         const day = dateObj.getDate()

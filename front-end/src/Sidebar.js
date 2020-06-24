@@ -10,6 +10,9 @@ import Avatar from '@material-ui/core/Avatar';
 import apiBaseUrl from './config';
 import Context from './Context'
 import ToggleSalary from './ToggleSalary';
+import ToggleExpense from './ToggleExpense';
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -72,18 +75,7 @@ const Sidebar = () => {
                 })}
                 {expenses.map((expense) => {
                     const labelId = `checkbox-list-secondary-label-${expense}`;
-                    return (
-                        <ListItem key={expense} button>
-                            <ListItemText id={labelId} primary={`${expense.description}`} />
-                            <ListItemSecondaryAction>
-                                <Checkbox
-                                    edge="end"
-                                    onChange={handleToggle(expense)}
-                                    checked={checked.indexOf(expense) !== -1}
-                                    inputProps={{ 'aria-labelledby': labelId }}
-                                />
-                            </ListItemSecondaryAction>
-                        </ListItem>)
+                    return <ToggleExpense key={expense.description} id={expense._id} description={expense.description} displayed={expense.displayed} />
                 })}
             </List>}
         </div>
