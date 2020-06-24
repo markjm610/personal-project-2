@@ -96,7 +96,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                 onChange={handleToggle}
                 checked={checked}
                 inputProps={{ 'aria-labelledby': labelId }}
-                style={{ marginRight: 10 }}
+                style={{ marginRight: 10, color: 'rgb(238, 122, 122)' }}
             />
             <div className={classes.root}>
                 <ExpansionPanel>
