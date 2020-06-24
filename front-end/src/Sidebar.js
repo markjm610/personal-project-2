@@ -9,6 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
 import apiBaseUrl from './config';
 import Context from './Context'
+import ToggleSalary from './ToggleSalary';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,18 +30,18 @@ const Sidebar = () => {
     const [expenses, setExpenses] = useState([])
     const [dropdown, setDropdown] = useState(false)
 
-    // const handleToggle = (value) => () => {
-    //     const currentIndex = checked.indexOf(value);
-    //     const newChecked = [...checked];
+    const handleToggle = (value) => () => {
+        const currentIndex = checked.indexOf(value);
+        const newChecked = [...checked];
 
-    //     if (currentIndex === -1) {
-    //         newChecked.push(value);
-    //     } else {
-    //         newChecked.splice(currentIndex, 1);
-    //     }
+        if (currentIndex === -1) {
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
 
-    //     setChecked(newChecked);
-    // };
+        setChecked(newChecked);
+    };
 
     useEffect(() => {
         if (selectedPlan._id) {
@@ -67,22 +68,7 @@ const Sidebar = () => {
         <div className='sidebar-container'>
             {selectedPlan._id && <List dense className={classes.root}>
                 {salaries.map((salary) => {
-                    const labelId = `checkbox-list-secondary-label-${salary}`;
-                    return (
-                        <>
-                            <ListItem key={salary} button onClick={() => setDropdown(!dropdown)}>
-                                <ListItemText id={labelId} primary={`${salary.name}`} />
-                                <ListItemSecondaryAction>
-                                    <Checkbox
-                                        edge="end"
-                                        onChange={handleToggle(salary)}
-                                        checked={checked.indexOf(salary) !== -1}
-                                        inputProps={{ 'aria-labelledby': labelId }}
-                                    />
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        </>
-                    );
+                    return <ToggleSalary key={salary.name} id={salary._id} name={salary.name} displayed={salary.displayed} />
                 })}
                 {expenses.map((expense) => {
                     const labelId = `checkbox-list-secondary-label-${expense}`;

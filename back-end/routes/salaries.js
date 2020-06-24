@@ -77,7 +77,7 @@ router.get('/plans/:planId/salaries', asyncHandler(async (req, res) => {
 
 }))
 
-router.put('plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) => {
+router.put('/plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) => {
     const planId = req.params.planId
     const salaryId = req.params.salaryId
     const { displayed } = req.body
@@ -126,6 +126,7 @@ router.put('plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) => 
 
 
     }
+
     await salary.updateOne({ displayed: displayed })
     await plan.updateOne({ graphData: graphDataArr })
 
