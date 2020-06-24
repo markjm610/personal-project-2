@@ -36,7 +36,6 @@ const AddExpense = () => {
     const [date, setDate] = useState(null)
     const [dateInput, setDateInput] = useState('')
     const [repeatingInterval, setRepeatingInterval] = useState(null)
-    const [repeatingIntervalInput, setRepeatingIntervalInput] = useState('')
     const [checkedRepeat, setCheckedRepeat] = useState(false)
 
     const addExpenseSubmit = async (e) => {
@@ -100,7 +99,9 @@ const AddExpense = () => {
         } else {
             setCheckedRepeat(false)
         }
-
+        if (repeatingInterval) {
+            setRepeatingInterval(null)
+        }
     }
 
     const repeatingIntervalChange = e => {

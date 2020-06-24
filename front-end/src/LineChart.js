@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { XYPlot, LineSeries, XAxis, YAxis, Highlight, Crosshair, AreaSeries } from 'react-vis';
 import '../node_modules/react-vis/dist/style.css';
 import Context from './Context';
@@ -21,6 +21,11 @@ const LineChart = () => {
     const { lastDrawLocation, setLastDrawLocation, setDisableLayer, selectedPlan, setHoverData, showLayer, setShowLayer } = useContext(Context)
     // const [lastDrawLocation, setLastDrawLocation] = useState(null)
     const [crosshair, setCrosshair] = useState([])
+    const [brushCounter, setBrushCounter] = useState(0)
+
+    // useEffect(() => {
+    //     console.log('mount')
+    // }, [selectedPlan])
 
     const handleNearestX = (nearestX) => {
         setHoverData(nearestX)
@@ -36,11 +41,11 @@ const LineChart = () => {
         setCrosshair([])
     }
 
-    const [brushCounter, setBrushCounter] = useState(0)
+
 
     return (
         <div className='graph-container'>
-            <XYPlot
+            {selectedPlan && <XYPlot
                 // dontCheckIfEmpty
                 animation={true}
                 height={700}
@@ -112,7 +117,7 @@ const LineChart = () => {
                         <div>${crosshair[0].y.toFixed(2)}</div>
                     </div>
                 </Crosshair>}
-            </XYPlot>
+            </XYPlot>}
             <Layer />
         </div>
     );
