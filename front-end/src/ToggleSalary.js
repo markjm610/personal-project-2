@@ -75,12 +75,13 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
     const endDateString = endDateStringArr.join('-')
 
-
+    const [currentAmountPerYear, setCurrentAmountPerYear] = useState(amountPerYear)
     const [amountPerYearInput, setAmountPerYearInput] = useState(amountPerYear.toString())
-    const [taxRateInput, setTaxRateInput] = useState(taxRate.toString())
-    const [afterTaxAmountInput, setafterTaxAmountInput] = useState(afterTaxAmount.toString())
-    const [startDate1, setStartDate1] = useState(null)
-    const [endDate1, setEndDate1] = useState(null)
+    const [currentTaxRate, setCurrentTaxRate] = useState(taxRate)
+    const [taxRateInput, setTaxRateInput] = useState((taxRate * 100).toString())
+    const [currentAfterTaxAmount, setCurrentAfterTaxAmount] = useState(afterTaxAmount)
+    const [startDateArr, setStartDateArr] = useState(null)
+    const [endDateArr, setEndDateArr] = useState(null)
     const [startDateInput, setStartDateInput] = useState(startDateString)
     const [endDateInput, setEndDateInput] = useState(endDateString)
 
@@ -123,24 +124,46 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
     }
 
-    const amountPerYearChange = () => {
+    const amountPerYearChange = (e) => {
+
+        const amountPerYearFloat = parseFloat(e.target.value)
+        setCurrentAmountPerYear(amountPerYearFloat)
+        setAmountPerYearInput(e.target.value)
+        setCurrentAfterTaxAmount(amountPerYearFloat - amountPerYearFloat * taxRate)
 
     }
 
-    const taxRateChange = () => {
-
+    const taxRateChange = (e) => {
+        setTaxRateInput(e.target.value)
+        const taxRateToDecimal = parseFloat(e.target.value) / 100
+        setCurrentTaxRate(taxRateToDecimal)
+        setCurrentAfterTaxAmount(currentAmountPerYear - currentAmountPerYear * taxRateToDecimal)
     }
 
-    const afterTaxAmountChange = () => {
+    const startDateChange = e => {
+        setStartDateInput(e.target.value)
+        const stringDateArr = e.target.value.split('-')
+        const numDateArr = stringDateArr.map((number, i) => {
+            if (i === 1) {
+                return parseInt(number) - 1
+            }
+            return parseInt(number)
+        })
 
+        setStartDateArr(numDateArr)
     }
 
-    const startDateChange = () => {
-        console.log(startDateInput)
-    }
+    const endDateChange = (e) => {
+        setEndDateInput(e.target.value)
+        const stringDateArr = e.target.value.split('-')
+        const numDateArr = stringDateArr.map((number, i) => {
+            if (i === 1) {
+                return parseInt(number) - 1
+            }
+            return parseInt(number)
+        })
 
-    const endDateChange = () => {
-
+        setEndDateArr(numDateArr)
     }
 
     const labelId = `checkbox-list-secondary-label-${name}`;
@@ -201,20 +224,12 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                 </TableRow>
                                 <TableRow key={afterTaxAmount}>
                                     <TableCell component="th" scope="row">
-                                        Amount After Taxes
+                                        Amount After Tax
                         </TableCell>
-                                    {!edit.afterTaxAmount
-                                        ? <>
-                                            <TableCell align="right">${afterTaxAmount}</TableCell>
-                                            <TableCell align="right">
-                                                <div className='edit-icon'>
-                                                    <EditIcon onClick={() => editClick('afterTaxAmount')} />
-                                                </div>
-                                            </TableCell>
-                                        </>
-                                        : <TableCell align="right">
-                                            <TextField type='number' id="edit-afterTaxAmount" value={afterTaxAmountInput} onChange={afterTaxAmountChange} />
-                                        </TableCell>}
+
+                                    <TableCell align="right">${currentAfterTaxAmount}</TableCell>
+                                    <TableCell align="right"></TableCell>
+
                                 </TableRow>
                                 <TableRow key={startDateDisplay}>
                                     <TableCell component="th" scope="row">

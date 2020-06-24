@@ -111,7 +111,7 @@ const AddSalary = () => {
             }
             return parseInt(number)
         })
-        // setEndDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
+
         setEndDate(numDateArr)
     }
 
