@@ -56,7 +56,6 @@ const Sidebar = () => {
 
                 setSalaries(salaries)
                 setExpenses(expenses)
-                console.log(expenses)
             }
 
             getItems()

@@ -75,8 +75,6 @@ const AddSalary = () => {
         } else {
             setAfterTaxAmount('')
         }
-
-
     }
 
     const taxChange = (e) => {

@@ -39,3 +39,10 @@
     display: flex;
 }
 
+.new-plan-nav:hover {
+    cursor: pointer;
+}
+
+.edit-icon:hover {
+    cursor: pointer;
+}

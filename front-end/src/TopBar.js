@@ -129,9 +129,9 @@ const TopBar = () => {
                 [classes.appBarShift]: open,
             })}>
                 <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                    {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <MenuIcon onClick={handleDrawerOpen} />
-                    </IconButton>
+                    </IconButton> */}
                     {/* <Menu
                         id="menu-appbar"
                         anchorEl={anchorEl}
@@ -157,11 +157,15 @@ const TopBar = () => {
                     <Typography variant="h6" className={classes.title}>
                         Top Bar
                     </Typography>
-                    <NewPlanNav />
+
                     {currentUserPlans.map(plan => {
                         return <PlanNav key={plan._id} id={plan._id} name={plan.name} />
                     })}
+
+                    <div className='new-plan-nav'><NewPlanNav /></div>
+
                     <Button color="inherit" onClick={zoomOut}>Zoom Out</Button>
+
                     <div>
                         {!isAuthenticated && (
                             <Button color='inherit' onClick={() => loginWithRedirect({})}>Log in</Button>
@@ -171,35 +175,6 @@ const TopBar = () => {
                     </div>
                 </Toolbar>
             </AppBar>
-            <Drawer
-                className={classes.drawer}
-                // variant="persistent"
-                anchor="left"
-                open={drawerOpen}
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-            >
-                <div className={classes.drawerHeader}>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-
-                    ))} */}
-                    <ListItem>
-                        {/* <AddSalaryNav />
-                        <AddExpenseNav /> */}
-                    </ListItem>
-                </List>
-            </Drawer>
         </div>
     );
 }
