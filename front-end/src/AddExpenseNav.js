@@ -5,6 +5,8 @@ import Drawer from '@material-ui/core/Drawer';
 import AddExpense from './AddExpense';
 import MenuItem from '@material-ui/core/MenuItem';
 import Context from './Context';
+import Button from '@material-ui/core/Button';
+
 
 const useStyles = makeStyles({
     list: {
@@ -17,7 +19,7 @@ const useStyles = makeStyles({
 
 const AddExpenseNav = () => {
     const classes = useStyles();
-    const { openAddExpense, setOpenAddExpense } = useContext(Context)
+    const { openAddExpense, setOpenAddExpense, selectedPlan } = useContext(Context)
 
     const toggleDrawer = () => {
         setOpenAddExpense(!openAddExpense);
@@ -36,10 +38,15 @@ const AddExpenseNav = () => {
 
     return (
         <div>
-            <MenuItem onClick={toggleDrawer}>Add Expense</MenuItem>
-            <Drawer anchor='top' open={openAddExpense} onClose={toggleDrawer}>
-                {list('top')}
-            </Drawer>
+            {selectedPlan._id &&
+                <>
+                    <Button variant='outlined' onClick={toggleDrawer}>Add Expense</Button>
+                    <Drawer anchor='top' open={openAddExpense} onClose={toggleDrawer}>
+                        {list('top')}
+                    </Drawer>
+                </>
+            }
+
         </div>
     );
 }

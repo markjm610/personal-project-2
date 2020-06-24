@@ -11,6 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -110,7 +111,7 @@ const AddExpense = () => {
 
     return (
         <>
-            <div>Add Expense</div>
+            <Typography variant='h6'>Add Expense</Typography>
             <form className={classes.root} noValidate autoComplete="off">
                 <TextField id="name" label="Description" value={description} onChange={descriptionChange} />
                 <TextField type='date' id="date" value={dateInput} onChange={dateChange} />

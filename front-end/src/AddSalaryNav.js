@@ -5,6 +5,8 @@ import Drawer from '@material-ui/core/Drawer';
 import AddSalary from './AddSalary';
 import MenuItem from '@material-ui/core/MenuItem';
 import Context from './Context';
+import Button from '@material-ui/core/Button';
+
 
 const useStyles = makeStyles({
     list: {
@@ -17,7 +19,7 @@ const useStyles = makeStyles({
 
 const AddSalaryNav = () => {
     const classes = useStyles();
-    const { openAddSalary, setOpenAddSalary } = useContext(Context)
+    const { openAddSalary, setOpenAddSalary, selectedPlan } = useContext(Context)
 
     const toggleDrawer = () => {
         setOpenAddSalary(!openAddSalary);
@@ -35,12 +37,18 @@ const AddSalaryNav = () => {
     );
 
     return (
+
         <div>
-            <MenuItem onClick={toggleDrawer}>Add Salary</MenuItem>
-            <Drawer anchor='top' open={openAddSalary} onClose={toggleDrawer}>
-                {list('top')}
-            </Drawer>
+            {selectedPlan._id &&
+                <>
+                    <Button variant='outlined' onClick={toggleDrawer}>Add Salary</Button>
+                    <Drawer anchor='top' open={openAddSalary} onClose={toggleDrawer}>
+                        {list('top')}
+                    </Drawer>
+                </>
+            }
         </div>
+
     );
 }
 

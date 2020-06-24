@@ -11,7 +11,7 @@ import apiBaseUrl from './config';
 import Context from './Context'
 import ToggleSalary from './ToggleSalary';
 import ToggleExpense from './ToggleExpense';
-
+import Typography from '@material-ui/core/Typography';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -70,6 +70,7 @@ const Sidebar = () => {
     return (
         <div className='sidebar-container'>
             {selectedPlan._id && <List dense className={classes.root}>
+                <Typography variant='h6'>Salaries</Typography>
                 {salaries.map(({ _id, name, displayed, amountPerYear, afterTaxAmount, taxRate, startDate, endDate }) => {
                     return <ToggleSalary
                         key={name}
@@ -82,6 +83,7 @@ const Sidebar = () => {
                         startDate={startDate}
                         endDate={endDate} />
                 })}
+                <Typography variant='h6'>Expenses</Typography>
                 {expenses.map(({ description, _id, displayed, date, repeatingInterval, amount }) => {
                     return <ToggleExpense
                         key={description}

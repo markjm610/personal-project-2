@@ -91,7 +91,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                     onChange={handleToggle}
                     checked={checked}
                     inputProps={{ 'aria-labelledby': labelId }}
-                    style={{ marginRight: 10 }}
+                    style={{ marginRight: 10, color: 'rgb(110, 211, 43)' }}
                 />
                 <div className={classes.root}>
                     <ExpansionPanel>
