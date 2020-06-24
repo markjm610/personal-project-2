@@ -19,7 +19,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
     },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 }));
 
 
@@ -37,15 +42,15 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
     const classes = useStyles();
 
 
-
-    const [checked, setChecked] = useState(displayed)
     const { selectedPlan, setSelectedPlan } = useContext(Context)
 
+    const [checked, setChecked] = useState(displayed)
+    const [backdrop, setBackdrop] = useState(false)
 
     const dateDisplay = new Date(date[0], date[1], date[2]).toString().slice(3, 15)
 
     const handleToggle = async () => {
-
+        setBackdrop(true)
         const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/expenses/${id}`, {
             method: 'PUT',
             body: JSON.stringify({
@@ -65,6 +70,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
             setSelectedPlan(plan)
 
             setChecked(!checked)
+            setBackdrop(false)
         }
 
     }
@@ -125,6 +131,9 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
             </div>
+            <Backdrop className={classes.backdrop} open={backdrop}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </div>
     )
 }

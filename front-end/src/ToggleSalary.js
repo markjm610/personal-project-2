@@ -19,6 +19,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
     heading: {
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     },
 }));
 
@@ -37,13 +44,15 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
     const { selectedPlan, setSelectedPlan } = useContext(Context)
     const [checked, setChecked] = useState(displayed)
     const [infoDisplay, setInfoDisplay] = useState(false)
-    // const [startDateDisplay, setStartDateDisplay] = useState(null)
+    const [backdrop, setBackdrop] = useState(false)
+
+
 
     const startDateDisplay = new Date(startDate[0], startDate[1], startDate[2]).toString().slice(3, 15)
     const endDateDisplay = new Date(endDate[0], endDate[1], endDate[2]).toString().slice(3, 15)
 
     const handleToggle = async () => {
-
+        setBackdrop(true)
         const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/salaries/${id}`, {
             method: 'PUT',
             body: JSON.stringify({
@@ -63,6 +72,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
             setSelectedPlan(plan)
 
             setChecked(!checked)
+            setBackdrop(false)
         }
 
     }
@@ -74,81 +84,65 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
     const labelId = `checkbox-list-secondary-label-${name}`;
 
     return (
-        // <>
-        //     <ListItem key={name} button onClick={toggleInfo}>
-        //         <ListItemText id={labelId} primary={`${name}`} />
-        //         <ListItemSecondaryAction>
-        //             <Checkbox
-        //                 edge="end"
-        //                 onChange={handleToggle}
-        //                 checked={checked}
-        //                 inputProps={{ 'aria-labelledby': labelId }}
-        //             />
-        //         </ListItemSecondaryAction>
-        //     </ListItem>
-        //     {infoDisplay &&
-        //         <>
-        //             <div>{amountPerYear}</div>
-        //             <div>{taxRate * 100}%</div>
-        //             <div>{afterTaxAmount}</div>
-        //             <div>{startDateDisplay}</div>
-        //         </>
-        //     }
-        // </>
-        <div className='side-list-container'>
-            <Checkbox
-                edge="end"
-                onChange={handleToggle}
-                checked={checked}
-                inputProps={{ 'aria-labelledby': labelId }}
-                style={{ marginRight: 10 }}
-            />
-            <div className={classes.root}>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                    >
-                        <Typography className={classes.heading}>{name}</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                        <TableBody>
-                            <TableRow key={amountPerYear}>
-                                <TableCell component="th" scope="row">
-                                    Amount Per Year
+        <>
+            <div className='side-list-container'>
+                <Checkbox
+                    edge="end"
+                    onChange={handleToggle}
+                    checked={checked}
+                    inputProps={{ 'aria-labelledby': labelId }}
+                    style={{ marginRight: 10 }}
+                />
+                <div className={classes.root}>
+                    <ExpansionPanel>
+                        <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography className={classes.heading}>{name}</Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <TableBody>
+                                <TableRow key={amountPerYear}>
+                                    <TableCell component="th" scope="row">
+                                        Amount Per Year
                         </TableCell>
-                                <TableCell align="right">${amountPerYear}</TableCell>
-                            </TableRow>
-                            <TableRow key={afterTaxAmount}>
-                                <TableCell component="th" scope="row">
-                                    Amount After Taxes
+                                    <TableCell align="right">${amountPerYear}</TableCell>
+                                </TableRow>
+                                <TableRow key={afterTaxAmount}>
+                                    <TableCell component="th" scope="row">
+                                        Amount After Taxes
                         </TableCell>
-                                <TableCell align="right">${afterTaxAmount}</TableCell>
-                            </TableRow>
-                            <TableRow key={taxRate}>
-                                <TableCell component="th" scope="row">
-                                    Tax Rate
+                                    <TableCell align="right">${afterTaxAmount}</TableCell>
+                                </TableRow>
+                                <TableRow key={taxRate}>
+                                    <TableCell component="th" scope="row">
+                                        Tax Rate
                         </TableCell>
-                                <TableCell align="right">{taxRate * 100}%</TableCell>
-                            </TableRow>
-                            <TableRow key={startDateDisplay}>
-                                <TableCell component="th" scope="row">
-                                    Start Date
+                                    <TableCell align="right">{taxRate * 100}%</TableCell>
+                                </TableRow>
+                                <TableRow key={startDateDisplay}>
+                                    <TableCell component="th" scope="row">
+                                        Start Date
                         </TableCell>
-                                <TableCell align="right">{startDateDisplay}</TableCell>
-                            </TableRow>
-                            <TableRow key={endDateDisplay}>
-                                <TableCell component="th" scope="row">
-                                    End Date
+                                    <TableCell align="right">{startDateDisplay}</TableCell>
+                                </TableRow>
+                                <TableRow key={endDateDisplay}>
+                                    <TableCell component="th" scope="row">
+                                        End Date
                         </TableCell>
-                                <TableCell align="right">{endDateDisplay}</TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
+                                    <TableCell align="right">{endDateDisplay}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                </div>
             </div>
-        </div>
+            <Backdrop className={classes.backdrop} open={backdrop}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        </>
     )
 }
 

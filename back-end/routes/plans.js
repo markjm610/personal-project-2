@@ -75,8 +75,10 @@ router.put('/plans/:planId', asyncHandler(async (req, res) => {
 
     let salaries = []
     planSalaries.forEach(salary => {
-        if (salary.startDateMilliseconds <= dateMilliseconds && salary.endDateMilliseconds >= dateMilliseconds) {
-            salaries.push(salary)
+        if (salary.displayed === true) {
+            if (salary.startDateMilliseconds <= dateMilliseconds && salary.endDateMilliseconds >= dateMilliseconds) {
+                salaries.push(salary)
+            }
         }
     })
 
@@ -88,28 +90,29 @@ router.put('/plans/:planId', asyncHandler(async (req, res) => {
     // Gets expenses from last month
     // Will have to update once expenses have end dates
     planExpenses.forEach(expense => {
-        if (expense.dateMilliseconds <= dateMilliseconds) {
-            if (!expense.repeatingInterval && (expense.dateMilliseconds + thirtyDaysInMilliseconds) >= dateMilliseconds) {
-                expenses.push(expense)
-            } else if (expense.repeatingInterval === 'Daily'
-                || expense.repeatingInterval === 'Weekly'
-                || expense.repeatingInterval === 'Monthly') {
-                expenses.push(expense)
-            } else if (expense.repeatingInterval === 'Yearly') {
-                const expenseDate = new Date(expense.dateMilliseconds)
-                if (expenseDate.getMonth() === clickedDate.getMonth()) {
-                    if (expenseDate.getDate() <= clickedDate.getDate()) {
-                        expenses.push(expense)
-                    }
-                } else if (expenseDate.getMonth() === clickedDate.getMonth() - 1) {
-                    if (expenseDate.getDate() > clickedDate.getDate()) {
-                        expenses.push(expense)
+        if (expense.displayed === true) {
+            if (expense.dateMilliseconds <= dateMilliseconds) {
+                if (!expense.repeatingInterval && (expense.dateMilliseconds + thirtyDaysInMilliseconds) >= dateMilliseconds) {
+                    expenses.push(expense)
+                } else if (expense.repeatingInterval === 'Daily'
+                    || expense.repeatingInterval === 'Weekly'
+                    || expense.repeatingInterval === 'Monthly') {
+                    expenses.push(expense)
+                } else if (expense.repeatingInterval === 'Yearly') {
+                    const expenseDate = new Date(expense.dateMilliseconds)
+                    if (expenseDate.getMonth() === clickedDate.getMonth()) {
+                        if (expenseDate.getDate() <= clickedDate.getDate()) {
+                            expenses.push(expense)
+                        }
+                    } else if (expenseDate.getMonth() === clickedDate.getMonth() - 1) {
+                        if (expenseDate.getDate() > clickedDate.getDate()) {
+                            expenses.push(expense)
+                        }
                     }
                 }
+
             }
-
         }
-
     })
 
 
