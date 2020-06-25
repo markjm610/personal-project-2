@@ -144,9 +144,10 @@ router.patch('/plans/:planId/salaries/:salaryId/amount', asyncHandler(async (req
         taxRate,
         afterTaxAmount
     })
-
+    console.log('previousSalary', previousSalary)
     const afterTaxAmountDifference = afterTaxAmount - previousSalary.afterTaxAmount
-
+    console.log(afterTaxAmount)
+    console.log('afterTaxAmountDifference', afterTaxAmountDifference)
     const plan = await Plan.findById(planId)
 
     const graphDataArr = plan.graphData
@@ -186,6 +187,7 @@ router.patch('/plans/:planId/salaries/:salaryId/amount', asyncHandler(async (req
 
     }
 
+    await plan.updateOne({ graphData: graphDataArr })
 
     res.json(plan)
 
