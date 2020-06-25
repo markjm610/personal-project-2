@@ -81,8 +81,8 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
     const [currentTaxRate, setCurrentTaxRate] = useState(taxRate)
     const [taxRateInput, setTaxRateInput] = useState((taxRate * 100).toString())
     const [currentAfterTaxAmount, setCurrentAfterTaxAmount] = useState(afterTaxAmount)
-    const [startDateArr, setStartDateArr] = useState(null)
-    const [endDateArr, setEndDateArr] = useState(null)
+    const [currentStartDateArr, setCurrentStartDateArr] = useState(startDate)
+    const [currentEndDateArr, setCurrentEndDateArr] = useState(endDate)
     const [startDateInput, setStartDateInput] = useState(startDateString)
     const [endDateInput, setEndDateInput] = useState(endDateString)
 
@@ -151,7 +151,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
             return parseInt(number)
         })
 
-        setStartDateArr(numDateArr)
+        setCurrentStartDateArr(numDateArr)
     }
 
     const endDateChange = (e) => {
@@ -164,7 +164,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
             return parseInt(number)
         })
 
-        setEndDateArr(numDateArr)
+        setCurrentEndDateArr(numDateArr)
     }
 
     const handleSaveAmount = async () => {
@@ -199,7 +199,34 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
     }
 
-    const handleSaveDate = () => {
+    const handleSaveDate = async () => {
+        setBackdrop(true)
+        const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/salaries/${id}/date`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                startDate: currentStartDateArr,
+                endDate: currentEndDateArr
+            }),
+            headers: {
+                "Content-Type": 'application/json',
+            }
+        })
+        if (res.ok) {
+            const plan = await res.json()
+            const dateObjData = plan.graphData.map(datapoint => {
+                return { x: new Date(datapoint.x), y: datapoint.y }
+            })
+
+            plan.graphData = dateObjData
+            setSelectedPlan(plan)
+
+            setEdit({
+                ...edit,
+                startDate: false,
+                endDate: false,
+            })
+            setBackdrop(false)
+        }
 
     }
 

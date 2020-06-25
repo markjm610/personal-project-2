@@ -46,3 +46,7 @@
 .edit-icon:hover {
     cursor: pointer;
 }
+
+.graph-container {
+    margin-left: 100px
+}

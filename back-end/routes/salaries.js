@@ -139,15 +139,15 @@ router.patch('/plans/:planId/salaries/:salaryId/amount', asyncHandler(async (req
     const planId = req.params.planId
     const { amountPerYear, taxRate, afterTaxAmount } = req.body
 
+    // Returns previous salary, not the updated version
     const previousSalary = await Salary.findByIdAndUpdate(salaryId, {
         amountPerYear,
         taxRate,
         afterTaxAmount
     })
-    console.log('previousSalary', previousSalary)
+
     const afterTaxAmountDifference = afterTaxAmount - previousSalary.afterTaxAmount
-    console.log(afterTaxAmount)
-    console.log('afterTaxAmountDifference', afterTaxAmountDifference)
+
     const plan = await Plan.findById(planId)
 
     const graphDataArr = plan.graphData
@@ -197,25 +197,109 @@ router.patch('/plans/:planId/salaries/:salaryId/amount', asyncHandler(async (req
 router.patch('/plans/:planId/salaries/:salaryId/date', asyncHandler(async (req, res) => {
     const salaryId = req.params.salaryId
     const planId = req.params.planId
-    const { amountPerYear, taxRate, afterTaxAmount } = req.body
+    const { startDate, endDate } = req.body
 
     const startDateMilliseconds = new Date(startDate[0], startDate[1], startDate[2]).getTime()
-    const endDateMilliseconds = new Date(endDate[0], endDate[1], endDate[2]).getTime()
+    const endDateMilliseconds = new Date(endDate[0], endDate[1], endDate[2] + 1).getTime()
 
-
-    await Salary.findByIdAndUpdate(salaryId, {
+    // Returns previous salary, not the updated version
+    const previousSalary = await Salary.findByIdAndUpdate(salaryId, {
         startDate,
         endDate,
-        amountPerYear,
-        taxRate,
-        afterTaxAmount,
         startDateMilliseconds,
         endDateMilliseconds
     })
 
+    const afterTaxAmount = previousSalary.afterTaxAmount
+
     const plan = await Plan.findById(planId)
 
     const graphDataArr = plan.graphData
+
+
+
+    let firstDayIndex;
+
+    graphDataArr.forEach((datapoint, i) => {
+        if (datapoint.x.getTime() === startDateMilliseconds) {
+            firstDayIndex = i
+        }
+    })
+
+    const previousDayDifference = (previousSalary.endDateMilliseconds - previousSalary.startDateMilliseconds) / (1000 * 60 * 60 * 24)
+    const newDayDifference = (endDateMilliseconds - startDateMilliseconds) / (1000 * 60 * 60 * 24)
+
+    let daysPassed = 0
+
+
+    if (newDayDifference > previousDayDifference) {
+        console.log('newDayDifference > previousDayDifference')
+        for (let i = firstDayIndex; i < firstDayIndex + newDayDifference; i++) {
+
+            // < or <= ?
+            if (i < firstDayIndex + previousDayDifference) {
+
+                daysPassed++
+
+                const previousAmountToAdd = afterTaxAmount / previousDayDifference * daysPassed
+                const newAmountToAdd = afterTaxAmount / newDayDifference * daysPassed
+
+                const difference = previousAmountToAdd - newAmountToAdd
+
+                graphDataArr[i].y -= difference
+            } else {
+                daysPassed++
+
+
+
+                const newAmountToAdd = afterTaxAmount / newDayDifference * daysPassed
+                const change = afterTaxAmount - newAmountToAdd
+
+                graphDataArr[i].y -= change
+            }
+        }
+    }
+
+    if (newDayDifference < previousDayDifference) {
+        console.log('newDayDifference < previousDayDifference')
+        for (let i = firstDayIndex; i < firstDayIndex + previousDayDifference; i++) {
+
+            // < or <= ?
+            if (i < firstDayIndex + newDayDifference) {
+
+                daysPassed++
+
+                const previousAmountToAdd = afterTaxAmount / previousDayDifference * daysPassed
+                const newAmountToAdd = afterTaxAmount / newDayDifference * daysPassed
+
+                const difference = newAmountToAdd - previousAmountToAdd
+
+                graphDataArr[i].y += difference
+            } else if (i < firstDayIndex + previousDayDifference) {
+
+                daysPassed++
+
+                const previousAmountToAdd = afterTaxAmount / previousDayDifference * daysPassed
+
+                const change = afterTaxAmount - previousAmountToAdd
+
+                graphDataArr[i].y += change
+
+            }
+        }
+    }
+
+
+
+
+    await plan.updateOne({ graphData: graphDataArr })
+
+    await Salary.findByIdAndUpdate(salaryId, {
+        startDate,
+        endDate,
+        startDateMilliseconds,
+        endDateMilliseconds
+    })
 
 
     res.json(plan)
