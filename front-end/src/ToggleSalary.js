@@ -51,7 +51,6 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
     const [backdrop, setBackdrop] = useState(false)
     const [edit, setEdit] = useState({
         amountPerYear: false,
-        afterTaxAmount: false,
         taxRate: false,
         startDate: false,
         endDate: false
@@ -168,10 +167,41 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
         setEndDateArr(numDateArr)
     }
 
-    const handleSave = async () => {
+    const handleSaveAmount = async () => {
+        setBackdrop(true)
+        const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/salaries/${id}/amount`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                amountPerYear: currentAmountPerYear,
+                taxRate: currentTaxRate,
+                afterTaxAmount: currentAfterTaxAmount
+            }),
+            headers: {
+                "Content-Type": 'application/json',
+            }
+        })
+        if (res.ok) {
+            const plan = await res.json()
+            const dateObjData = plan.graphData.map(datapoint => {
+                return { x: new Date(datapoint.x), y: datapoint.y }
+            })
+
+            plan.graphData = dateObjData
+            setSelectedPlan(plan)
+
+            setEdit({
+                ...edit,
+                amountPerYear: false,
+                taxRate: false,
+            })
+            setBackdrop(false)
+        }
 
     }
 
+    const handleSaveDate = () => {
+
+    }
 
 
     const labelId = `checkbox-list-secondary-label-${name}`;
@@ -216,7 +246,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                 <TextField type='number' id="edit-amountPerYear" value={amountPerYearInput} onChange={amountPerYearChange} />
                                             </TableCell>
                                             <TableCell align="right">
-                                                <Button onClick={handleSave}>Save</Button>
+                                                <Button onClick={handleSaveAmount}>Save</Button>
                                             </TableCell>
                                         </>}
                                 </TableRow>
@@ -238,7 +268,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                 <TextField type='number' id="edit-taxRate" value={taxRateInput} onChange={taxRateChange} />
                                             </TableCell>
                                             <TableCell align="right">
-                                                <Button onClick={handleSave}>Save</Button>
+                                                <Button onClick={handleSaveAmount}>Save</Button>
                                             </TableCell>
                                         </>}
                                 </TableRow>
@@ -269,7 +299,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                 <TextField type='date' id="edit-startDate" value={startDateInput} onChange={startDateChange} />
                                             </TableCell>
                                             <TableCell align="right">
-                                                <Button onClick={handleSave}>Save</Button>
+                                                <Button onClick={handleSaveDate}>Save</Button>
                                             </TableCell>
                                         </>}
                                 </TableRow>
@@ -292,7 +322,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                 <TextField type='date' id="edit-endDate" value={endDateInput} onChange={endDateChange} />
                                             </TableCell>
                                             <TableCell align="right">
-                                                <Button onClick={handleSave}>Save</Button>
+                                                <Button onClick={handleSaveDate}>Save</Button>
                                             </TableCell>
                                         </>}
                                 </TableRow>

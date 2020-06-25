@@ -134,4 +134,90 @@ router.put('/plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) =>
 
 }))
 
+router.patch('/plans/:planId/salaries/:salaryId/amount', asyncHandler(async (req, res) => {
+    const salaryId = req.params.salaryId
+    const planId = req.params.planId
+    const { amountPerYear, taxRate, afterTaxAmount } = req.body
+
+    const previousSalary = await Salary.findByIdAndUpdate(salaryId, {
+        amountPerYear,
+        taxRate,
+        afterTaxAmount
+    })
+
+    const afterTaxAmountDifference = afterTaxAmount - previousSalary.afterTaxAmount
+
+    const plan = await Plan.findById(planId)
+
+    const graphDataArr = plan.graphData
+
+
+    const startMilliseconds = new Date(previousSalary.startDate[0], previousSalary.startDate[1], previousSalary.startDate[2]).getTime()
+    const endMilliseconds = new Date(previousSalary.endDate[0], previousSalary.endDate[1], previousSalary.endDate[2]).getTime()
+
+
+
+    let firstDayIndex;
+
+    graphDataArr.forEach((datapoint, i) => {
+        if (datapoint.x.getTime() === startMilliseconds) {
+            firstDayIndex = i
+        }
+    })
+
+    const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+
+    let daysPassed = 0
+
+    for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+        if (i <= firstDayIndex + dayDifference) {
+            // For every day in salary period, add that day's proportion of salary to total
+            daysPassed++
+
+            const amountToAdd = afterTaxAmountDifference / dayDifference * daysPassed
+
+            graphDataArr[i].y += amountToAdd
+        } else {
+            // Once salary period is over, add full amount every day to total
+            graphDataArr[i].y += afterTaxAmountDifference
+        }
+
+
+    }
+
+
+    res.json(plan)
+
+}))
+
+
+router.patch('/plans/:planId/salaries/:salaryId/date', asyncHandler(async (req, res) => {
+    const salaryId = req.params.salaryId
+    const planId = req.params.planId
+    const { amountPerYear, taxRate, afterTaxAmount } = req.body
+
+    const startDateMilliseconds = new Date(startDate[0], startDate[1], startDate[2]).getTime()
+    const endDateMilliseconds = new Date(endDate[0], endDate[1], endDate[2]).getTime()
+
+
+    await Salary.findByIdAndUpdate(salaryId, {
+        startDate,
+        endDate,
+        amountPerYear,
+        taxRate,
+        afterTaxAmount,
+        startDateMilliseconds,
+        endDateMilliseconds
+    })
+
+    const plan = await Plan.findById(planId)
+
+    const graphDataArr = plan.graphData
+
+
+    res.json(plan)
+
+}))
+
 module.exports = router;
