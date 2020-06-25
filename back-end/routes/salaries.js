@@ -32,7 +32,7 @@ router.post('/salaries', asyncHandler(async (req, res) => {
 
     for (let i = firstDayIndex; i < graphDataArr.length; i++) {
 
-        if (i <= firstDayIndex + dayDifference) {
+        if (i < firstDayIndex + dayDifference) {
             // For every day in salary period, add that day's proportion of salary to total
             daysPassed++
 
