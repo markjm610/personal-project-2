@@ -82,7 +82,7 @@ const Sidebar = () => {
                         startDate={startDate}
                         endDate={endDate} />
                 })}
-                {salaries.length !== 0 && <Typography variant='h6'>Expenses</Typography>}
+                {expenses.length !== 0 && <Typography variant='h6'>Expenses</Typography>}
                 {expenses.map(({ description, _id, displayed, date, repeatingInterval, amount }) => {
                     return <ToggleExpense
                         key={description}
