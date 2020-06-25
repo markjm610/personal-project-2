@@ -152,11 +152,8 @@ router.patch('/plans/:planId/salaries/:salaryId/amount', asyncHandler(async (req
 
     const graphDataArr = plan.graphData
 
-
     const startMilliseconds = new Date(previousSalary.startDate[0], previousSalary.startDate[1], previousSalary.startDate[2]).getTime()
     const endMilliseconds = new Date(previousSalary.endDate[0], previousSalary.endDate[1], previousSalary.endDate[2]).getTime()
-
-
 
     let firstDayIndex;
 
@@ -303,7 +300,7 @@ router.patch('/plans/:planId/salaries/:salaryId/endDate', asyncHandler(async (re
 
 }))
 
-router.patch('/plans/:planId/salaries/:salaryId/startDate', asyncHandler(async (req, res) => {
+router.patch('/plans/:planId/salaries/:salaryId/date', asyncHandler(async (req, res) => {
     const salaryId = req.params.salaryId
     const planId = req.params.planId
     const { startDate, endDate } = req.body
@@ -316,8 +313,7 @@ router.patch('/plans/:planId/salaries/:salaryId/startDate', asyncHandler(async (
 
     const startMilliseconds = previousSalary.startDateMilliseconds
     const endMilliseconds = previousSalary.endDateMilliseconds
-    console.log(previousSalary.startDate)
-    console.log(previousSalary.endDate)
+
     let firstDayIndex;
 
     graphDataArr.forEach((datapoint, i) => {
@@ -325,7 +321,7 @@ router.patch('/plans/:planId/salaries/:salaryId/startDate', asyncHandler(async (
             firstDayIndex = i
         }
     })
-    console.log(graphDataArr[firstDayIndex])
+
     const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
 
     let daysPassed = 0
@@ -365,7 +361,6 @@ router.patch('/plans/:planId/salaries/:salaryId/startDate', asyncHandler(async (
 
     let newDaysPassed = 0
 
-    console.log(newFirstDayIndex)
 
     for (let i = newFirstDayIndex; i < graphDataArr.length; i++) {
 

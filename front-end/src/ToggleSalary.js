@@ -199,9 +199,9 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
     }
 
-    const handleSaveEndDate = async () => {
+    const handleSaveDate = async () => {
         setBackdrop(true)
-        const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/salaries/${id}/endDate`, {
+        const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/salaries/${id}/date`, {
             method: 'PATCH',
             body: JSON.stringify({
                 startDate: currentStartDateArr,
@@ -230,36 +230,6 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
     }
 
-    const handleSaveStartDate = async () => {
-        setBackdrop(true)
-        const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/salaries/${id}/startDate`, {
-            method: 'PATCH',
-            body: JSON.stringify({
-                startDate: currentStartDateArr,
-                endDate: currentEndDateArr
-            }),
-            headers: {
-                "Content-Type": 'application/json',
-            }
-        })
-        if (res.ok) {
-            const plan = await res.json()
-            const dateObjData = plan.graphData.map(datapoint => {
-                return { x: new Date(datapoint.x), y: datapoint.y }
-            })
-
-            plan.graphData = dateObjData
-            setSelectedPlan(plan)
-
-            setEdit({
-                ...edit,
-                startDate: false,
-                endDate: false,
-            })
-            setBackdrop(false)
-        }
-
-    }
 
 
     const labelId = `checkbox-list-secondary-label-${name}`;
@@ -357,7 +327,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                 <TextField type='date' id="edit-startDate" value={startDateInput} onChange={startDateChange} />
                                             </TableCell>
                                             <TableCell align="right">
-                                                <Button onClick={handleSaveStartDate}>Save</Button>
+                                                <Button onClick={handleSaveDate}>Save</Button>
                                             </TableCell>
                                         </>}
                                 </TableRow>
@@ -380,7 +350,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                 <TextField type='date' id="edit-endDate" value={endDateInput} onChange={endDateChange} />
                                             </TableCell>
                                             <TableCell align="right">
-                                                <Button onClick={handleSaveEndDate}>Save</Button>
+                                                <Button onClick={handleSaveDate}>Save</Button>
                                             </TableCell>
                                         </>}
                                 </TableRow>
