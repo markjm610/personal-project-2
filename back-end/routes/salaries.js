@@ -194,7 +194,7 @@ router.patch('/plans/:planId/salaries/:salaryId/amount', asyncHandler(async (req
 }))
 
 
-router.patch('/plans/:planId/salaries/:salaryId/date', asyncHandler(async (req, res) => {
+router.patch('/plans/:planId/salaries/:salaryId/endDate', asyncHandler(async (req, res) => {
     const salaryId = req.params.salaryId
     const planId = req.params.planId
     const { startDate, endDate } = req.body
@@ -233,7 +233,7 @@ router.patch('/plans/:planId/salaries/:salaryId/date', asyncHandler(async (req, 
 
 
     if (newDayDifference > previousDayDifference) {
-        console.log('newDayDifference > previousDayDifference')
+
         for (let i = firstDayIndex; i < firstDayIndex + newDayDifference; i++) {
 
             // < or <= ?
@@ -261,7 +261,7 @@ router.patch('/plans/:planId/salaries/:salaryId/date', asyncHandler(async (req, 
     }
 
     if (newDayDifference < previousDayDifference) {
-        console.log('newDayDifference < previousDayDifference')
+
         for (let i = firstDayIndex; i < firstDayIndex + previousDayDifference; i++) {
 
             // < or <= ?
@@ -289,9 +289,6 @@ router.patch('/plans/:planId/salaries/:salaryId/date', asyncHandler(async (req, 
         }
     }
 
-
-
-
     await plan.updateOne({ graphData: graphDataArr })
 
     await Salary.findByIdAndUpdate(salaryId, {
@@ -305,5 +302,104 @@ router.patch('/plans/:planId/salaries/:salaryId/date', asyncHandler(async (req, 
     res.json(plan)
 
 }))
+
+router.patch('/plans/:planId/salaries/:salaryId/startDate', asyncHandler(async (req, res) => {
+    const salaryId = req.params.salaryId
+    const planId = req.params.planId
+    const { startDate, endDate } = req.body
+
+    const previousSalary = await Salary.findById(salaryId)
+
+    const plan = await Plan.findById(planId)
+
+    const graphDataArr = plan.graphData
+
+    const startMilliseconds = previousSalary.startDateMilliseconds
+    const endMilliseconds = previousSalary.endDateMilliseconds
+    console.log(previousSalary.startDate)
+    console.log(previousSalary.endDate)
+    let firstDayIndex;
+
+    graphDataArr.forEach((datapoint, i) => {
+        if (datapoint.x.getTime() === startMilliseconds) {
+            firstDayIndex = i
+        }
+    })
+    console.log(graphDataArr[firstDayIndex])
+    const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+
+    let daysPassed = 0
+
+    for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+        if (i < firstDayIndex + dayDifference) {
+
+            daysPassed++
+
+            const amountToAdd = previousSalary.afterTaxAmount / dayDifference * daysPassed
+
+            graphDataArr[i].y -= amountToAdd
+
+
+        } else {
+
+            graphDataArr[i].y -= previousSalary.afterTaxAmount
+
+        }
+
+
+    }
+
+    const newStartMilliseconds = new Date(startDate[0], startDate[1], startDate[2]).getTime()
+    const newEndMilliseconds = new Date(endDate[0], endDate[1], endDate[2] + 1).getTime()
+
+    const newDayDifference = (newEndMilliseconds - newStartMilliseconds) / (1000 * 60 * 60 * 24)
+
+    let newFirstDayIndex;
+
+    graphDataArr.forEach((datapoint, i) => {
+        if (datapoint.x.getTime() === newStartMilliseconds) {
+            newFirstDayIndex = i
+        }
+    })
+
+    let newDaysPassed = 0
+
+    console.log(newFirstDayIndex)
+
+    for (let i = newFirstDayIndex; i < graphDataArr.length; i++) {
+
+        if (i < newFirstDayIndex + newDayDifference) {
+
+            newDaysPassed++
+
+            const amountToAdd = previousSalary.afterTaxAmount / newDayDifference * newDaysPassed
+
+            graphDataArr[i].y += amountToAdd
+        } else {
+
+            graphDataArr[i].y += previousSalary.afterTaxAmount
+        }
+
+
+    }
+
+
+    await plan.updateOne({ graphData: graphDataArr })
+
+    await Salary.findByIdAndUpdate(salaryId, {
+        startDate,
+        endDate,
+        startDateMilliseconds: newStartMilliseconds,
+        endDateMilliseconds: newEndMilliseconds
+    })
+
+
+    res.json(plan)
+
+}))
+
+
+
 
 module.exports = router;
