@@ -24,7 +24,7 @@ router.post('/salaries', asyncHandler(async (req, res) => {
     })
 
     const startMilliseconds = new Date(startDate[0], startDate[1], startDate[2]).getTime()
-    const endMilliseconds = new Date(endDate[0], endDate[1], endDate[2]).getTime()
+    const endMilliseconds = new Date(endDate[0], endDate[1], endDate[2] + 1).getTime()
 
     const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
 

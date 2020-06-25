@@ -76,7 +76,7 @@ router.put('/plans/:planId', asyncHandler(async (req, res) => {
     let salaries = []
     planSalaries.forEach(salary => {
         if (salary.displayed === true) {
-            if (salary.startDateMilliseconds <= dateMilliseconds && salary.endDateMilliseconds >= dateMilliseconds) {
+            if (salary.startDateMilliseconds <= dateMilliseconds && salary.endDateMilliseconds > dateMilliseconds) {
                 salaries.push(salary)
             }
         }
