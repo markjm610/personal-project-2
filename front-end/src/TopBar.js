@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
         width: 'auto',
     },
     appBar: {
-        backgroundColor: 'rgb(49, 48, 48)'
+        backgroundColor: 'rgb(49, 48, 48)',
     },
     drawer: {
         width: drawerWidth,
@@ -74,6 +74,10 @@ const useStyles = makeStyles((theme) => ({
         }),
         marginLeft: 0,
     },
+    toolbar: {
+        display: 'flex',
+        justifyContent: 'center'
+    }
 }));
 
 const TopBar = () => {
@@ -128,32 +132,7 @@ const TopBar = () => {
             <AppBar position="static" className={clsx(classes.appBar, {
                 [classes.appBarShift]: open,
             })}>
-                <Toolbar>
-                    {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                        <MenuIcon onClick={handleDrawerOpen} />
-                    </IconButton> */}
-                    {/* <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        open={open}
-                        onClose={handleClose}
-                    >
-                        <div onClick={handleClose}>
-                            <AddSalaryNav />
-                        </div>
-                        <div onClick={handleClose}>
-                            <AddExpenseNav />
-                        </div>
-                    </Menu> */}
+                <Toolbar className={classes.toolbar}>
                     <Typography variant="h6" className={classes.title}>
                         Top Bar
                     </Typography>
