@@ -38,7 +38,7 @@ const AddSalaryNav = () => {
 
     return (
 
-        <div>
+        <div className='add-salary-button'>
             {selectedPlan._id &&
                 <>
                     <Button variant='outlined' onClick={toggleDrawer}>Add Salary</Button>

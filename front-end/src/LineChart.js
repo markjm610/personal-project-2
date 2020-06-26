@@ -34,7 +34,6 @@ const LineChart = () => {
 
     const handleToggle = () => {
         setShowLayer(!showLayer);
-        console.log('click')
     };
 
     const handleMouseLeave = () => {
@@ -47,9 +46,9 @@ const LineChart = () => {
         <div className='graph-container'>
             {selectedPlan && <XYPlot
                 // dontCheckIfEmpty
-                margin={{ left: 100, right: 100 }}
+                margin={{ left: 60 }}
                 height={700}
-                width={1400}
+                width={900}
                 xType='time'
                 animation
                 xDomain={
@@ -67,7 +66,6 @@ const LineChart = () => {
                 onClick={handleToggle}
                 onMouseLeave={handleMouseLeave}
                 onMouseDown={() => {
-                    console.log('mouseDown')
                     setDisableLayer(false)
                     setShowLayer(false)
                 }}
@@ -86,25 +84,27 @@ const LineChart = () => {
                         userSelect: 'none'
                     }}
                 />
-                <AreaSeries
+                <LineSeries
                     data={selectedPlan.graphData}
                     onNearestX={handleNearestX}
                     color='rgb(110, 211, 43)'
                 />
                 <Highlight
                     onBrush={() => {
-
-                        if (brushCounter < 1) {
-                            setBrushCounter(brushCounter + 1)
-                        } else {
-                            setDisableLayer(true)
-                        }
+                        // console.log('on brush')
+                        // if (brushCounter < 1) {
+                        //     setBrushCounter(brushCounter + 1)
+                        // } else {
+                        //     console.log('disable layer')
+                        //     setDisableLayer(true)
+                        // }
 
 
                     }}
                     onBrushEnd={area => {
-                        setBrushCounter(0)
+                        // setBrushCounter(0)
                         if (area) {
+                            setDisableLayer(true)
                             setLastDrawLocation(area)
                         }
                     }}

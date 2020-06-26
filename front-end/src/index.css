@@ -25,10 +25,7 @@
     padding: 5px;
 }
 
-.below-graph {
-    display: flex;
-    justify-content: center;
-}
+
 
 .middle {
     display: flex;
@@ -52,7 +49,7 @@
 }
 
 body {
-    margin: 0px
+    margin: 0px;
 }
 
 .app-bar-div {
@@ -75,3 +72,27 @@ body {
 .checkbox-container {
     align-self: flex-start
 }
+
+
+.click-salary-info {
+    margin-right: 50px;
+}
+
+.add-salary-button {
+    margin-right: 10px;
+}
+
+.add-expense-button {
+    margin-right: 400px;
+}
+
+.sidebar-container {
+    height: 90vh;
+    overflow-y: auto;
+}
+
+.below-graph {
+    display: flex;
+    justify-content: flex-end;
+}
+

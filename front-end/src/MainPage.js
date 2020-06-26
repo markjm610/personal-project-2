@@ -15,10 +15,11 @@ const MainPage = () => {
             <TopBar />
             <div className='middle'>
                 <Sidebar />
-                <LineChart />
+                <div className='chart-and-buttons'>
+                    <LineChart />
+                    <BelowGraph />
+                </div>
             </div>
-            <BelowGraph />
-
         </>
     )
 }

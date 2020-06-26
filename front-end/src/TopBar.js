@@ -147,9 +147,9 @@ const TopBar = () => {
                             <div className='new-plan-nav'><NewPlanNav /></div>
                         </div>
 
-                        <div>
+                        {/* <div>
                             <Button color="inherit" onClick={zoomOut}>Zoom Out</Button>
-                        </div>
+                        </div> */}
                         <div>
                             {!isAuthenticated && (
                                 <Button color='inherit' onClick={() => loginWithRedirect({})}>Log in</Button>

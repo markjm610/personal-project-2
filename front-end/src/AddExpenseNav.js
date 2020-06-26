@@ -37,7 +37,7 @@ const AddExpenseNav = () => {
     );
 
     return (
-        <div>
+        <div className='add-expense-button'>
             {selectedPlan._id &&
                 <>
                     <Button variant='outlined' onClick={toggleDrawer}>Add Expense</Button>

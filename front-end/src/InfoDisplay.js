@@ -15,6 +15,7 @@ const useStyles = makeStyles({
     table: {
         minWidth: 650,
     },
+
 });
 
 function createRowSalary(name, amountPerYear, taxRate, afterTaxAmount) {
@@ -81,53 +82,56 @@ const InfoDisplay = () => {
 
     return (
         <>
-            {/* {hoverData[0] && <h1 className='info'>{hoverData[0].x.toString().slice(0, 15)}</h1>} */}
-            {salaryState.length !== 0 && <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Salary</TableCell>
-                            <TableCell align="right">Amount Per Year</TableCell>
-                            <TableCell align="right">Tax Rate</TableCell>
-                            <TableCell align="right">After Tax Amount</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {salaryState.map((salary) => (
-                            <TableRow key={salary.name}>
-                                <TableCell component="th" scope="row">
-                                    {salary.name}
-                                </TableCell>
-                                <TableCell align="right">${salary.amountPerYear}</TableCell>
-                                <TableCell align="right">{salary.taxRate * 100}%</TableCell>
-                                <TableCell align="right">${salary.afterTaxAmount}</TableCell>
+            <div className='click-salary-info'>
+                {salaryState.length !== 0 && <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell className={classes.tableCell}><b>Salary</b></TableCell>
+                                <TableCell align="right"><b>Amount Per Year</b></TableCell>
+                                <TableCell align="right"><b>Tax Rate</b></TableCell>
+                                <TableCell align="right"><b>After Tax Amount</b></TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>}
-            {expenseState.length !== 0 && <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Expenses (last month)</TableCell>
-                            <TableCell align="right">Amount</TableCell>
-                            <TableCell align="right">Repeats?</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {expenseState.map((expense) => (
-                            <TableRow key={expense.description}>
-                                <TableCell component="th" scope="row">
-                                    {expense.description}
-                                </TableCell>
-                                <TableCell align="right">${expense.amount}</TableCell>
-                                <TableCell align="right">{expense.repeatingInterval ? expense.repeatingInterval : 'No'}</TableCell>
+                        </TableHead>
+                        <TableBody>
+                            {salaryState.map((salary) => (
+                                <TableRow key={salary.name}>
+                                    <TableCell component="th" scope="row">
+                                        {salary.name}
+                                    </TableCell>
+                                    <TableCell align="right">${salary.amountPerYear}</TableCell>
+                                    <TableCell align="right">{salary.taxRate * 100}%</TableCell>
+                                    <TableCell align="right">${salary.afterTaxAmount}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>}
+            </div>
+            <div className='click-expense-info'>
+                {expenseState.length !== 0 && <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell><b>Expenses (last month)</b></TableCell>
+                                <TableCell align="right"><b>Amount</b></TableCell>
+                                <TableCell align="right"><b>Repeats?</b></TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>}
+                        </TableHead>
+                        <TableBody>
+                            {expenseState.map((expense) => (
+                                <TableRow key={expense.description}>
+                                    <TableCell component="th" scope="row">
+                                        {expense.description}
+                                    </TableCell>
+                                    <TableCell align="right">${expense.amount}</TableCell>
+                                    <TableCell align="right">{expense.repeatingInterval ? expense.repeatingInterval : 'No'}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>}
+            </div>
         </>
     )
 }

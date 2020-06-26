@@ -240,7 +240,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                 <TableRow key={amountPerYear}>
                                     <TableCell component="th" scope="row">
                                         Amount Per Year
-                        </TableCell>
+                                            </TableCell>
                                     {!edit.amountPerYear
                                         ? <>
                                             <TableCell align="right">${amountPerYear}</TableCell>
@@ -294,7 +294,8 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                 <TableRow key={startDateDisplay}>
                                     <TableCell component="th" scope="row">
                                         Start Date
-                        </TableCell>{!edit.startDate
+                        </TableCell>
+                                    {!edit.startDate
                                         ? <>
                                             <TableCell align="right">{startDateDisplay}</TableCell>
                                             <TableCell align="right">

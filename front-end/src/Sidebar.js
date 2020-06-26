@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 360,
         backgroundColor: theme.palette.background.paper,
     },
+    headings: {
+        padding: 5
+    }
 }));
 
 
@@ -68,32 +71,31 @@ const Sidebar = () => {
 
     return (
         <div className='sidebar-container'>
-            {selectedPlan._id && <List dense className={classes.root}>
-                {salaries.length !== 0 && <Typography variant='h6'>Salaries</Typography>}
-                {salaries.map(({ _id, name, displayed, amountPerYear, afterTaxAmount, taxRate, startDate, endDate }) => {
-                    return <ToggleSalary
-                        key={name}
-                        id={_id}
-                        name={name}
-                        displayed={displayed}
-                        amountPerYear={amountPerYear}
-                        afterTaxAmount={afterTaxAmount}
-                        taxRate={taxRate}
-                        startDate={startDate}
-                        endDate={endDate} />
-                })}
-                {expenses.length !== 0 && <Typography variant='h6'>Expenses</Typography>}
-                {expenses.map(({ description, _id, displayed, date, repeatingInterval, amount }) => {
-                    return <ToggleExpense
-                        key={description}
-                        id={_id}
-                        description={description}
-                        displayed={displayed}
-                        date={date}
-                        repeatingInterval={repeatingInterval}
-                        amount={amount} />
-                })}
-            </List>}
+            {salaries.length !== 0 && <Typography className={classes.headings} variant='h6'>Salaries</Typography>}
+            {salaries.map(({ _id, name, displayed, amountPerYear, afterTaxAmount, taxRate, startDate, endDate }) => {
+                return <ToggleSalary
+                    key={name}
+                    id={_id}
+                    name={name}
+                    displayed={displayed}
+                    amountPerYear={amountPerYear}
+                    afterTaxAmount={afterTaxAmount}
+                    taxRate={taxRate}
+                    startDate={startDate}
+                    endDate={endDate} />
+            })}
+            {expenses.length !== 0 && <Typography className={classes.headings} variant='h6'>Expenses</Typography>}
+            {expenses.map(({ description, _id, displayed, date, repeatingInterval, amount }) => {
+                return <ToggleExpense
+                    key={description}
+                    id={_id}
+                    description={description}
+                    displayed={displayed}
+                    date={date}
+                    repeatingInterval={repeatingInterval}
+                    amount={amount} />
+            })}
+            {/* </List>} */}
         </div>
     )
 }
