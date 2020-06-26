@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Context from './Context';
 import { Typography } from '@material-ui/core';
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,13 +29,14 @@ const AddSalary = () => {
     const [afterTaxAmount, setAfterTaxAmount] = useState('')
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
-    const [startDateInput, setStartDateInput] = useState('')
-    const [endDateInput, setEndDateInput] = useState('')
+    const [startDateInput, setStartDateInput] = useState(new Date())
+    const [endDateInput, setEndDateInput] = useState(new Date())
 
     const classes = useStyles();
 
     const addSalarySubmit = async (e) => {
         e.preventDefault()
+        setOpenAddSalary(false)
         const res = await fetch(`${apiBaseUrl}/salaries`, {
             method: 'POST',
             body: JSON.stringify({
@@ -45,7 +47,7 @@ const AddSalary = () => {
             }
         })
         if (res.ok) {
-            setOpenAddSalary(false)
+
             const plan = await res.json()
             const dateObjData = plan.graphData.map(datapoint => {
                 return { x: new Date(datapoint.x), y: datapoint.y }
@@ -89,30 +91,37 @@ const AddSalary = () => {
 
     }
 
-    const startDateChange = e => {
-        setStartDateInput(e.target.value)
-        const stringDateArr = e.target.value.split('-')
-        const numDateArr = stringDateArr.map((number, i) => {
-            if (i === 1) {
-                return parseInt(number) - 1
-            }
-            return parseInt(number)
-        })
-        // setStartDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
-        setStartDate(numDateArr)
+    const startDateChange = date => {
+        // console.log(typeof date.c.month)
+
+        setStartDateInput(date)
+
+        if (date.c) {
+            setStartDate([date.c.year, date.c.month - 1, date.c.day])
+        }
+        // const stringDateArr = e.target.value.split('-')
+        // const numDateArr = stringDateArr.map((number, i) => {
+        //     if (i === 1) {
+        //         return parseInt(number) - 1
+        //     }
+        //     return parseInt(number)
+        // })
+
     }
 
-    const endDateChange = e => {
-        setEndDateInput(e.target.value)
-        const stringDateArr = e.target.value.split('-')
-        const numDateArr = stringDateArr.map((number, i) => {
-            if (i === 1) {
-                return parseInt(number) - 1
-            }
-            return parseInt(number)
-        })
+    const endDateChange = date => {
+        setEndDateInput(date)
+        // const stringDateArr = e.target.value.split('-')
+        // const numDateArr = stringDateArr.map((number, i) => {
+        //     if (i === 1) {
+        //         return parseInt(number) - 1
+        //     }
+        //     return parseInt(number)
+        // })
+        if (date.c) {
+            setEndDate([date.c.year, date.c.month - 1, date.c.day])
+        }
 
-        setEndDate(numDateArr)
     }
 
     return (
@@ -123,8 +132,28 @@ const AddSalary = () => {
                 <TextField type='number' id="amount-per-year" label="Amount Per Year" value={amountPerYearInput} onChange={amountPerYearChange} />
                 <TextField type='number' id="tax" label="Tax Rate" value={taxRateInput} onChange={taxChange} />
                 <TextField type='number' id="after-tax-amount" label="Amount After Taxes" value={afterTaxAmount} />
-                <TextField type='date' id="start-date" value={startDateInput} onChange={startDateChange} />
-                <TextField type='date' id="end-date" value={endDateInput} onChange={endDateChange} />
+                {/* <TextField type='date' id="start-date" value={startDateInput} onChange={startDateChange} /> */}
+                <KeyboardDatePicker
+                    autoOk
+                    variant="inline"
+                    inputVariant="outlined"
+                    label="Start Date"
+                    format="MM/dd/yyyy"
+                    value={startDateInput}
+                    InputAdornmentProps={{ position: "start" }}
+                    onChange={date => startDateChange(date)}
+                />
+                <KeyboardDatePicker
+                    autoOk
+                    variant="inline"
+                    inputVariant="outlined"
+                    label="End Date"
+                    format="MM/dd/yyyy"
+                    value={endDateInput}
+                    InputAdornmentProps={{ position: "start" }}
+                    onChange={date => endDateChange(date)}
+                />
+                {/* <TextField type='date' id="end-date" value={endDateInput} onChange={endDateChange} /> */}
                 <Button variant="contained" onClick={addSalarySubmit}>Submit</Button>
             </form>
         </>

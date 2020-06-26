@@ -9,7 +9,8 @@ import LandingPage from './LandingPage'
 import { Auth0Provider } from "./react-auth0-spa";
 import config from "./auth_config.json";
 import * as serviceWorker from './serviceWorker';
-
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import LuxonUtils from '@date-io/luxon';
 
 
 const onRedirectCallback = appState => {
@@ -31,16 +32,15 @@ function App() {
       redirect_uri={window.location.origin}
       onRedirectCallback={onRedirectCallback}
     >
-      <Router history={history}>
-        <Switch>
-          <Route path="/" exact component={LandingPage} />
-          <PrivateRoute path="/main" component={MainPage} />
-          {/* <Route path="/profile" component={Profile} /> */}
-          <PrivateRoute path="/profile" component={Profile} />
-        </Switch>
-      </Router>
-      {/* <BrowserRouter>
-      </BrowserRouter> */}
+      <MuiPickersUtilsProvider utils={LuxonUtils}>
+        <Router history={history}>
+          <Switch>
+            <Route path="/" exact component={LandingPage} />
+            <PrivateRoute path="/main" component={MainPage} />
+            <PrivateRoute path="/profile" component={Profile} />
+          </Switch>
+        </Router>
+      </MuiPickersUtilsProvider>
     </Auth0Provider>
 
   );

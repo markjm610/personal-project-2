@@ -12,6 +12,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Typography } from '@material-ui/core';
+import { KeyboardDatePicker } from "@material-ui/pickers";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,12 +37,13 @@ const AddExpense = () => {
     const [amount, setAmount] = useState(null)
     const [amountInput, setAmountInput] = useState('')
     const [date, setDate] = useState(null)
-    const [dateInput, setDateInput] = useState('')
+    const [dateInput, setDateInput] = useState(new Date())
     const [repeatingInterval, setRepeatingInterval] = useState(null)
     const [checkedRepeat, setCheckedRepeat] = useState(false)
 
     const addExpenseSubmit = async (e) => {
         e.preventDefault()
+        setOpenAddExpense(false)
         const res = await fetch(`${apiBaseUrl}/expenses`, {
             method: 'POST',
             body: JSON.stringify({
@@ -51,7 +54,7 @@ const AddExpense = () => {
             }
         })
         if (res.ok) {
-            setOpenAddExpense(false)
+
 
             const plan = await res.json()
 
@@ -81,17 +84,12 @@ const AddExpense = () => {
 
     }
 
-    const dateChange = e => {
-        setDateInput(e.target.value)
-        const stringDateArr = e.target.value.split('-')
-        const numDateArr = stringDateArr.map((number, i) => {
-            if (i === 1) {
-                return parseInt(number) - 1
-            }
-            return parseInt(number)
-        })
-        // setDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
-        setDate(numDateArr)
+    const dateChange = date => {
+        setDateInput(date)
+        console.log(date.c)
+        if (date.c) {
+            setDate([date.c.year, date.c.month - 1, date.c.day])
+        }
     }
 
     const checkChange = e => {
@@ -114,7 +112,16 @@ const AddExpense = () => {
             <Typography variant='h6'>Add Expense</Typography>
             <form className={classes.root} noValidate autoComplete="off">
                 <TextField id="name" label="Description" value={description} onChange={descriptionChange} />
-                <TextField type='date' id="date" value={dateInput} onChange={dateChange} />
+                <KeyboardDatePicker
+                    autoOk
+                    variant="inline"
+                    inputVariant="outlined"
+                    label="Date"
+                    format="MM/dd/yyyy"
+                    value={dateInput}
+                    InputAdornmentProps={{ position: "start" }}
+                    onChange={date => dateChange(date)}
+                />
                 <TextField type='number' id="amount" label="Amount" value={amountInput} onChange={amountChange} />
                 <FormControlLabel
                     control={
