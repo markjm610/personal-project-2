@@ -140,7 +140,12 @@ router.put('/plans/:planId/expenses/:expenseId', asyncHandler(async (req, res) =
 
     if (!expense.repeatingInterval) {
         for (let i = firstDayIndex; i < graphDataArr.length; i++) {
-            graphDataArr[i].y += expense.amount
+            if (displayed) {
+                graphDataArr[i].y -= expense.amount
+            } else {
+                graphDataArr[i].y += expense.amount
+            }
+
         }
     } else if (expense.repeatingInterval === 'Daily') {
         let daysPassed = 0
@@ -241,5 +246,17 @@ router.put('/plans/:planId/expenses/:expenseId', asyncHandler(async (req, res) =
 
 }))
 
+router.patch('/plans/:planId/expenses/:expenseId/amount', asyncHandler(async (req, res) => {
+
+    const planId = req.params.planId
+    const expenseId = req.params.expenseId
+
+    const { amount } = req.body
+
+    const previousExpense = await Expense.findByIdAndUpdate(expenseId, { amount })
+
+
+
+}))
 
 module.exports = router;

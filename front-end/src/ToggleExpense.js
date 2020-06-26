@@ -22,6 +22,9 @@ import Paper from '@material-ui/core/Paper';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
+import Button from '@material-ui/core/Button';
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,13 +44,33 @@ const useStyles = makeStyles((theme) => ({
 const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInterval }) => {
     const classes = useStyles();
 
+    const dateStringArr = date.map((num, i) => {
+        if (i === 1 || i === 2) {
+            return num.toString().padStart(2, '0')
+        } else {
+            return num.toString()
+        }
+    })
+
+    const dateString = dateStringArr.join('-')
+
+    const dateDisplay = new Date(date[0], date[1], date[2]).toString().slice(3, 15)
 
     const { selectedPlan, setSelectedPlan } = useContext(Context)
 
     const [checked, setChecked] = useState(displayed)
     const [backdrop, setBackdrop] = useState(false)
+    const [edit, setEdit] = useState({
+        amount: false,
+        date: false,
+        repeatingInterval: false,
+    })
 
-    const dateDisplay = new Date(date[0], date[1], date[2]).toString().slice(3, 15)
+    const [currentAmount, setCurrentAmount] = useState(amount)
+    const [amountInput, setAmountInput] = useState(amount.toString())
+    const [currentDate, setCurrentDate] = useState(date)
+    const [dateInput, setDateInput] = useState(dateString)
+
 
     const handleToggle = async () => {
         setBackdrop(true)
@@ -75,21 +98,42 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
 
     }
 
+    const amountChange = (e) => {
+
+        const amountFloat = parseFloat(e.target.value)
+        setCurrentAmount(amountFloat)
+        setAmountInput(e.target.value)
+
+
+    }
+
+
+    const dateChange = e => {
+        setDateInput(e.target.value)
+        const stringDateArr = e.target.value.split('-')
+        const numDateArr = stringDateArr.map((number, i) => {
+            if (i === 1) {
+                return parseInt(number) - 1
+            }
+            return parseInt(number)
+        })
+        // setDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
+        setCurrentDate(numDateArr)
+    }
+
+    const editClick = (row) => {
+        setEdit({ ...edit, [row]: true })
+
+    }
+
+    const handleSave = () => {
+
+    }
 
     const labelId = `checkbox-list-secondary-label-${description}`;
 
     return (
-        // <ListItem key={description} button>
-        //     <ListItemText id={labelId} primary={`${description}`} />
-        //     <ListItemSecondaryAction>
-        //         <Checkbox
-        //             edge="end"
-        //             onChange={handleToggle}
-        //             checked={checked}
-        //             inputProps={{ 'aria-labelledby': labelId }}
-        //         />
-        //     </ListItemSecondaryAction>
-        // </ListItem>
+
         <div className='side-list-container'>
             <Checkbox
                 edge="end"
@@ -113,19 +157,57 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                 <TableCell component="th" scope="row">
                                     Amount
                         </TableCell>
-                                <TableCell align="right">${amount}</TableCell>
+                                {!edit.amount
+                                    ? <>
+                                        <TableCell align="right">${amount}</TableCell>
+                                        <TableCell align="right">
+                                            <div className='edit-icon'>
+                                                <EditIcon onClick={() => editClick('amount')} />
+                                            </div>
+                                        </TableCell>
+                                    </>
+                                    :
+                                    <>
+                                        <TableCell align="right">
+                                            <TextField type='number' id="edit-amount" value={amountInput} onChange={amountChange} />
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <Button onClick={handleSave}>Save</Button>
+                                        </TableCell>
+                                    </>}
                             </TableRow>
                             <TableRow key={dateDisplay}>
                                 <TableCell component="th" scope="row">
                                     Date
                         </TableCell>
-                                <TableCell align="right">{dateDisplay}</TableCell>
+                                {!edit.date
+                                    ? <>
+                                        <TableCell align="right">{dateDisplay}</TableCell>
+                                        <TableCell align="right">
+                                            <div className='edit-icon'>
+                                                <EditIcon onClick={() => editClick('date')} />
+                                            </div>
+                                        </TableCell>
+                                    </>
+                                    :
+                                    <>
+                                        <TableCell align="right">
+                                            <TextField type='date' id="edit-date" value={dateInput} onChange={dateChange} />
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <Button onClick={handleSave}>Save</Button>
+                                        </TableCell>
+                                    </>}
                             </TableRow>
                             <TableRow key={repeatingInterval}>
                                 <TableCell component="th" scope="row">
                                     Repeats?
                         </TableCell>
-                                <TableCell align="right">{repeatingInterval ? repeatingInterval : 'No'}</TableCell>
+                                <>
+                                    <TableCell align="right">{repeatingInterval ? repeatingInterval : 'No'}</TableCell>
+                                    <TableCell align="right">
+                                    </TableCell>
+                                </>
                             </TableRow>
                         </TableBody>
                     </ExpansionPanelDetails>

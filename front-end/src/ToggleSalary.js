@@ -47,7 +47,6 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
     const { selectedPlan, setSelectedPlan } = useContext(Context)
     const [checked, setChecked] = useState(displayed)
-    const [infoDisplay, setInfoDisplay] = useState(false)
     const [backdrop, setBackdrop] = useState(false)
     const [edit, setEdit] = useState({
         amountPerYear: false,
@@ -114,10 +113,6 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
             setBackdrop(false)
         }
 
-    }
-
-    const toggleInfo = () => {
-        setInfoDisplay(!infoDisplay)
     }
 
     const editClick = (row) => {
