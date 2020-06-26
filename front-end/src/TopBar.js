@@ -139,14 +139,14 @@ const TopBar = () => {
                                 Top Bar
                     </Typography>
                         </div>
-                        <div>
+                        <div className='plan-nav'>
                             {currentUserPlans.map(plan => {
                                 return <PlanNav key={plan._id} id={plan._id} name={plan.name} />
                             })}
 
-
+                            <div className='new-plan-nav'><NewPlanNav /></div>
                         </div>
-                        <div className='new-plan-nav'><NewPlanNav /></div>
+
                         <div>
                             <Button color="inherit" onClick={zoomOut}>Zoom Out</Button>
                         </div>

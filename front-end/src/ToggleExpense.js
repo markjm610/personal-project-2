@@ -174,13 +174,15 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
     return (
 
         <div className='side-list-container'>
-            <Checkbox
-                edge="end"
-                onChange={handleToggle}
-                checked={checked}
-                inputProps={{ 'aria-labelledby': labelId }}
-                style={{ marginRight: 10, color: 'rgb(238, 122, 122)' }}
-            />
+            <div className='checkbox-container'>
+                <Checkbox
+                    edge="end"
+                    onChange={handleToggle}
+                    checked={checked}
+                    inputProps={{ 'aria-labelledby': labelId }}
+                    style={{ marginRight: 10, color: 'rgb(238, 122, 122)' }}
+                />
+            </div>
             <div className={classes.root}>
                 <ExpansionPanel>
                     <ExpansionPanelSummary

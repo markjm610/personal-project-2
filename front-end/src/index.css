@@ -62,3 +62,16 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
+.plan-nav {
+    display: flex;
+}
+
+.new-plan-nav {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.checkbox-container {
+    align-self: flex-start
+}
