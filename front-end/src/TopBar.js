@@ -133,28 +133,34 @@ const TopBar = () => {
                 [classes.appBarShift]: open,
             })}>
                 <Toolbar className={classes.toolbar}>
-                    <Typography variant="h6" className={classes.title}>
-                        Top Bar
+                    <div className='app-bar-div'>
+                        <div>
+                            <Typography variant="h6" className={classes.title}>
+                                Top Bar
                     </Typography>
+                        </div>
+                        <div>
+                            {currentUserPlans.map(plan => {
+                                return <PlanNav key={plan._id} id={plan._id} name={plan.name} />
+                            })}
 
-                    {currentUserPlans.map(plan => {
-                        return <PlanNav key={plan._id} id={plan._id} name={plan.name} />
-                    })}
 
-                    <div className='new-plan-nav'><NewPlanNav /></div>
+                        </div>
+                        <div className='new-plan-nav'><NewPlanNav /></div>
+                        <div>
+                            <Button color="inherit" onClick={zoomOut}>Zoom Out</Button>
+                        </div>
+                        <div>
+                            {!isAuthenticated && (
+                                <Button color='inherit' onClick={() => loginWithRedirect({})}>Log in</Button>
+                            )}
 
-                    <Button color="inherit" onClick={zoomOut}>Zoom Out</Button>
-
-                    <div>
-                        {!isAuthenticated && (
-                            <Button color='inherit' onClick={() => loginWithRedirect({})}>Log in</Button>
-                        )}
-
-                        {isAuthenticated && <Button color='inherit' onClick={() => logout()}>Log out</Button>}
+                            {isAuthenticated && <Button color='inherit' onClick={() => logout()}>Log out</Button>}
+                        </div>
                     </div>
                 </Toolbar>
             </AppBar>
-        </div>
+        </div >
     );
 }
 

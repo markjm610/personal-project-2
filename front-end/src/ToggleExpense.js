@@ -126,7 +126,61 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
 
     }
 
-    const handleSave = () => {
+    const handleSaveAmount = async () => {
+        setBackdrop(true)
+        const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/expenses/${id}/amount`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                amount: currentAmount
+            }),
+            headers: {
+                "Content-Type": 'application/json',
+            }
+        })
+        if (res.ok) {
+            const plan = await res.json()
+            const dateObjData = plan.graphData.map(datapoint => {
+                return { x: new Date(datapoint.x), y: datapoint.y }
+            })
+
+            plan.graphData = dateObjData
+            setSelectedPlan(plan)
+
+            setEdit({
+                ...edit,
+                amount: false
+            })
+            setBackdrop(false)
+        }
+    }
+
+    const handleSaveDate = async () => {
+        setBackdrop(true)
+        const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/expenses/${id}/date`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                date: currentDate
+            }),
+            headers: {
+                "Content-Type": 'application/json',
+            }
+        })
+        if (res.ok) {
+            const plan = await res.json()
+            const dateObjData = plan.graphData.map(datapoint => {
+                return { x: new Date(datapoint.x), y: datapoint.y }
+            })
+
+            plan.graphData = dateObjData
+            setSelectedPlan(plan)
+
+            setEdit({
+                ...edit,
+                startDate: false,
+                endDate: false,
+            })
+            setBackdrop(false)
+        }
 
     }
 
@@ -172,7 +226,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                             <TextField type='number' id="edit-amount" value={amountInput} onChange={amountChange} />
                                         </TableCell>
                                         <TableCell align="right">
-                                            <Button onClick={handleSave}>Save</Button>
+                                            <Button onClick={handleSaveAmount}>Save</Button>
                                         </TableCell>
                                     </>}
                             </TableRow>
@@ -195,7 +249,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                             <TextField type='date' id="edit-date" value={dateInput} onChange={dateChange} />
                                         </TableCell>
                                         <TableCell align="right">
-                                            <Button onClick={handleSave}>Save</Button>
+                                            <Button onClick={handleSaveDate}>Save</Button>
                                         </TableCell>
                                     </>}
                             </TableRow>
