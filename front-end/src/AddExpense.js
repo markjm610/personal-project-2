@@ -86,7 +86,6 @@ const AddExpense = () => {
 
     const dateChange = date => {
         setDateInput(date)
-        console.log(date.c)
         if (date.c) {
             setDate([date.c.year, date.c.month - 1, date.c.day])
         }

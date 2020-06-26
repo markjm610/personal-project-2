@@ -1,7 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react'
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import apiBaseUrl from './config';
 import Context from './Context';
@@ -12,18 +9,14 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
-
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,25 +48,27 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
         endDate: false
     })
 
-    const startDateStringArr = startDate.map((num, i) => {
-        if (i === 1 || i === 2) {
-            return num.toString().padStart(2, '0')
-        } else {
-            return num.toString()
-        }
-    })
+    // const startDateStringArr = startDate.map((num, i) => {
+    //     if (i === 1 || i === 2) {
+    //         return num.toString().padStart(2, '0')
+    //     } else {
+    //         return num.toString()
+    //     }
+    // })
 
-    const startDateString = startDateStringArr.join('-')
+    // const startDateString = startDateStringArr.join('-')
 
-    const endDateStringArr = endDate.map((num, i) => {
-        if (i === 1 || i === 2) {
-            return num.toString().padStart(2, '0')
-        } else {
-            return num.toString()
-        }
-    })
+    const startDateObj = new Date(startDate[0], startDate[1], startDate[2])
+    const endDateObj = new Date(endDate[0], endDate[1], endDate[2])
+    // const endDateStringArr = endDate.map((num, i) => {
+    //     if (i === 1 || i === 2) {
+    //         return num.toString().padStart(2, '0')
+    //     } else {
+    //         return num.toString()
+    //     }
+    // })
 
-    const endDateString = endDateStringArr.join('-')
+    // const endDateString = endDateStringArr.join('-')
 
     const [currentAmountPerYear, setCurrentAmountPerYear] = useState(amountPerYear)
     const [amountPerYearInput, setAmountPerYearInput] = useState(amountPerYear.toString())
@@ -82,8 +77,8 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
     const [currentAfterTaxAmount, setCurrentAfterTaxAmount] = useState(afterTaxAmount)
     const [currentStartDateArr, setCurrentStartDateArr] = useState(startDate)
     const [currentEndDateArr, setCurrentEndDateArr] = useState(endDate)
-    const [startDateInput, setStartDateInput] = useState(startDateString)
-    const [endDateInput, setEndDateInput] = useState(endDateString)
+    const [startDateInput, setStartDateInput] = useState(startDateObj)
+    const [endDateInput, setEndDateInput] = useState(endDateObj)
 
 
     const startDateDisplay = new Date(startDate[0], startDate[1], startDate[2]).toString().slice(3, 15)
@@ -136,30 +131,20 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
         setCurrentAfterTaxAmount(currentAmountPerYear - currentAmountPerYear * taxRateToDecimal)
     }
 
-    const startDateChange = e => {
-        setStartDateInput(e.target.value)
-        const stringDateArr = e.target.value.split('-')
-        const numDateArr = stringDateArr.map((number, i) => {
-            if (i === 1) {
-                return parseInt(number) - 1
-            }
-            return parseInt(number)
-        })
+    const startDateChange = date => {
+        setStartDateInput(date)
 
-        setCurrentStartDateArr(numDateArr)
+        if (date.c) {
+            setCurrentStartDateArr([date.c.year, date.c.month - 1, date.c.day])
+        }
     }
 
-    const endDateChange = (e) => {
-        setEndDateInput(e.target.value)
-        const stringDateArr = e.target.value.split('-')
-        const numDateArr = stringDateArr.map((number, i) => {
-            if (i === 1) {
-                return parseInt(number) - 1
-            }
-            return parseInt(number)
-        })
+    const endDateChange = date => {
+        setEndDateInput(date)
 
-        setCurrentEndDateArr(numDateArr)
+        if (date.c) {
+            setCurrentEndDateArr([date.c.year, date.c.month - 1, date.c.day])
+        }
     }
 
     const handleSaveAmount = async () => {
@@ -319,7 +304,15 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                         :
                                         <>
                                             <TableCell align="right">
-                                                <TextField type='date' id="edit-startDate" value={startDateInput} onChange={startDateChange} />
+                                                <KeyboardDatePicker
+                                                    autoOk
+                                                    variant="inline"
+                                                    inputVariant="outlined"
+                                                    format="MM/dd/yyyy"
+                                                    value={startDateInput}
+                                                    InputAdornmentProps={{ position: "start" }}
+                                                    onChange={date => startDateChange(date)}
+                                                />
                                             </TableCell>
                                             <TableCell align="right">
                                                 <Button onClick={handleSaveDate}>Save</Button>
@@ -342,7 +335,15 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                         :
                                         <>
                                             <TableCell align="right">
-                                                <TextField type='date' id="edit-endDate" value={endDateInput} onChange={endDateChange} />
+                                                <KeyboardDatePicker
+                                                    autoOk
+                                                    variant="inline"
+                                                    inputVariant="outlined"
+                                                    format="MM/dd/yyyy"
+                                                    value={endDateInput}
+                                                    InputAdornmentProps={{ position: "start" }}
+                                                    onChange={date => endDateChange(date)}
+                                                />
                                             </TableCell>
                                             <TableCell align="right">
                                                 <Button onClick={handleSaveDate}>Save</Button>

@@ -6,7 +6,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import PlanNav from './PlanNav';
-
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,8 +29,8 @@ const NewPlan = () => {
     const [name, setName] = useState('')
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
-    const [startDateInput, setStartDateInput] = useState('')
-    const [endDateInput, setEndDateInput] = useState('')
+    const [startDateInput, setStartDateInput] = useState(new Date())
+    const [endDateInput, setEndDateInput] = useState(new Date())
 
     const newPlanSubmit = async () => {
         const res = await fetch(`${apiBaseUrl}/plans`, {
@@ -52,30 +52,20 @@ const NewPlan = () => {
         setName(e.target.value)
     }
 
-    const startDateChange = e => {
-        setStartDateInput(e.target.value)
-        const stringDateArr = e.target.value.split('-')
-        const numDateArr = stringDateArr.map((number, i) => {
-            if (i === 1) {
-                return parseInt(number) - 1
-            }
-            return parseInt(number)
-        })
+    const startDateChange = date => {
+        setStartDateInput(date)
 
-        setStartDate(numDateArr)
+        if (date.c) {
+            setStartDate([date.c.year, date.c.month - 1, date.c.day])
+        }
     }
 
-    const endDateChange = e => {
-        setEndDateInput(e.target.value)
-        const stringDateArr = e.target.value.split('-')
-        const numDateArr = stringDateArr.map((number, i) => {
-            if (i === 1) {
-                return parseInt(number) - 1
-            }
-            return parseInt(number)
-        })
+    const endDateChange = date => {
+        setEndDateInput(date)
 
-        setEndDate(numDateArr)
+        if (date.c) {
+            setEndDate([date.c.year, date.c.month - 1, date.c.day])
+        }
     }
 
     return (
@@ -83,8 +73,26 @@ const NewPlan = () => {
             <div>New Plan</div>
             <form className={classes.root} noValidate autoComplete="off">
                 <TextField id="name" label="Name" value={name} onChange={nameChange} />
-                <TextField type='date' id="start-date" value={startDateInput} onChange={startDateChange} />
-                <TextField type='date' id="end-date" value={endDateInput} onChange={endDateChange} />
+                <KeyboardDatePicker
+                    autoOk
+                    variant="inline"
+                    inputVariant="outlined"
+                    label="Start Date"
+                    format="MM/dd/yyyy"
+                    value={startDateInput}
+                    InputAdornmentProps={{ position: "start" }}
+                    onChange={date => startDateChange(date)}
+                />
+                <KeyboardDatePicker
+                    autoOk
+                    variant="inline"
+                    inputVariant="outlined"
+                    label="End Date"
+                    format="MM/dd/yyyy"
+                    value={endDateInput}
+                    InputAdornmentProps={{ position: "start" }}
+                    onChange={date => endDateChange(date)}
+                />
                 <Button variant="contained" onClick={newPlanSubmit}>Submit</Button>
             </form>
         </>

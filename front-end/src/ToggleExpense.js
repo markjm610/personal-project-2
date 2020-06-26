@@ -23,7 +23,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
-
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,15 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInterval }) => {
     const classes = useStyles();
 
-    const dateStringArr = date.map((num, i) => {
-        if (i === 1 || i === 2) {
-            return num.toString().padStart(2, '0')
-        } else {
-            return num.toString()
-        }
-    })
-
-    const dateString = dateStringArr.join('-')
+    const dateObj = new Date(date[0], date[1], date[2])
 
     const dateDisplay = new Date(date[0], date[1], date[2]).toString().slice(3, 15)
 
@@ -69,7 +61,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
     const [currentAmount, setCurrentAmount] = useState(amount)
     const [amountInput, setAmountInput] = useState(amount.toString())
     const [currentDate, setCurrentDate] = useState(date)
-    const [dateInput, setDateInput] = useState(dateString)
+    const [dateInput, setDateInput] = useState(dateObj)
 
 
     const handleToggle = async () => {
@@ -108,17 +100,11 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
     }
 
 
-    const dateChange = e => {
-        setDateInput(e.target.value)
-        const stringDateArr = e.target.value.split('-')
-        const numDateArr = stringDateArr.map((number, i) => {
-            if (i === 1) {
-                return parseInt(number) - 1
-            }
-            return parseInt(number)
-        })
-        // setDate(new Date(numDateArr[0], numDateArr[1] - 1, numDateArr[2]))
-        setCurrentDate(numDateArr)
+    const dateChange = date => {
+        setDateInput(date)
+        if (date.c) {
+            setCurrentDate([date.c.year, date.c.month - 1, date.c.day])
+        }
     }
 
     const editClick = (row) => {
@@ -176,8 +162,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
 
             setEdit({
                 ...edit,
-                startDate: false,
-                endDate: false,
+                date: false
             })
             setBackdrop(false)
         }
@@ -246,7 +231,15 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                     :
                                     <>
                                         <TableCell align="right">
-                                            <TextField type='date' id="edit-date" value={dateInput} onChange={dateChange} />
+                                            <KeyboardDatePicker
+                                                autoOk
+                                                variant="inline"
+                                                inputVariant="outlined"
+                                                format="MM/dd/yyyy"
+                                                value={dateInput}
+                                                InputAdornmentProps={{ position: "start" }}
+                                                onChange={date => dateChange(date)}
+                                            />
                                         </TableCell>
                                         <TableCell align="right">
                                             <Button onClick={handleSaveDate}>Save</Button>

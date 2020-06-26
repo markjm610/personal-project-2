@@ -99,25 +99,13 @@ const AddSalary = () => {
         if (date.c) {
             setStartDate([date.c.year, date.c.month - 1, date.c.day])
         }
-        // const stringDateArr = e.target.value.split('-')
-        // const numDateArr = stringDateArr.map((number, i) => {
-        //     if (i === 1) {
-        //         return parseInt(number) - 1
-        //     }
-        //     return parseInt(number)
-        // })
+
 
     }
 
     const endDateChange = date => {
         setEndDateInput(date)
-        // const stringDateArr = e.target.value.split('-')
-        // const numDateArr = stringDateArr.map((number, i) => {
-        //     if (i === 1) {
-        //         return parseInt(number) - 1
-        //     }
-        //     return parseInt(number)
-        // })
+
         if (date.c) {
             setEndDate([date.c.year, date.c.month - 1, date.c.day])
         }
