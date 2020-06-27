@@ -120,34 +120,272 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
     }
 
     const amountPerYearChange = (e) => {
+        const previousAfterTaxAmount = currentAfterTaxAmount
 
         const amountPerYearFloat = parseFloat(e.target.value)
+
         setCurrentAmountPerYear(amountPerYearFloat)
         setAmountPerYearInput(e.target.value)
-        setCurrentAfterTaxAmount(amountPerYearFloat - amountPerYearFloat * taxRate)
 
+        const newAfterTaxAmount = amountPerYearFloat - amountPerYearFloat * currentTaxRate
+
+        setCurrentAfterTaxAmount(newAfterTaxAmount)
+
+        const planCopy = { ...selectedPlan }
+        const graphDataArr = planCopy.graphData
+
+        const afterTaxAmountDifference = newAfterTaxAmount - previousAfterTaxAmount
+
+        const startMilliseconds = new Date(currentStartDateArr[0], currentStartDateArr[1], currentStartDateArr[2]).getTime()
+        const endMilliseconds = new Date(currentEndDateArr[0], currentEndDateArr[1], currentEndDateArr[2]).getTime()
+
+        let firstDayIndex;
+
+        graphDataArr.forEach((datapoint, i) => {
+            if (datapoint.x.getTime() === startMilliseconds) {
+                firstDayIndex = i
+            }
+        })
+
+        const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+
+        let daysPassed = 0
+
+        for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+            if (i < firstDayIndex + dayDifference) {
+                // For every day in salary period, add that day's proportion of salary to total
+                daysPassed++
+
+                const amountToAdd = afterTaxAmountDifference / 365 * daysPassed
+
+                graphDataArr[i].y += amountToAdd
+            } else {
+                // Once salary period is over, add full amount every day to total
+                graphDataArr[i].y += afterTaxAmountDifference / 365 * daysPassed
+            }
+
+
+        }
+        setSelectedPlan(planCopy)
     }
 
     const taxRateChange = (e) => {
         setTaxRateInput(e.target.value)
+
         const taxRateToDecimal = parseFloat(e.target.value) / 100
         setCurrentTaxRate(taxRateToDecimal)
-        setCurrentAfterTaxAmount(currentAmountPerYear - currentAmountPerYear * taxRateToDecimal)
+
+        const newAfterTaxAmount = currentAmountPerYear - currentAmountPerYear * taxRateToDecimal
+
+        const previousAfterTaxAmount = currentAfterTaxAmount
+
+        setCurrentAfterTaxAmount(newAfterTaxAmount)
+
+        const planCopy = { ...selectedPlan }
+        const graphDataArr = planCopy.graphData
+
+        const afterTaxAmountDifference = newAfterTaxAmount - previousAfterTaxAmount
+
+        const startMilliseconds = new Date(currentStartDateArr[0], currentStartDateArr[1], currentStartDateArr[2]).getTime()
+        const endMilliseconds = new Date(currentEndDateArr[0], currentEndDateArr[1], currentEndDateArr[2]).getTime()
+
+        let firstDayIndex;
+
+        graphDataArr.forEach((datapoint, i) => {
+            if (datapoint.x.getTime() === startMilliseconds) {
+                firstDayIndex = i
+            }
+        })
+
+        const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+
+        let daysPassed = 0
+
+        for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+            if (i < firstDayIndex + dayDifference) {
+                // For every day in salary period, add that day's proportion of salary to total
+                daysPassed++
+
+                const amountToAdd = afterTaxAmountDifference / 365 * daysPassed
+
+                graphDataArr[i].y += amountToAdd
+            } else {
+                // Once salary period is over, add full amount every day to total
+                graphDataArr[i].y += afterTaxAmountDifference / 365 * daysPassed
+            }
+
+
+        }
+        setSelectedPlan(planCopy)
     }
 
     const startDateChange = date => {
         setStartDateInput(date)
 
         if (date.c) {
+
+            const previousStartMilliseconds = new Date(currentStartDateArr[0], currentStartDateArr[1], currentStartDateArr[2]).getTime()
+            const endMilliseconds = new Date(currentEndDateArr[0], currentEndDateArr[1], currentEndDateArr[2]).getTime()
+
             setCurrentStartDateArr([date.c.year, date.c.month - 1, date.c.day])
+
+
+
+            const planCopy = { ...selectedPlan }
+            const graphDataArr = planCopy.graphData
+
+
+            let firstDayIndex;
+
+            graphDataArr.forEach((datapoint, i) => {
+                if (datapoint.x.getTime() === previousStartMilliseconds) {
+                    firstDayIndex = i
+                }
+            })
+
+            const dayDifference = (endMilliseconds - previousStartMilliseconds) / (1000 * 60 * 60 * 24)
+
+            let daysPassed = 0
+
+            for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+                if (i < firstDayIndex + dayDifference) {
+
+                    daysPassed++
+
+                    const amountToAdd = currentAfterTaxAmount / 365 * daysPassed
+
+                    graphDataArr[i].y -= amountToAdd
+
+
+                } else {
+
+                    graphDataArr[i].y -= currentAfterTaxAmount / 365 * daysPassed
+
+                }
+
+
+            }
+
+
+            const newStartMilliseconds = new Date(date.c.year, date.c.month - 1, date.c.day).getTime()
+
+            const newDayDifference = (endMilliseconds - newStartMilliseconds) / (1000 * 60 * 60 * 24)
+
+            let newFirstDayIndex;
+
+            graphDataArr.forEach((datapoint, i) => {
+                if (datapoint.x.getTime() === newStartMilliseconds) {
+                    newFirstDayIndex = i
+                }
+            })
+
+            let newDaysPassed = 0
+
+
+            for (let i = newFirstDayIndex; i < graphDataArr.length; i++) {
+
+                if (i < newFirstDayIndex + newDayDifference) {
+
+                    newDaysPassed++
+
+                    const amountToAdd = currentAfterTaxAmount / 365 * newDaysPassed
+
+                    graphDataArr[i].y += amountToAdd
+                } else {
+
+                    graphDataArr[i].y += currentAfterTaxAmount / 365 * newDaysPassed
+                }
+            }
+
+            setSelectedPlan(planCopy)
         }
+
+
     }
 
     const endDateChange = date => {
         setEndDateInput(date)
 
+
         if (date.c) {
+
+            const startMilliseconds = new Date(currentStartDateArr[0], currentStartDateArr[1], currentStartDateArr[2]).getTime()
+            const previousEndMilliseconds = new Date(currentEndDateArr[0], currentEndDateArr[1], currentEndDateArr[2]).getTime()
+
             setCurrentEndDateArr([date.c.year, date.c.month - 1, date.c.day])
+
+
+            const planCopy = { ...selectedPlan }
+            const graphDataArr = planCopy.graphData
+
+
+            let firstDayIndex;
+
+            graphDataArr.forEach((datapoint, i) => {
+                if (datapoint.x.getTime() === startMilliseconds) {
+                    firstDayIndex = i
+                }
+            })
+
+            const dayDifference = (previousEndMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+
+            let daysPassed = 0
+
+            for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+                if (i < firstDayIndex + dayDifference) {
+
+                    daysPassed++
+
+                    const amountToAdd = currentAfterTaxAmount / 365 * daysPassed
+
+                    graphDataArr[i].y -= amountToAdd
+
+
+                } else {
+
+                    graphDataArr[i].y -= currentAfterTaxAmount / 365 * daysPassed
+
+                }
+
+
+            }
+
+
+            const newEndMilliseconds = new Date(date.c.year, date.c.month - 1, date.c.day).getTime()
+
+            const newDayDifference = (newEndMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+
+            let newFirstDayIndex;
+
+            graphDataArr.forEach((datapoint, i) => {
+                if (datapoint.x.getTime() === startMilliseconds) {
+                    newFirstDayIndex = i
+                }
+            })
+
+            let newDaysPassed = 0
+
+
+            for (let i = newFirstDayIndex; i < graphDataArr.length; i++) {
+
+                if (i < newFirstDayIndex + newDayDifference) {
+
+                    newDaysPassed++
+
+                    const amountToAdd = currentAfterTaxAmount / 365 * newDaysPassed
+
+                    graphDataArr[i].y += amountToAdd
+                } else {
+
+                    graphDataArr[i].y += currentAfterTaxAmount / 365 * newDaysPassed
+                }
+            }
+
+            setSelectedPlan(planCopy)
         }
     }
 
@@ -318,7 +556,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                     <TableCell component="th" scope="row">
                                         Amount After Tax
                         </TableCell>
-
+                                    <TableCell align='right'>
+                                    </TableCell>
+                                    <TableCell align='right'>
+                                    </TableCell>
                                     <TableCell align="right">${currentAfterTaxAmount}</TableCell>
                                     <TableCell align="right"></TableCell>
 

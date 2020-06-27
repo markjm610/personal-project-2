@@ -7,6 +7,7 @@ import NewPlan from './NewPlan'
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
+import { IconButton } from '@material-ui/core';
 
 
 const useStyles = makeStyles({
@@ -42,7 +43,7 @@ const NewPlanNav = () => {
 
     return (
         <div>
-            <AddCircleOutlineIcon color="inherit" onClick={toggleDrawer} />
+            <IconButton color='inherit' onClick={toggleDrawer}><AddCircleOutlineIcon /></IconButton>
             <Drawer anchor='top' open={openNewPlan} onClose={toggleDrawer}>
                 {list('top')}
             </Drawer>
