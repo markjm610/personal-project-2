@@ -48,7 +48,7 @@ const LineChart = () => {
                 // dontCheckIfEmpty
                 margin={{ left: 60 }}
                 height={700}
-                width={900}
+                width={1000}
                 xType='time'
                 animation
                 xDomain={

@@ -24,6 +24,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import { KeyboardDatePicker } from "@material-ui/pickers";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +42,12 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
+    tableBody: {
+        width: '100%'
+    },
+    tableRow: {
+        width: '100%'
+    }
 }));
 
 
@@ -193,14 +203,20 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                         <Typography className={classes.heading}>{description}</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                        <TableBody>
-                            <TableRow key={amount}>
+                        <TableBody className={classes.tableBody}>
+                            <TableRow key={amount} className={classes.tableRow}>
                                 <TableCell component="th" scope="row">
                                     Amount
                         </TableCell>
                                 {!edit.amount
                                     ? <>
-                                        <TableCell align="right">${amount}</TableCell>
+                                        <TableCell align='right'>
+                                        </TableCell>
+                                        <TableCell align='right'>
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            ${amount}
+                                        </TableCell>
                                         <TableCell align="right">
                                             <div className='edit-icon'>
                                                 <EditIcon onClick={() => editClick('amount')} />
@@ -209,12 +225,24 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                     </>
                                     :
                                     <>
-                                        <TableCell align="right">
-                                            <TextField type='number' id="edit-amount" value={amountInput} onChange={amountChange} />
+                                        <TableCell align="right" colSpan={4}>
+                                            <TextField
+                                                type='number'
+                                                id="edit-amount"
+                                                value={amountInput}
+                                                onChange={amountChange}
+                                                InputProps={{
+                                                    endAdornment: <InputAdornment>
+                                                        <IconButton>
+                                                            <CheckCircleIcon />
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }}
+                                            />
                                         </TableCell>
-                                        <TableCell align="right">
+                                        {/* <TableCell align="right">
                                             <Button onClick={handleSaveAmount}>Save</Button>
-                                        </TableCell>
+                                        </TableCell> */}
                                     </>}
                             </TableRow>
                             <TableRow key={dateDisplay}>
@@ -223,7 +251,14 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                         </TableCell>
                                 {!edit.date
                                     ? <>
-                                        <TableCell align="right">{dateDisplay}</TableCell>
+                                        <TableCell align='right'>
+                                        </TableCell>
+                                        <TableCell align='right'>
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {dateDisplay}
+                                        </TableCell>
+
                                         <TableCell align="right">
                                             <div className='edit-icon'>
                                                 <EditIcon onClick={() => editClick('date')} />
@@ -232,7 +267,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                     </>
                                     :
                                     <>
-                                        <TableCell align="right">
+                                        <TableCell align="right" colSpan={4}>
                                             <KeyboardDatePicker
                                                 autoOk
                                                 variant="inline"
@@ -240,12 +275,20 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                                 format="MM/dd/yyyy"
                                                 value={dateInput}
                                                 InputAdornmentProps={{ position: "start" }}
+                                                // endAdornment={{}}
+                                                InputProps={{
+                                                    endAdornment: <InputAdornment>
+                                                        <IconButton>
+                                                            <CheckCircleIcon />
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }}
                                                 onChange={date => dateChange(date)}
                                             />
                                         </TableCell>
-                                        <TableCell align="right">
+                                        {/* <TableCell align="right">
                                             <Button onClick={handleSaveDate}>Save</Button>
-                                        </TableCell>
+                                        </TableCell> */}
                                     </>}
                             </TableRow>
                             <TableRow key={repeatingInterval}>
@@ -253,6 +296,10 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                     Repeats?
                         </TableCell>
                                 <>
+                                    <TableCell align='right'>
+                                    </TableCell>
+                                    <TableCell align='right'>
+                                    </TableCell>
                                     <TableCell align="right">{repeatingInterval ? repeatingInterval : 'No'}</TableCell>
                                     <TableCell align="right">
                                     </TableCell>

@@ -17,6 +17,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import { KeyboardDatePicker } from "@material-ui/pickers";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -243,6 +247,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                     {!edit.amountPerYear
                                         ? <>
+                                            <TableCell align='right'>
+                                            </TableCell>
+                                            <TableCell align='right'>
+                                            </TableCell>
                                             <TableCell align="right">${amountPerYear}</TableCell>
                                             <TableCell align="right">
                                                 <div className='edit-icon'>
@@ -252,12 +260,22 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                         </>
                                         :
                                         <>
-                                            <TableCell align="right">
-                                                <TextField type='number' id="edit-amountPerYear" value={amountPerYearInput} onChange={amountPerYearChange} />
+                                            <TableCell align="right" colSpan={4}>
+                                                <TextField
+                                                    type='number'
+                                                    id="edit-amountPerYear"
+                                                    value={amountPerYearInput}
+                                                    onChange={amountPerYearChange}
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment>
+                                                            <IconButton>
+                                                                <CheckCircleIcon />
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    }}
+                                                />
                                             </TableCell>
-                                            <TableCell align="right">
-                                                <Button onClick={handleSaveAmount}>Save</Button>
-                                            </TableCell>
+
                                         </>}
                                 </TableRow>
                                 <TableRow key={taxRate}>
@@ -265,6 +283,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                         Tax Rate
                         </TableCell>{!edit.taxRate
                                         ? <>
+                                            <TableCell align='right'>
+                                            </TableCell>
+                                            <TableCell align='right'>
+                                            </TableCell>
                                             <TableCell align="right">{taxRate * 100}%</TableCell>
                                             <TableCell align="right">
                                                 <div className='edit-icon'>
@@ -274,12 +296,22 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                         </>
                                         :
                                         <>
-                                            <TableCell align="right">
-                                                <TextField type='number' id="edit-taxRate" value={taxRateInput} onChange={taxRateChange} />
+                                            <TableCell align="right" colSpan={4}>
+                                                <TextField
+                                                    type='number'
+                                                    id="edit-taxRate"
+                                                    value={taxRateInput}
+                                                    onChange={taxRateChange}
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment>
+                                                            <IconButton>
+                                                                <CheckCircleIcon />
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    }}
+                                                />
                                             </TableCell>
-                                            <TableCell align="right">
-                                                <Button onClick={handleSaveAmount}>Save</Button>
-                                            </TableCell>
+
                                         </>}
                                 </TableRow>
                                 <TableRow key={afterTaxAmount}>
@@ -297,6 +329,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                         </TableCell>
                                     {!edit.startDate
                                         ? <>
+                                            <TableCell align='right'>
+                                            </TableCell>
+                                            <TableCell align='right'>
+                                            </TableCell>
                                             <TableCell align="right">{startDateDisplay}</TableCell>
                                             <TableCell align="right">
                                                 <div className='edit-icon'>
@@ -306,7 +342,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                         </>
                                         :
                                         <>
-                                            <TableCell align="right">
+                                            <TableCell align="right" colSpan={4}>
                                                 <KeyboardDatePicker
                                                     autoOk
                                                     variant="inline"
@@ -314,11 +350,15 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     format="MM/dd/yyyy"
                                                     value={startDateInput}
                                                     InputAdornmentProps={{ position: "start" }}
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment>
+                                                            <IconButton>
+                                                                <CheckCircleIcon />
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    }}
                                                     onChange={date => startDateChange(date)}
                                                 />
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                <Button onClick={handleSaveDate}>Save</Button>
                                             </TableCell>
                                         </>}
                                 </TableRow>
@@ -328,6 +368,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                         </TableCell>
                                     {!edit.endDate
                                         ? <>
+                                            <TableCell align='right'>
+                                            </TableCell>
+                                            <TableCell align='right'>
+                                            </TableCell>
                                             <TableCell align="right">{endDateDisplay}</TableCell>
                                             <TableCell align="right">
                                                 <div className='edit-icon'>
@@ -337,7 +381,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                         </>
                                         :
                                         <>
-                                            <TableCell align="right">
+                                            <TableCell align="right" colSpan={4}>
                                                 <KeyboardDatePicker
                                                     autoOk
                                                     variant="inline"
@@ -345,11 +389,15 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     format="MM/dd/yyyy"
                                                     value={endDateInput}
                                                     InputAdornmentProps={{ position: "start" }}
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment>
+                                                            <IconButton>
+                                                                <CheckCircleIcon />
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    }}
                                                     onChange={date => endDateChange(date)}
                                                 />
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                <Button onClick={handleSaveDate}>Save</Button>
                                             </TableCell>
                                         </>}
                                 </TableRow>

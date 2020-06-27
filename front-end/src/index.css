@@ -34,6 +34,7 @@
 
 .side-list-container {
     display: flex;
+    width: 100%;
 }
 
 .new-plan-nav:hover {
@@ -44,9 +45,6 @@
     cursor: pointer;
 }
 
-.graph-container {
-    margin-left: 100px
-}
 
 body {
     margin: 0px;
@@ -89,6 +87,7 @@ body {
 .sidebar-container {
     height: 90vh;
     overflow-y: auto;
+    width: 800px;
 }
 
 .below-graph {
@@ -96,3 +95,8 @@ body {
     justify-content: flex-end;
 }
 
+
+
+.check:hover {
+    cursor: pointer
+}
