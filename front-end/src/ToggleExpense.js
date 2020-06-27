@@ -93,17 +93,131 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
             plan.graphData = dateObjData
             setSelectedPlan(plan)
 
+            if (checked) {
+                setEdit({
+                    amount: false,
+                    date: false,
+                    repeatingInterval: false,
+                })
+            }
+
             setChecked(!checked)
+
             setBackdrop(false)
         }
 
     }
 
     const amountChange = (e) => {
-
-        const amountFloat = parseFloat(e.target.value)
-        setCurrentAmount(amountFloat)
         setAmountInput(e.target.value)
+
+        if (e.target.value !== '') {
+            const previousAmount = currentAmount
+            const amountFloat = parseFloat(e.target.value)
+            setCurrentAmount(amountFloat)
+
+
+            const dateMilliseconds = new Date(date[0], date[1], date[2]).getTime()
+
+            const planCopy = { ...selectedPlan }
+            const graphDataArr = planCopy.graphData
+
+            let firstDayIndex;
+
+            graphDataArr.forEach((datapoint, i) => {
+                if (datapoint.x.getTime() === dateMilliseconds) {
+                    firstDayIndex = i
+                }
+            })
+
+            const amountDifference = amountFloat - previousAmount
+
+
+            // Will have to change repeatingInterval variable if interval can be edited
+
+            if (!repeatingInterval) {
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+                    graphDataArr[i].y -= amountDifference
+                }
+            } else if (repeatingInterval === 'Daily') {
+                let daysPassed = 0
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+                    daysPassed++
+                    graphDataArr[i].y -= (amountDifference * daysPassed)
+                }
+            } else if (repeatingInterval === 'Weekly') {
+                let weeksPassed = 0
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+                    if ((i - firstDayIndex) % 7 === 0) {
+                        weeksPassed++
+                    }
+                    graphDataArr[i].y -= (amountDifference * weeksPassed)
+                }
+            } else if (repeatingInterval === 'Monthly') {
+
+                // Need to subtract expense every day, only increase the amount subtracted every month
+
+                const day = dateObj.getDate()
+
+                let monthsPassed = 0
+                let currentMonth = dateObj.getMonth()
+                let foundDayInMonth = false
+
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+                    if (graphDataArr[i].x.getMonth() !== currentMonth) {
+                        // Update month
+
+                        currentMonth = graphDataArr[i].x.getMonth()
+                        foundDayInMonth = false
+                    }
+
+                    if (graphDataArr[i].x.getMonth() === currentMonth
+                        && graphDataArr[i].x.getDate() === day) {
+                        monthsPassed++
+                        foundDayInMonth = true;
+                    }
+
+                    if (graphDataArr[i + 1]
+                        && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth()
+                        && !foundDayInMonth) {
+                        monthsPassed++
+                    }
+
+                    graphDataArr[i].y -= (amountDifference * monthsPassed)
+
+                }
+
+            } else if (repeatingInterval === 'Yearly') {
+
+
+                const day = dateObj.getDate()
+                const month = dateObj.getMonth()
+                let yearsPassed = 0
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+                    if (graphDataArr[i].x.getMonth() === month && graphDataArr[i].x.getDate() === day) {
+                        yearsPassed++
+                    }
+
+                    if (month === 1 && day === 29 && graphDataArr[i].x.getMonth() === 1) {
+
+                        if (graphDataArr[i + 1]
+                            && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth()
+                            && graphDataArr[i].x.getDate() === 28) {
+
+                            yearsPassed++
+                        }
+                    }
+
+                    graphDataArr[i].y -= (amountDifference * yearsPassed)
+
+                }
+            }
+
+            setSelectedPlan(planCopy)
+
+        }
 
 
     }
@@ -112,8 +226,195 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
     const dateChange = date => {
         setDateInput(date)
         if (date.c) {
+
+            const dateObj = new Date(currentDate[0], currentDate[1], currentDate[2])
+            const dateMilliseconds = new Date(currentDate[0], currentDate[1], currentDate[2]).getTime()
+
             setCurrentDate([date.c.year, date.c.month - 1, date.c.day])
+
+            const newDateMilliseconds = new Date(date.c.year, date.c.month - 1, date.c.day).getTime()
+
+            const planCopy = { ...selectedPlan }
+            const graphDataArr = planCopy.graphData
+
+
+            let firstDayIndex;
+
+            graphDataArr.forEach((datapoint, i) => {
+                if (datapoint.x.getTime() === dateMilliseconds) {
+                    firstDayIndex = i
+                }
+            })
+
+            if (!repeatingInterval) {
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+                    graphDataArr[i].y += currentAmount
+                }
+            } else if (repeatingInterval === 'Daily') {
+                let daysPassed = 0
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+                    daysPassed++
+                    graphDataArr[i].y += (currentAmount * daysPassed)
+                }
+            } else if (repeatingInterval === 'Weekly') {
+                let weeksPassed = 0
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+                    if ((i - firstDayIndex) % 7 === 0) {
+                        weeksPassed++
+                    }
+                    graphDataArr[i].y += (currentAmount * weeksPassed)
+                }
+            } else if (repeatingInterval === 'Monthly') {
+
+
+                const day = dateObj.getDate()
+
+                let monthsPassed = 0
+                let currentMonth = dateObj.getMonth()
+                let foundDayInMonth = false
+
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+                    if (graphDataArr[i].x.getMonth() !== currentMonth) {
+                        // Update month
+
+                        currentMonth = graphDataArr[i].x.getMonth()
+                        foundDayInMonth = false
+                    }
+
+                    if (graphDataArr[i].x.getMonth() === currentMonth && graphDataArr[i].x.getDate() === day) {
+                        monthsPassed++
+                        foundDayInMonth = true;
+                    }
+
+                    if (graphDataArr[i + 1] && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth() && !foundDayInMonth) {
+                        monthsPassed++
+                    }
+
+                    graphDataArr[i].y += (currentAmount * monthsPassed)
+
+                }
+
+            } else if (repeatingInterval === 'Yearly') {
+
+
+                const day = dateObj.getDate()
+                const month = dateObj.getMonth()
+                let yearsPassed = 0
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+                    if (graphDataArr[i].x.getMonth() === month && graphDataArr[i].x.getDate() === day) {
+                        yearsPassed++
+                    }
+
+                    if (month === 1 && day === 29 && graphDataArr[i].x.getMonth() === 1) {
+
+                        if (graphDataArr[i + 1]
+                            && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth()
+                            && graphDataArr[i].x.getDate() === 28) {
+
+                            yearsPassed++
+                        }
+                    }
+
+                    graphDataArr[i].y += (currentAmount * yearsPassed)
+
+                }
+            }
+
+            const newDateObj = new Date(date.c.year, date.c.month - 1, date.c.day)
+
+            let newFirstDayIndex;
+
+            graphDataArr.forEach((datapoint, i) => {
+                if (datapoint.x.getTime() === newDateMilliseconds) {
+                    newFirstDayIndex = i
+                }
+            })
+
+            if (!repeatingInterval) {
+                for (let i = newFirstDayIndex; i < graphDataArr.length; i++) {
+                    graphDataArr[i].y -= currentAmount
+                }
+            } else if (repeatingInterval === 'Daily') {
+                let daysPassed = 0
+                for (let i = newFirstDayIndex; i < graphDataArr.length; i++) {
+                    daysPassed++
+                    graphDataArr[i].y -= (currentAmount * daysPassed)
+                }
+            } else if (repeatingInterval === 'Weekly') {
+                let weeksPassed = 0
+                for (let i = newFirstDayIndex; i < graphDataArr.length; i++) {
+                    if ((i - newFirstDayIndex) % 7 === 0) {
+                        weeksPassed++
+                    }
+                    graphDataArr[i].y -= (currentAmount * weeksPassed)
+                }
+            } else if (repeatingInterval === 'Monthly') {
+
+                const day = newDateObj.getDate()
+                // console.log(day)
+                let monthsPassed = 0
+                let currentMonth = newDateObj.getMonth()
+                // console.log(currentMonth)
+                let foundDayInMonth = false
+
+                for (let i = newFirstDayIndex; i < graphDataArr.length; i++) {
+
+                    if (graphDataArr[i].x.getMonth() !== currentMonth) {
+                        // Update month
+
+                        currentMonth = graphDataArr[i].x.getMonth()
+                        foundDayInMonth = false
+                    }
+
+                    if (graphDataArr[i].x.getMonth() === currentMonth && graphDataArr[i].x.getDate() === day) {
+
+                        monthsPassed++
+                        foundDayInMonth = true;
+                        // graphDataArr[i].y -= (currentAmount * monthsPassed)
+                    }
+
+                    if (graphDataArr[i + 1] && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth() && !foundDayInMonth) {
+                        monthsPassed++
+                        console.log('DAY NOT FOUND')
+
+                    }
+
+                    graphDataArr[i].y -= (currentAmount * monthsPassed)
+
+                }
+
+            } else if (repeatingInterval === 'Yearly') {
+
+
+                const day = newDateObj.getDate()
+                const month = newDateObj.getMonth()
+                let yearsPassed = 0
+                for (let i = newFirstDayIndex; i < graphDataArr.length; i++) {
+
+                    if (graphDataArr[i].x.getMonth() === month && graphDataArr[i].x.getDate() === day) {
+                        yearsPassed++
+                    }
+
+                    if (month === 1 && day === 29 && graphDataArr[i].x.getMonth() === 1) {
+
+                        if (graphDataArr[i + 1]
+                            && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth()
+                            && graphDataArr[i].x.getDate() === 28) {
+
+                            yearsPassed++
+                        }
+                    }
+
+                    graphDataArr[i].y -= (currentAmount * yearsPassed)
+
+                }
+            }
+            setSelectedPlan(planCopy)
         }
+
+
     }
 
     const editClick = (row) => {
@@ -217,9 +518,12 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                             ${amount}
                                         </TableCell>
                                         <TableCell align="right">
-                                            <div className='edit-icon'>
-                                                <EditIcon onClick={() => editClick('amount')} />
-                                            </div>
+                                            {checked &&
+                                                <div className='edit-icon'>
+                                                    <EditIcon onClick={() => editClick('amount')} />
+                                                </div>
+                                            }
+
                                         </TableCell>
                                     </>
                                     :
@@ -259,9 +563,10 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                         </TableCell>
 
                                         <TableCell align="right">
-                                            <div className='edit-icon'>
-                                                <EditIcon onClick={() => editClick('date')} />
-                                            </div>
+                                            {checked &&
+                                                <div className='edit-icon'>
+                                                    <EditIcon onClick={() => editClick('date')} />
+                                                </div>}
                                         </TableCell>
                                     </>
                                     :

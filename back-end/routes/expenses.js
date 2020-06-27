@@ -36,10 +36,14 @@ router.post('/expenses', asyncHandler(async (req, res) => {
         }
     } else if (repeatingInterval === 'Weekly') {
         let weeksPassed = 0
-        for (let i = firstDayIndex; i < graphDataArr.length; i += 7) {
-            weeksPassed++
+        for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+            if ((i - firstDayIndex) % 7 === 0) {
+                weeksPassed++
+            }
+
             graphDataArr[i].y -= (amount * weeksPassed)
         }
+
     } else if (repeatingInterval === 'Monthly') {
 
         // Need to subtract expense every day, only increase the amount subtracted every month
@@ -160,8 +164,11 @@ router.put('/plans/:planId/expenses/:expenseId', asyncHandler(async (req, res) =
         }
     } else if (expense.repeatingInterval === 'Weekly') {
         let weeksPassed = 0
-        for (let i = firstDayIndex; i < graphDataArr.length; i += 7) {
-            weeksPassed++
+        for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+            if ((i - firstDayIndex) % 7 === 0) {
+                weeksPassed++
+            }
+
             if (displayed) {
                 graphDataArr[i].y -= (expense.amount * weeksPassed)
             } else {
@@ -288,8 +295,10 @@ router.patch('/plans/:planId/expenses/:expenseId/amount', asyncHandler(async (re
         }
     } else if (repeatingInterval === 'Weekly') {
         let weeksPassed = 0
-        for (let i = firstDayIndex; i < graphDataArr.length; i += 7) {
-            weeksPassed++
+        for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+            if ((i - firstDayIndex) % 7 === 0) {
+                weeksPassed++
+            }
             graphDataArr[i].y -= (amountDifference * weeksPassed)
         }
     } else if (repeatingInterval === 'Monthly') {
@@ -356,6 +365,7 @@ router.patch('/plans/:planId/expenses/:expenseId/amount', asyncHandler(async (re
     res.json(plan)
 }))
 
+
 router.patch('/plans/:planId/expenses/:expenseId/date', asyncHandler(async (req, res) => {
 
     const planId = req.params.planId
@@ -405,8 +415,10 @@ router.patch('/plans/:planId/expenses/:expenseId/date', asyncHandler(async (req,
         }
     } else if (repeatingInterval === 'Weekly') {
         let weeksPassed = 0
-        for (let i = firstDayIndex; i < graphDataArr.length; i += 7) {
-            weeksPassed++
+        for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+            if ((i - firstDayIndex) % 7 === 0) {
+                weeksPassed++
+            }
             graphDataArr[i].y += (previousAmount * weeksPassed)
         }
     } else if (repeatingInterval === 'Monthly') {
@@ -489,10 +501,13 @@ router.patch('/plans/:planId/expenses/:expenseId/date', asyncHandler(async (req,
         }
     } else if (repeatingInterval === 'Weekly') {
         let weeksPassed = 0
-        for (let i = newFirstDayIndex; i < graphDataArr.length; i += 7) {
-            weeksPassed++
+        for (let i = newFirstDayIndex; i < graphDataArr.length; i++) {
+            if ((i - firstDayIndex) % 7 === 0) {
+                weeksPassed++
+            }
             graphDataArr[i].y -= (previousAmount * weeksPassed)
         }
+
     } else if (repeatingInterval === 'Monthly') {
 
         // Need to subtract expense every day, only increase the amount subtracted every month

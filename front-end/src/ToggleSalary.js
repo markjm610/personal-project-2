@@ -107,7 +107,13 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
             plan.graphData = dateObjData
             setSelectedPlan(plan)
-
+            if (checked) {
+                setEdit({
+                    amount: false,
+                    date: false,
+                    repeatingInterval: false,
+                })
+            }
             setChecked(!checked)
             setBackdrop(false)
         }
@@ -500,9 +506,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align="right">${amountPerYear}</TableCell>
                                             <TableCell align="right">
-                                                <div className='edit-icon'>
+                                                {checked && <div className='edit-icon'>
                                                     <EditIcon onClick={() => editClick('amountPerYear')} />
-                                                </div>
+                                                </div>}
+
                                             </TableCell>
                                         </>
                                         :
@@ -536,9 +543,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align="right">{taxRate * 100}%</TableCell>
                                             <TableCell align="right">
-                                                <div className='edit-icon'>
+                                                {checked && <div className='edit-icon'>
                                                     <EditIcon onClick={() => editClick('taxRate')} />
-                                                </div>
+                                                </div>}
+
                                             </TableCell>
                                         </>
                                         :
@@ -585,9 +593,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align="right">{startDateDisplay}</TableCell>
                                             <TableCell align="right">
-                                                <div className='edit-icon'>
+                                                {checked && <div className='edit-icon'>
                                                     <EditIcon onClick={() => editClick('startDate')} />
-                                                </div>
+                                                </div>}
+
                                             </TableCell>
                                         </>
                                         :
@@ -624,9 +633,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align="right">{endDateDisplay}</TableCell>
                                             <TableCell align="right">
-                                                <div className='edit-icon'>
+                                                {checked && <div className='edit-icon'>
                                                     <EditIcon onClick={() => editClick('endDate')} />
-                                                </div>
+                                                </div>}
+
                                             </TableCell>
                                         </>
                                         :
