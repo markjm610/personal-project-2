@@ -268,7 +268,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     onChange={amountPerYearChange}
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
-                                                            <IconButton>
+                                                            <IconButton onClick={handleSaveAmount}>
                                                                 <CheckCircleIcon />
                                                             </IconButton>
                                                         </InputAdornment>
@@ -304,7 +304,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     onChange={taxRateChange}
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
-                                                            <IconButton>
+                                                            <IconButton onClick={handleSaveAmount}>
                                                                 <CheckCircleIcon />
                                                             </IconButton>
                                                         </InputAdornment>
@@ -352,7 +352,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     InputAdornmentProps={{ position: "start" }}
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
-                                                            <IconButton>
+                                                            <IconButton onClick={handleSaveDate}>
                                                                 <CheckCircleIcon />
                                                             </IconButton>
                                                         </InputAdornment>
@@ -391,7 +391,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     InputAdornmentProps={{ position: "start" }}
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
-                                                            <IconButton>
+                                                            <IconButton onClick={handleSaveDate}>
                                                                 <CheckCircleIcon />
                                                             </IconButton>
                                                         </InputAdornment>

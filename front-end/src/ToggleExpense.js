@@ -22,7 +22,6 @@ import Paper from '@material-ui/core/Paper';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Edit';
-import Button from '@material-ui/core/Button';
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -233,7 +232,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                                 onChange={amountChange}
                                                 InputProps={{
                                                     endAdornment: <InputAdornment>
-                                                        <IconButton>
+                                                        <IconButton onClick={handleSaveAmount}>
                                                             <CheckCircleIcon />
                                                         </IconButton>
                                                     </InputAdornment>
@@ -278,7 +277,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                                 // endAdornment={{}}
                                                 InputProps={{
                                                     endAdornment: <InputAdornment>
-                                                        <IconButton>
+                                                        <IconButton onClick={handleSaveDate}>
                                                             <CheckCircleIcon />
                                                         </IconButton>
                                                     </InputAdornment>
