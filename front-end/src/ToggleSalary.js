@@ -411,20 +411,21 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
             body: JSON.stringify({
                 amountPerYear: currentAmountPerYear,
                 taxRate: currentTaxRate,
-                afterTaxAmount: currentAfterTaxAmount
+                afterTaxAmount: currentAfterTaxAmount,
+                graphData: selectedPlan.graphData
             }),
             headers: {
                 "Content-Type": 'application/json',
             }
         })
         if (res.ok) {
-            const plan = await res.json()
-            const dateObjData = plan.graphData.map(datapoint => {
-                return { x: new Date(datapoint.x), y: datapoint.y }
-            })
+            // const plan = await res.json()
+            // const dateObjData = plan.graphData.map(datapoint => {
+            //     return { x: new Date(datapoint.x), y: datapoint.y }
+            // })
 
-            plan.graphData = dateObjData
-            setSelectedPlan(plan)
+            // plan.graphData = dateObjData
+            // setSelectedPlan(plan)
 
             setEdit({
                 ...edit,
@@ -442,20 +443,21 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
             method: 'PATCH',
             body: JSON.stringify({
                 startDate: currentStartDateArr,
-                endDate: currentEndDateArr
+                endDate: currentEndDateArr,
+                graphData: selectedPlan.graphData
             }),
             headers: {
                 "Content-Type": 'application/json',
             }
         })
         if (res.ok) {
-            const plan = await res.json()
-            const dateObjData = plan.graphData.map(datapoint => {
-                return { x: new Date(datapoint.x), y: datapoint.y }
-            })
+            // const plan = await res.json()
+            // const dateObjData = plan.graphData.map(datapoint => {
+            //     return { x: new Date(datapoint.x), y: datapoint.y }
+            // })
 
-            plan.graphData = dateObjData
-            setSelectedPlan(plan)
+            // plan.graphData = dateObjData
+            // setSelectedPlan(plan)
 
             setEdit({
                 ...edit,

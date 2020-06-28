@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import PlanNav from './PlanNav';
 import { KeyboardDatePicker } from "@material-ui/pickers";
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -70,7 +71,7 @@ const NewPlan = () => {
 
     return (
         <>
-            <div>New Plan</div>
+            <Typography variant='h6'>New Plan</Typography>
             <form className={classes.root} noValidate autoComplete="off">
                 <TextField id="name" label="Name" value={name} onChange={nameChange} />
                 <KeyboardDatePicker

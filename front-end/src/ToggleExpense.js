@@ -55,7 +55,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
 
     const dateObj = new Date(date[0], date[1], date[2])
 
-    const dateDisplay = new Date(date[0], date[1], date[2]).toString().slice(3, 15)
+    // const dateDisplay = new Date(date[0], date[1], date[2]).toString().slice(3, 15)
 
     const { selectedPlan, setSelectedPlan } = useContext(Context)
 
@@ -377,7 +377,6 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
 
                     if (graphDataArr[i + 1] && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth() && !foundDayInMonth) {
                         monthsPassed++
-                        console.log('DAY NOT FOUND')
 
                     }
 
@@ -427,20 +426,21 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
         const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/expenses/${id}/amount`, {
             method: 'PATCH',
             body: JSON.stringify({
-                amount: currentAmount
+                amount: currentAmount,
+                graphData: selectedPlan.graphData
             }),
             headers: {
                 "Content-Type": 'application/json',
             }
         })
         if (res.ok) {
-            const plan = await res.json()
-            const dateObjData = plan.graphData.map(datapoint => {
-                return { x: new Date(datapoint.x), y: datapoint.y }
-            })
+            // const plan = await res.json()
+            // const dateObjData = plan.graphData.map(datapoint => {
+            //     return { x: new Date(datapoint.x), y: datapoint.y }
+            // })
 
-            plan.graphData = dateObjData
-            setSelectedPlan(plan)
+            // plan.graphData = dateObjData
+            // setSelectedPlan(plan)
 
             setEdit({
                 ...edit,
@@ -455,20 +455,21 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
         const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/expenses/${id}/date`, {
             method: 'PATCH',
             body: JSON.stringify({
-                date: currentDate
+                date: currentDate,
+                graphData: selectedPlan.graphData
             }),
             headers: {
                 "Content-Type": 'application/json',
             }
         })
         if (res.ok) {
-            const plan = await res.json()
-            const dateObjData = plan.graphData.map(datapoint => {
-                return { x: new Date(datapoint.x), y: datapoint.y }
-            })
+            // const plan = await res.json()
+            // const dateObjData = plan.graphData.map(datapoint => {
+            //     return { x: new Date(datapoint.x), y: datapoint.y }
+            // })
 
-            plan.graphData = dateObjData
-            setSelectedPlan(plan)
+            // plan.graphData = dateObjData
+            // setSelectedPlan(plan)
 
             setEdit({
                 ...edit,
@@ -478,6 +479,9 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
         }
 
     }
+
+    const currentDateDisplay = new Date(currentDate[0], currentDate[1], currentDate[2]).toString().slice(3, 15)
+
 
     const labelId = `checkbox-list-secondary-label-${description}`;
 
@@ -515,7 +519,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                         <TableCell align='right'>
                                         </TableCell>
                                         <TableCell align="right">
-                                            ${amount}
+                                            ${currentAmount}
                                         </TableCell>
                                         <TableCell align="right">
                                             {checked &&
@@ -548,7 +552,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                         </TableCell> */}
                                     </>}
                             </TableRow>
-                            <TableRow key={dateDisplay}>
+                            <TableRow key={currentDateDisplay}>
                                 <TableCell component="th" scope="row">
                                     Date
                         </TableCell>
@@ -559,7 +563,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                         <TableCell align='right'>
                                         </TableCell>
                                         <TableCell align="right">
-                                            {dateDisplay}
+                                            {currentDateDisplay}
                                         </TableCell>
 
                                         <TableCell align="right">
