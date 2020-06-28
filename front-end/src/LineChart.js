@@ -33,7 +33,9 @@ const LineChart = () => {
         setShowLayer,
         singleMode,
         setSingleMode,
-        disableLayer
+        disableLayer,
+        setExpandItem,
+        expandItem
     } = useContext(Context)
 
     const [crosshair, setCrosshair] = useState([])
@@ -228,6 +230,20 @@ const LineChart = () => {
             setSelectedPlan(planCopy)
             setSingleMode(true)
 
+            let expandObj = { ...expandItem }
+
+            for (const id in expandObj) {
+                if (id === item.id) {
+
+                    expandObj[id] = true
+                } else {
+
+                    expandObj[id] = false
+                }
+            }
+
+            // console.log(expandObj)
+            setExpandItem(expandObj)
         }
     }
 
