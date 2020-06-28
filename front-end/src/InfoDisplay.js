@@ -9,6 +9,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { Typography } from '@material-ui/core';
 
 
 const useStyles = makeStyles({
@@ -33,8 +34,8 @@ const InfoDisplay = () => {
     const { hoverData, selectedPlan } = useContext(Context)
     // `${hoverData[0].x}`
     const [infoState, setInfoState] = useState({})
-    const [salaryState, setSalaryState] = useState([])
-    const [expenseState, setExpenseState] = useState([])
+    const [salaryState, setSalaryState] = useState(null)
+    const [expenseState, setExpenseState] = useState(null)
 
     useEffect(() => {
         if (hoverData) {
@@ -83,7 +84,7 @@ const InfoDisplay = () => {
     return (
         <>
             <div className='click-salary-info'>
-                {salaryState.length !== 0 && <TableContainer component={Paper}>
+                {salaryState && salaryState.length !== 0 && <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
                         <TableHead>
                             <TableRow>
@@ -109,7 +110,7 @@ const InfoDisplay = () => {
                 </TableContainer>}
             </div>
             <div className='click-expense-info'>
-                {expenseState.length !== 0 && <TableContainer component={Paper}>
+                {expenseState && expenseState.length !== 0 && <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
                         <TableHead>
                             <TableRow>
@@ -132,6 +133,11 @@ const InfoDisplay = () => {
                     </Table>
                 </TableContainer>}
             </div>
+            {expenseState && salaryState && salaryState.length === 0 && expenseState.length === 0 &&
+                <Typography variant='h4'>
+                    No items found.
+                </Typography>}
+
         </>
     )
 }
