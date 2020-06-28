@@ -9,8 +9,8 @@ import Layer from './Layer'
 import Button from '@material-ui/core/Button';
 import { ItemTypes } from './ItemTypes';
 import { useDrag, useDrop } from 'react-dnd';
-
-
+import apiBaseUrl from './config';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -22,22 +22,54 @@ const useStyles = makeStyles((theme) => ({
 const LineChart = () => {
     const classes = useStyles();
 
-    const { setSelectedPlan, lastDrawLocation, setLastDrawLocation, setDisableLayer, selectedPlan, setHoverData, showLayer, setShowLayer } = useContext(Context)
-    // const [lastDrawLocation, setLastDrawLocation] = useState(null)
+    const {
+        setSelectedPlan,
+        lastDrawLocation,
+        setLastDrawLocation,
+        setDisableLayer,
+        selectedPlan,
+        setHoverData,
+        showLayer,
+        setShowLayer,
+        singleMode,
+        setSingleMode,
+        disableLayer
+    } = useContext(Context)
+
     const [crosshair, setCrosshair] = useState([])
     const [brushCounter, setBrushCounter] = useState(0)
+    const [backdrop, setBackdrop] = useState(false)
 
-    // useEffect(() => {
-    //     console.log('mount')
-    // }, [selectedPlan])
 
     const handleNearestX = (nearestX) => {
         setHoverData(nearestX)
         setCrosshair([nearestX])
     }
 
-    const handleToggle = () => {
-        setShowLayer(!showLayer);
+    const handleToggle = async () => {
+        if (singleMode && !disableLayer) {
+            setSingleMode(false)
+            setBackdrop(true)
+            const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}`)
+            if (res.ok) {
+                const plan = await res.json()
+
+
+                const dateObjData = plan.graphData.map(datapoint => {
+                    return { x: new Date(datapoint.x), y: datapoint.y }
+                })
+
+                plan.graphData = dateObjData
+
+                setBackdrop(false)
+                setSelectedPlan(plan)
+                setLastDrawLocation(null)
+            }
+
+        } else {
+            setShowLayer(!showLayer);
+        }
+
     };
 
     const handleMouseLeave = () => {
@@ -91,6 +123,7 @@ const LineChart = () => {
 
             planCopy.graphData = graphDataArr
             setSelectedPlan(planCopy)
+            setSingleMode(true)
         } else if (item.expense) {
             const planCopy = { ...selectedPlan }
             const graphDataCopy = planCopy.graphData
@@ -193,7 +226,7 @@ const LineChart = () => {
 
             planCopy.graphData = graphDataArr
             setSelectedPlan(planCopy)
-
+            setSingleMode(true)
 
         }
     }
@@ -292,6 +325,9 @@ const LineChart = () => {
                 </XYPlot>}
             </div>
             <Layer />
+            <Backdrop className={classes.backdrop} open={backdrop}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </div>
     );
 }

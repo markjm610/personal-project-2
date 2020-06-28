@@ -15,7 +15,7 @@ const ContextWrapper = () => {
     const [lastDrawLocation, setLastDrawLocation] = useState(null)
     const [currentUser, setCurrentUser] = useState(null)
     const [currentUserPlans, setCurrentUserPlans] = useState([])
-
+    const [singleMode, setSingleMode] = useState(false)
 
     return (
         <Context.Provider value={
@@ -29,7 +29,8 @@ const ContextWrapper = () => {
                 lastDrawLocation, setLastDrawLocation,
                 currentUser, setCurrentUser,
                 openNewPlan, setOpenNewPlan,
-                currentUserPlans, setCurrentUserPlans
+                currentUserPlans, setCurrentUserPlans,
+                singleMode, setSingleMode
             }
         } >
             <App />
