@@ -104,12 +104,12 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
     }
 
-    const editClick = (row) => {
+    const editClick = async (row) => {
 
         if (edit.amountPerYear || edit.taxRate) {
-            handleSaveAmount()
+            await handleSaveAmount()
         } else if (edit.startDate || edit.endDate) {
-            handleSaveDate()
+            await handleSaveDate()
         }
 
 
@@ -426,6 +426,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
     }
 
     const handleSaveAmount = async () => {
+
         setBackdrop(true)
         const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/salaries/${id}/amount`, {
             method: 'PATCH',
@@ -459,6 +460,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
     }
 
     const handleSaveDate = async () => {
+
         setBackdrop(true)
         const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/salaries/${id}/date`, {
             method: 'PATCH',
@@ -526,6 +528,17 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
     }
 
 
+    const handleSaveAmountClick = e => {
+        e.stopPropagation()
+        handleSaveAmount()
+    }
+
+    const handleSaveDateClick = e => {
+        e.stopPropagation()
+        handleSaveDate()
+    }
+
+
     const labelId = `checkbox-list-secondary-label-${name}`;
 
     return (
@@ -566,7 +579,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             <TableCell align="right">${amountPerYear}</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
-                                                    <EditIcon onClick={() => editClick('amountPerYear')} />
+                                                    <EditIcon onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        editClick('amountPerYear')
+                                                    }} />
                                                 </div>}
 
                                             </TableCell>
@@ -581,7 +597,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     onChange={amountPerYearChange}
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
-                                                            <IconButton onClick={handleSaveAmount}>
+                                                            <IconButton onClick={handleSaveAmountClick}>
                                                                 <CheckCircleIcon />
                                                             </IconButton>
                                                         </InputAdornment>
@@ -603,7 +619,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             <TableCell align="right">{taxRate * 100}%</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
-                                                    <EditIcon onClick={() => editClick('taxRate')} />
+                                                    <EditIcon onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        editClick('taxRate')
+                                                    }} />
                                                 </div>}
 
                                             </TableCell>
@@ -618,7 +637,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     onChange={taxRateChange}
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
-                                                            <IconButton onClick={handleSaveAmount}>
+                                                            <IconButton onClick={handleSaveAmountClick}>
                                                                 <CheckCircleIcon />
                                                             </IconButton>
                                                         </InputAdornment>
@@ -653,7 +672,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             <TableCell align="right">{startDateDisplay}</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
-                                                    <EditIcon onClick={() => editClick('startDate')} />
+                                                    <EditIcon onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        editClick('startDate')
+                                                    }} />
                                                 </div>}
 
                                             </TableCell>
@@ -670,7 +692,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     InputAdornmentProps={{ position: "start" }}
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
-                                                            <IconButton onClick={handleSaveDate}>
+                                                            <IconButton onClick={handleSaveDateClick}>
                                                                 <CheckCircleIcon />
                                                             </IconButton>
                                                         </InputAdornment>
@@ -693,7 +715,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             <TableCell align="right">{endDateDisplay}</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
-                                                    <EditIcon onClick={() => editClick('endDate')} />
+                                                    <EditIcon onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        editClick('endDate')
+                                                    }} />
                                                 </div>}
 
                                             </TableCell>
@@ -710,7 +735,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     InputAdornmentProps={{ position: "start" }}
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
-                                                            <IconButton onClick={handleSaveDate}>
+                                                            <IconButton onClick={handleSaveDateClick}>
                                                                 <CheckCircleIcon />
                                                             </IconButton>
                                                         </InputAdornment>
