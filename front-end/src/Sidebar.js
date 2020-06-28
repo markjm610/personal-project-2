@@ -77,7 +77,7 @@ const Sidebar = () => {
             {salaries.length !== 0 && <Typography className={classes.headings} variant='h6'>Salaries</Typography>}
             {salaries.map(({ _id, name, displayed, amountPerYear, afterTaxAmount, taxRate, startDate, endDate }) => {
                 return <ToggleSalary
-                    key={name}
+                    key={_id}
                     id={_id}
                     name={name}
                     displayed={displayed}
@@ -90,7 +90,7 @@ const Sidebar = () => {
             {expenses.length !== 0 && <Typography className={classes.headings} variant='h6'>Expenses</Typography>}
             {expenses.map(({ description, _id, displayed, date, repeatingInterval, amount }) => {
                 return <ToggleExpense
-                    key={description}
+                    key={_id}
                     id={_id}
                     description={description}
                     displayed={displayed}

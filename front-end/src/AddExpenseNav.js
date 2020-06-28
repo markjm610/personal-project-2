@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 
 const AddExpenseNav = () => {
     const classes = useStyles();
-    const { openAddExpense, setOpenAddExpense, selectedPlan } = useContext(Context)
+    const { openAddExpense, setOpenAddExpense, selectedPlan, singleMode } = useContext(Context)
 
     const toggleDrawer = () => {
         setOpenAddExpense(!openAddExpense);
@@ -38,7 +38,7 @@ const AddExpenseNav = () => {
 
     return (
         <div className='add-expense-button'>
-            {selectedPlan._id &&
+            {selectedPlan._id && !singleMode &&
                 <>
                     <Button variant='outlined' onClick={toggleDrawer}>Add Expense</Button>
                     <Drawer anchor='top' open={openAddExpense} onClose={toggleDrawer}>

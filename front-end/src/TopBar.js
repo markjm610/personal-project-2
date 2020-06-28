@@ -132,7 +132,6 @@ const TopBar = () => {
                     itemsObj[expense._id] = false
                 })
 
-                console.log(itemsObj)
                 setExpandItem(itemsObj)
                 // setSavedItems({ salaries: salaries, expenses: expenses })
 

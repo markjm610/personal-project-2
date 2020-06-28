@@ -43,7 +43,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
 
 
-    const { selectedPlan, setSelectedPlan } = useContext(Context)
+    const { selectedPlan, setSelectedPlan, expandItem, setExpandItem } = useContext(Context)
     const [checked, setChecked] = useState(displayed)
     const [backdrop, setBackdrop] = useState(false)
     const [edit, setEdit] = useState({
@@ -53,27 +53,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
         endDate: false
     })
 
-    // const startDateStringArr = startDate.map((num, i) => {
-    //     if (i === 1 || i === 2) {
-    //         return num.toString().padStart(2, '0')
-    //     } else {
-    //         return num.toString()
-    //     }
-    // })
-
-    // const startDateString = startDateStringArr.join('-')
 
     const startDateObj = new Date(startDate[0], startDate[1], startDate[2])
     const endDateObj = new Date(endDate[0], endDate[1], endDate[2])
-    // const endDateStringArr = endDate.map((num, i) => {
-    //     if (i === 1 || i === 2) {
-    //         return num.toString().padStart(2, '0')
-    //     } else {
-    //         return num.toString()
-    //     }
-    // })
 
-    // const endDateString = endDateStringArr.join('-')
 
     const [currentAmountPerYear, setCurrentAmountPerYear] = useState(amountPerYear)
     const [amountPerYearInput, setAmountPerYearInput] = useState(amountPerYear.toString())
@@ -524,7 +507,8 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
             currentAfterTaxAmount,
             currentStartDateArr,
             currentEndDateArr,
-            salary: true
+            salary: true,
+            id
         },
         begin: () => {
 
@@ -537,9 +521,9 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
         })
     })
 
-
-
-
+    const clickExpansionPanel = () => {
+        setExpandItem({ ...expandItem, [id]: !expandItem[id] })
+    }
 
 
     const labelId = `checkbox-list-secondary-label-${name}`;
@@ -557,7 +541,9 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                     />
                 </div>
                 <div className={classes.root} ref={drag}>
-                    <ExpansionPanel>
+                    <ExpansionPanel
+                        expanded={expandItem[id]}
+                        onClick={clickExpansionPanel}>
                         <ExpansionPanelSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"

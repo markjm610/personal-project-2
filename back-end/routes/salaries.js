@@ -64,7 +64,7 @@ router.post('/salaries', asyncHandler(async (req, res) => {
 
     await newSalary.save()
 
-    res.json(plan)
+    res.json({ plan, newSalary })
 
 }))
 

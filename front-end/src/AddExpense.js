@@ -31,14 +31,15 @@ const useStyles = makeStyles((theme) => ({
 const AddExpense = () => {
     const classes = useStyles();
 
-    const { selectedPlan, setSelectedPlan, setOpenAddExpense } = useContext(Context)
+    const { selectedPlan, setSelectedPlan, setOpenAddExpense, expandItem, setExpandItem } = useContext(Context)
 
+    const dateDefault = [selectedPlan.startDate[0], selectedPlan.startDate[1], selectedPlan.startDate[2]]
     const dateInputDefault = new Date(selectedPlan.startDate[0], selectedPlan.startDate[1], selectedPlan.startDate[2])
 
     const [description, setDescription] = useState('')
     const [amount, setAmount] = useState(null)
     const [amountInput, setAmountInput] = useState('')
-    const [date, setDate] = useState(null)
+    const [date, setDate] = useState(dateDefault)
     const [dateInput, setDateInput] = useState(dateInputDefault)
     const [repeatingInterval, setRepeatingInterval] = useState(null)
     const [checkedRepeat, setCheckedRepeat] = useState(false)
@@ -58,16 +59,16 @@ const AddExpense = () => {
         if (res.ok) {
 
 
-            const plan = await res.json()
-
-            const dateObjData = plan.graphData.map(datapoint => {
-
+            const parsedRes = await res.json()
+            const dateObjData = parsedRes.plan.graphData.map(datapoint => {
                 return { x: new Date(datapoint.x), y: datapoint.y }
             })
 
-            plan.graphData = dateObjData
+            parsedRes.plan.graphData = dateObjData
 
-            setSelectedPlan(plan)
+            setExpandItem({ ...expandItem, [parsedRes.newExpense._id]: false })
+
+            setSelectedPlan(parsedRes.plan)
         }
 
 

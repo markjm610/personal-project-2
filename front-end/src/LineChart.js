@@ -126,6 +126,21 @@ const LineChart = () => {
             planCopy.graphData = graphDataArr
             setSelectedPlan(planCopy)
             setSingleMode(true)
+
+            let expandObj = { ...expandItem }
+
+            for (const id in expandObj) {
+                if (id === item.id) {
+
+                    expandObj[id] = true
+                } else {
+
+                    expandObj[id] = false
+                }
+            }
+
+            setExpandItem(expandObj)
+
         } else if (item.expense) {
             const planCopy = { ...selectedPlan }
             const graphDataCopy = planCopy.graphData
@@ -242,7 +257,6 @@ const LineChart = () => {
                 }
             }
 
-            // console.log(expandObj)
             setExpandItem(expandObj)
         }
     }

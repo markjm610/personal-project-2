@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 
 const AddSalaryNav = () => {
     const classes = useStyles();
-    const { openAddSalary, setOpenAddSalary, selectedPlan } = useContext(Context)
+    const { openAddSalary, setOpenAddSalary, selectedPlan, singleMode } = useContext(Context)
 
     const toggleDrawer = () => {
         setOpenAddSalary(!openAddSalary);
@@ -39,7 +39,7 @@ const AddSalaryNav = () => {
     return (
 
         <div className='add-salary-button'>
-            {selectedPlan._id &&
+            {selectedPlan._id && !singleMode &&
                 <>
                     <Button variant='outlined' onClick={toggleDrawer}>Add Salary</Button>
                     <Drawer anchor='top' open={openAddSalary} onClose={toggleDrawer}>
@@ -47,7 +47,7 @@ const AddSalaryNav = () => {
                     </Drawer>
                 </>
             }
-        </div>
+        </div >
 
     );
 }

@@ -118,7 +118,7 @@ router.post('/expenses', asyncHandler(async (req, res) => {
 
     await newExpense.save()
 
-    res.json(plan)
+    res.json({ plan, newExpense })
 
 }))
 

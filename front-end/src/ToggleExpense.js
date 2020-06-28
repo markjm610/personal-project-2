@@ -55,8 +55,6 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
 
     const { selectedPlan, setSelectedPlan, expandItem, setExpandItem } = useContext(Context)
 
-    console.log(expandItem)
-
     const [checked, setChecked] = useState(displayed)
     const [backdrop, setBackdrop] = useState(false)
     const [edit, setEdit] = useState({
@@ -518,13 +516,12 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                     onChange={handleToggle}
                     checked={checked}
                     inputProps={{ 'aria-labelledby': labelId }}
-                    style={{ marginRight: 10, color: 'rgb(238, 122, 122)' }}
+                    style={{ marginRight: 10, color: 'rgb(49, 48, 48)' }}
                 />
             </div>
             <div className={classes.root} ref={drag}>
                 <ExpansionPanel
                     expanded={expandItem[id]}
-
                     onClick={clickExpansionPanel}
                 >
                     <ExpansionPanelSummary

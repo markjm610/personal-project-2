@@ -19,8 +19,10 @@ const useStyles = makeStyles((theme) => ({
 
 const AddSalary = () => {
 
-    const { selectedPlan, setSelectedPlan, setOpenAddSalary } = useContext(Context)
+    const { selectedPlan, setSelectedPlan, setOpenAddSalary, expandItem, setExpandItem } = useContext(Context)
 
+    const startDateDefault = [selectedPlan.startDate[0], selectedPlan.startDate[1], selectedPlan.startDate[2]]
+    const endDateDefault = [selectedPlan.endDate[0], selectedPlan.endDate[1], selectedPlan.endDate[2]]
     const startDateInputDefault = new Date(selectedPlan.startDate[0], selectedPlan.startDate[1], selectedPlan.startDate[2])
     const endDateInputDefault = new Date(selectedPlan.endDate[0], selectedPlan.endDate[1], selectedPlan.endDate[2])
 
@@ -31,8 +33,8 @@ const AddSalary = () => {
     const [taxRate, setTaxRate] = useState(null)
     const [taxRateInput, setTaxRateInput] = useState('')
     const [afterTaxAmount, setAfterTaxAmount] = useState('')
-    const [startDate, setStartDate] = useState(null)
-    const [endDate, setEndDate] = useState(null)
+    const [startDate, setStartDate] = useState(startDateDefault)
+    const [endDate, setEndDate] = useState(endDateDefault)
     const [startDateInput, setStartDateInput] = useState(startDateInputDefault)
     const [endDateInput, setEndDateInput] = useState(endDateInputDefault)
 
@@ -52,14 +54,16 @@ const AddSalary = () => {
         })
         if (res.ok) {
 
-            const plan = await res.json()
-            const dateObjData = plan.graphData.map(datapoint => {
+            const parsedRes = await res.json()
+            const dateObjData = parsedRes.plan.graphData.map(datapoint => {
                 return { x: new Date(datapoint.x), y: datapoint.y }
             })
 
-            plan.graphData = dateObjData
+            parsedRes.plan.graphData = dateObjData
 
-            setSelectedPlan(plan)
+            setExpandItem({ ...expandItem, [parsedRes.newSalary._id]: false })
+
+            setSelectedPlan(parsedRes.plan)
         }
 
 
