@@ -1,4 +1,3 @@
 export const ItemTypes = {
-    SALARY: 'salary',
-    EXPENSE: 'expense'
+    ITEM: 'item'
 }

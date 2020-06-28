@@ -45,54 +45,162 @@ const LineChart = () => {
     }
 
     const handleDrop = (item) => {
-        const planCopy = { ...selectedPlan }
-        const graphDataCopy = planCopy.graphData
 
-        const graphDataArr = graphDataCopy.map(({ x, y }) => {
-            return { x, y: 0 }
-        })
+        if (item.salary) {
 
-        const startDateObj = new Date(item.currentStartDateArr[0], item.currentStartDateArr[1], item.currentStartDateArr[2])
+            const planCopy = { ...selectedPlan }
+            const graphDataCopy = planCopy.graphData
 
-        let firstDayIndex;
+            const graphDataArr = graphDataCopy.map(({ x, y }) => {
+                return { x, y: 0 }
+            })
 
-        graphDataArr.forEach((datapoint, i) => {
-            if (datapoint.x.getTime() === startDateObj.getTime()) {
-                firstDayIndex = i
+            const startDateObj = new Date(item.currentStartDateArr[0], item.currentStartDateArr[1], item.currentStartDateArr[2])
+
+            let firstDayIndex;
+
+            graphDataArr.forEach((datapoint, i) => {
+                if (datapoint.x.getTime() === startDateObj.getTime()) {
+                    firstDayIndex = i
+                }
+            })
+
+            const startMilliseconds = startDateObj.getTime()
+            const endMilliseconds = new Date(item.currentEndDateArr[0], item.currentEndDateArr[1], item.currentEndDateArr[2]).getTime()
+
+            const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+
+            let daysPassed = 0
+
+            for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+                if (i < firstDayIndex + dayDifference) {
+                    // For every day in salary period, add that day's proportion of salary to total
+                    daysPassed++
+
+                    const amountToAdd = item.currentAfterTaxAmount / 365 * daysPassed
+
+                    graphDataArr[i].y += amountToAdd
+                } else {
+                    // Once salary period is over, add full amount every day to total
+                    graphDataArr[i].y += item.currentAfterTaxAmount / 365 * daysPassed
+                }
+
+
             }
-        })
 
-        const startMilliseconds = startDateObj.getTime()
-        const endMilliseconds = new Date(item.currentEndDateArr[0], item.currentEndDateArr[1], item.currentEndDateArr[2]).getTime()
+            planCopy.graphData = graphDataArr
+            setSelectedPlan(planCopy)
+        } else if (item.expense) {
+            const planCopy = { ...selectedPlan }
+            const graphDataCopy = planCopy.graphData
 
-        const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+            const currentDate = item.currentDate
+            const currentAmount = item.currentAmount
+            const repeatingInterval = item.repeatingInterval
 
-        let daysPassed = 0
+            const graphDataArr = graphDataCopy.map(({ x, y }) => {
+                return { x, y: 0 }
+            })
 
-        for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+            const dateObj = new Date(currentDate[0], currentDate[1], currentDate[2])
+            const dateMilliseconds = dateObj.getTime()
 
-            if (i < firstDayIndex + dayDifference) {
-                // For every day in salary period, add that day's proportion of salary to total
-                daysPassed++
+            let firstDayIndex;
 
-                const amountToAdd = item.currentAfterTaxAmount / 365 * daysPassed
+            graphDataArr.forEach((datapoint, i) => {
+                if (datapoint.x.getTime() === dateMilliseconds) {
+                    firstDayIndex = i
+                }
+            })
 
-                graphDataArr[i].y += amountToAdd
-            } else {
-                // Once salary period is over, add full amount every day to total
-                graphDataArr[i].y += item.currentAfterTaxAmount / 365 * daysPassed
+            if (!repeatingInterval) {
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+                    graphDataArr[i].y -= currentAmount
+                }
+            } else if (repeatingInterval === 'Daily') {
+                let daysPassed = 0
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+                    daysPassed++
+                    graphDataArr[i].y -= (currentAmount * daysPassed)
+                }
+            } else if (repeatingInterval === 'Weekly') {
+                let weeksPassed = 0
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+                    if ((i - firstDayIndex) % 7 === 0) {
+                        weeksPassed++
+                    }
+
+                    graphDataArr[i].y -= (currentAmount * weeksPassed)
+                }
+
+            } else if (repeatingInterval === 'Monthly') {
+
+                const day = dateObj.getDate()
+
+                let monthsPassed = 0
+                let currentMonth = dateObj.getMonth()
+                let foundDayInMonth = false
+
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+                    if (graphDataArr[i].x.getMonth() !== currentMonth) {
+                        // Update month
+
+                        currentMonth = graphDataArr[i].x.getMonth()
+                        foundDayInMonth = false
+                    }
+
+                    if (graphDataArr[i].x.getMonth() === currentMonth && graphDataArr[i].x.getDate() === day) {
+                        monthsPassed++
+                        foundDayInMonth = true;
+                    }
+
+                    if (graphDataArr[i + 1] && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth() && !foundDayInMonth) {
+                        monthsPassed++
+                    }
+
+                    graphDataArr[i].y -= (currentAmount * monthsPassed)
+
+                }
+
+            } else if (repeatingInterval === 'Yearly') {
+
+
+                const day = dateObj.getDate()
+                const month = dateObj.getMonth()
+                let yearsPassed = 0
+                for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+                    if (graphDataArr[i].x.getMonth() === month && graphDataArr[i].x.getDate() === day) {
+                        yearsPassed++
+                    }
+
+                    if (month === 1 && day === 29 && graphDataArr[i].x.getMonth() === 1) {
+
+                        if (graphDataArr[i + 1]
+                            && graphDataArr[i].x.getMonth() !== graphDataArr[i + 1].x.getMonth()
+                            && graphDataArr[i].x.getDate() === 28) {
+
+                            yearsPassed++
+                        }
+                    }
+
+                    graphDataArr[i].y -= (currentAmount * yearsPassed)
+
+                }
             }
+
+            planCopy.graphData = graphDataArr
+            setSelectedPlan(planCopy)
 
 
         }
-
-        planCopy.graphData = graphDataArr
-        setSelectedPlan(planCopy)
     }
 
 
     const [{ isOver }, drop] = useDrop({
-        accept: ItemTypes.SALARY,
+        accept: ItemTypes.ITEM,
         drop: (item) => {
             handleDrop(item);
         },

@@ -520,10 +520,11 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
     const [{ isDragging }, drag] = useDrag({
         item: {
-            type: ItemTypes.SALARY,
+            type: ItemTypes.ITEM,
             currentAfterTaxAmount,
             currentStartDateArr,
-            currentEndDateArr
+            currentEndDateArr,
+            salary: true
         },
         begin: () => {
 

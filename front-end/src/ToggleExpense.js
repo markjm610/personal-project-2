@@ -26,7 +26,8 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
-
+import { ItemTypes } from './ItemTypes';
+import { useDrag, useDrop } from 'react-dnd';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -483,6 +484,26 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
     const currentDateDisplay = new Date(currentDate[0], currentDate[1], currentDate[2]).toString().slice(3, 15)
 
 
+
+    const [{ isDragging }, drag] = useDrag({
+        item: {
+            type: ItemTypes.ITEM,
+            currentAmount,
+            currentDate,
+            repeatingInterval,
+            expense: true
+        },
+        begin: () => {
+
+        },
+        end: (item) => {
+
+        },
+        collect: monitor => ({
+            isDragging: monitor.isDragging()
+        })
+    })
+
     const labelId = `checkbox-list-secondary-label-${description}`;
 
     return (
@@ -497,7 +518,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                     style={{ marginRight: 10, color: 'rgb(238, 122, 122)' }}
                 />
             </div>
-            <div className={classes.root}>
+            <div className={classes.root} ref={drag}>
                 <ExpansionPanel>
                     <ExpansionPanelSummary
                         expandIcon={<ExpandMoreIcon />}
