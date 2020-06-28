@@ -16,6 +16,8 @@ const ContextWrapper = () => {
     const [currentUser, setCurrentUser] = useState(null)
     const [currentUserPlans, setCurrentUserPlans] = useState([])
     const [singleMode, setSingleMode] = useState(false)
+    const [expandItem, setExpandItem] = useState({})
+
 
     return (
         <Context.Provider value={
@@ -30,7 +32,8 @@ const ContextWrapper = () => {
                 currentUser, setCurrentUser,
                 openNewPlan, setOpenNewPlan,
                 currentUserPlans, setCurrentUserPlans,
-                singleMode, setSingleMode
+                singleMode, setSingleMode,
+                expandItem, setExpandItem
             }
         } >
             <App />

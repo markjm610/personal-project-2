@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Sidebar = () => {
 
-    const { selectedPlan } = useContext(Context)
+    const { selectedPlan, expandItem, setExpandItem } = useContext(Context)
 
     const classes = useStyles();
     const [checked, setChecked] = React.useState([]);
@@ -59,13 +59,16 @@ const Sidebar = () => {
 
                 setSalaries(salaries)
                 setExpenses(expenses)
+
+                // expenses.forEach(expense => {
+                //     setExpandItem({ ...expandItem, [expense._id]: false })
+                // })
             }
 
             getItems()
         }
 
     }, [selectedPlan])
-
 
 
 

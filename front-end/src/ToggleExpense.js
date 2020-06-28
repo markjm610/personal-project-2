@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Checkbox from '@material-ui/core/Checkbox';
 import apiBaseUrl from './config';
 import Context from './Context';
@@ -53,9 +53,9 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
 
     const dateObj = new Date(date[0], date[1], date[2])
 
-    // const dateDisplay = new Date(date[0], date[1], date[2]).toString().slice(3, 15)
+    const { selectedPlan, setSelectedPlan, expandItem, setExpandItem } = useContext(Context)
 
-    const { selectedPlan, setSelectedPlan } = useContext(Context)
+    console.log(expandItem)
 
     const [checked, setChecked] = useState(displayed)
     const [backdrop, setBackdrop] = useState(false)
@@ -480,8 +480,6 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
 
     const currentDateDisplay = new Date(currentDate[0], currentDate[1], currentDate[2]).toString().slice(3, 15)
 
-
-
     const [{ isDragging }, drag] = useDrag({
         item: {
             type: ItemTypes.ITEM,
@@ -501,6 +499,13 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
         })
     })
 
+    const clickExpansionPanel = () => {
+        setExpandItem({ ...expandItem, [id]: !expandItem[id] })
+    }
+
+
+
+
     const labelId = `checkbox-list-secondary-label-${description}`;
 
     return (
@@ -516,7 +521,11 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                 />
             </div>
             <div className={classes.root} ref={drag}>
-                <ExpansionPanel>
+                <ExpansionPanel
+                    expanded={expandItem[id]}
+
+                    onClick={clickExpansionPanel}
+                >
                     <ExpansionPanelSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
@@ -638,7 +647,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
             <Backdrop className={classes.backdrop} open={backdrop}>
                 <CircularProgress color="inherit" />
             </Backdrop>
-        </div>
+        </div >
     )
 }
 

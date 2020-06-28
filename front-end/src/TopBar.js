@@ -84,7 +84,7 @@ const TopBar = () => {
     const classes = useStyles();
     const theme = useTheme();
 
-    const { setLastDrawLocation, currentUserPlans, setCurrentUserPlans, currentUser } = useContext(Context)
+    const { setLastDrawLocation, currentUserPlans, setCurrentUserPlans, currentUser, expandItem, setExpandItem } = useContext(Context)
     const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -113,19 +113,76 @@ const TopBar = () => {
         setLastDrawLocation(null)
     }
 
+    const [savedItems, setSavedItems] = useState({})
+
     useEffect(() => {
         if (currentUser) {
+            // let salaries;
+            // let expenses;
+            let itemsObj = {}
+            const getItems = async (planId) => {
+                const res = await fetch(`${apiBaseUrl}/plans/${planId}/items`)
+                const items = await res.json()
+                const salaries = [...items.salaries]
+                const expenses = [...items.expenses]
+                salaries.forEach(salary => {
+                    itemsObj[salary._id] = false
+                })
+                expenses.forEach(expense => {
+                    itemsObj[expense._id] = false
+                })
+
+                console.log(itemsObj)
+                setExpandItem(itemsObj)
+                // setSavedItems({ salaries: salaries, expenses: expenses })
+
+                // savedItems.salaries = salaries
+                // savedItems.expenses = expenses
+                // console.log(items)
+                // expenses.forEach(expense => {
+                //     setExpandItem({ ...expandItem, [expense._id]: false })
+                // })
+            }
+
             const getPlans = async () => {
                 const res = await fetch(`${apiBaseUrl}/users/${currentUser._id}/plans`)
 
                 const plans = await res.json()
 
+
+                plans.forEach(async (plan) => {
+                    await getItems(plan._id)
+                    // plan.salaries = salaries
+                    // plan.expenses = expenses
+
+                })
+
                 setCurrentUserPlans(plans)
             }
             getPlans()
+
+
         }
 
-    }, [currentUser, currentUserPlans])
+    }, [currentUser])
+
+    // useEffect(() => {
+    //     if (currentUserPlans.length !== 0) {
+    //         let expandObj = {}
+    //         currentUserPlans.forEach((plan) => {
+    //             console.log(plan)
+    //             console.log(plan.salaries)
+    //             // plan.salaries.forEach(salary => {
+    //             //     expandObj[salary._id] = false
+    //             // })
+    //             // plan.expenses.forEach(expense => {
+    //             //     expandObj[expense._id] = false
+    //             // })
+    //         })
+    //         console.log(expandObj)
+    //     }
+    // }, [currentUserPlans])
+
 
     return (
         <div className={classes.root}>
