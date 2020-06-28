@@ -33,11 +33,13 @@ const AddExpense = () => {
 
     const { selectedPlan, setSelectedPlan, setOpenAddExpense } = useContext(Context)
 
+    const dateInputDefault = new Date(selectedPlan.startDate[0], selectedPlan.startDate[1], selectedPlan.startDate[2])
+
     const [description, setDescription] = useState('')
     const [amount, setAmount] = useState(null)
     const [amountInput, setAmountInput] = useState('')
     const [date, setDate] = useState(null)
-    const [dateInput, setDateInput] = useState(new Date())
+    const [dateInput, setDateInput] = useState(dateInputDefault)
     const [repeatingInterval, setRepeatingInterval] = useState(null)
     const [checkedRepeat, setCheckedRepeat] = useState(false)
 

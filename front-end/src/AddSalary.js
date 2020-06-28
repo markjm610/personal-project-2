@@ -21,6 +21,10 @@ const AddSalary = () => {
 
     const { selectedPlan, setSelectedPlan, setOpenAddSalary } = useContext(Context)
 
+    const startDateInputDefault = new Date(selectedPlan.startDate[0], selectedPlan.startDate[1], selectedPlan.startDate[2])
+    const endDateInputDefault = new Date(selectedPlan.endDate[0], selectedPlan.endDate[1], selectedPlan.endDate[2])
+
+
     const [name, setName] = useState('')
     const [amountPerYear, setAmountPerYear] = useState(null)
     const [amountPerYearInput, setAmountPerYearInput] = useState('')
@@ -29,8 +33,8 @@ const AddSalary = () => {
     const [afterTaxAmount, setAfterTaxAmount] = useState('')
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
-    const [startDateInput, setStartDateInput] = useState(new Date())
-    const [endDateInput, setEndDateInput] = useState(new Date())
+    const [startDateInput, setStartDateInput] = useState(startDateInputDefault)
+    const [endDateInput, setEndDateInput] = useState(endDateInputDefault)
 
     const classes = useStyles();
 

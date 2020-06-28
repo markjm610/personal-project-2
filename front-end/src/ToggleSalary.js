@@ -20,7 +20,8 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
-
+import { ItemTypes } from './ItemTypes';
+import { useDrag, useDrop } from 'react-dnd';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -121,7 +122,43 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
     }
 
     const editClick = (row) => {
-        setEdit({ ...edit, [row]: true })
+
+        if (edit.amountPerYear || edit.taxRate) {
+            handleSaveAmount()
+        } else if (edit.startDate || edit.endDate) {
+            handleSaveDate()
+        }
+
+
+        if (row === 'amountPerYear') {
+            setEdit({
+                amountPerYear: true,
+                taxRate: false,
+                startDate: false,
+                endDate: false
+            })
+        } else if (row === 'taxRate') {
+            setEdit({
+                amountPerYear: false,
+                taxRate: true,
+                startDate: false,
+                endDate: false
+            })
+        } else if (row === 'startDate') {
+            setEdit({
+                amountPerYear: false,
+                taxRate: false,
+                startDate: true,
+                endDate: false
+            })
+        } else if (row === 'endDate') {
+            setEdit({
+                amountPerYear: false,
+                taxRate: false,
+                startDate: false,
+                endDate: true
+            })
+        }
 
     }
 
@@ -335,7 +372,8 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
             const planCopy = { ...selectedPlan }
             const graphDataArr = planCopy.graphData
-
+            // graphDataArr and planCopy.graphData must be pointing to the same array because otherwise
+            // this makes no sense
 
             let firstDayIndex;
 
@@ -469,6 +507,38 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
     }
 
+    // const [currentAmountPerYear, setCurrentAmountPerYear] = useState(amountPerYear)
+    // const [amountPerYearInput, setAmountPerYearInput] = useState(amountPerYear.toString())
+    // const [currentTaxRate, setCurrentTaxRate] = useState(taxRate)
+    // const [taxRateInput, setTaxRateInput] = useState((taxRate * 100).toString())
+    // const [currentAfterTaxAmount, setCurrentAfterTaxAmount] = useState(afterTaxAmount)
+    // const [currentStartDateArr, setCurrentStartDateArr] = useState(startDate)
+    // const [currentEndDateArr, setCurrentEndDateArr] = useState(endDate)
+    // const [startDateInput, setStartDateInput] = useState(startDateObj)
+    // const [endDateInput, setEndDateInput] = useState(endDateObj)
+
+
+    const [{ isDragging }, drag] = useDrag({
+        item: {
+            type: ItemTypes.SALARY,
+            currentAfterTaxAmount,
+            currentStartDateArr,
+            currentEndDateArr
+        },
+        begin: () => {
+
+        },
+        end: (item) => {
+
+        },
+        collect: monitor => ({
+            isDragging: monitor.isDragging()
+        })
+    })
+
+
+
+
 
 
     const labelId = `checkbox-list-secondary-label-${name}`;
@@ -485,7 +555,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                         style={{ marginRight: 10, color: 'rgb(110, 211, 43)' }}
                     />
                 </div>
-                <div className={classes.root}>
+                <div className={classes.root} ref={drag}>
                     <ExpansionPanel>
                         <ExpansionPanelSummary
                             expandIcon={<ExpandMoreIcon />}
