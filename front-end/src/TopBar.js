@@ -101,86 +101,59 @@ const TopBar = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const zoomOut = () => {
-        setLastDrawLocation(null)
-    }
 
     const [savedItems, setSavedItems] = useState({})
 
-    useEffect(() => {
-        if (currentUser) {
-            // let salaries;
-            // let expenses;
-            let itemsObj = {}
-            const getItems = async (planId) => {
-                const res = await fetch(`${apiBaseUrl}/plans/${planId}/items`)
-                const items = await res.json()
-                const salaries = [...items.salaries]
-                const expenses = [...items.expenses]
-                salaries.forEach(salary => {
-                    itemsObj[salary._id] = false
-                })
-                expenses.forEach(expense => {
-                    itemsObj[expense._id] = false
-                })
-
-                setExpandItem(itemsObj)
-                // setSavedItems({ salaries: salaries, expenses: expenses })
-
-                // savedItems.salaries = salaries
-                // savedItems.expenses = expenses
-                // console.log(items)
-                // expenses.forEach(expense => {
-                //     setExpandItem({ ...expandItem, [expense._id]: false })
-                // })
-            }
-
-            const getPlans = async () => {
-                const res = await fetch(`${apiBaseUrl}/users/${currentUser._id}/plans`)
-
-                const plans = await res.json()
-
-
-                plans.forEach(async (plan) => {
-                    await getItems(plan._id)
-                    // plan.salaries = salaries
-                    // plan.expenses = expenses
-
-                })
-
-                setCurrentUserPlans(plans)
-            }
-            getPlans()
-
-
-        }
-
-    }, [currentUser])
-
     // useEffect(() => {
-    //     if (currentUserPlans.length !== 0) {
-    //         let expandObj = {}
-    //         currentUserPlans.forEach((plan) => {
-    //             console.log(plan)
-    //             console.log(plan.salaries)
-    //             // plan.salaries.forEach(salary => {
-    //             //     expandObj[salary._id] = false
+    //     if (currentUser) {
+    //         // let salaries;
+    //         // let expenses;
+    //         let itemsObj = {}
+    //         const getItems = async (planId) => {
+    //             const res = await fetch(`${apiBaseUrl}/plans/${planId}/items`)
+    //             const items = await res.json()
+    //             const salaries = [...items.salaries]
+    //             const expenses = [...items.expenses]
+    //             salaries.forEach(salary => {
+    //                 itemsObj[salary._id] = false
+    //             })
+    //             expenses.forEach(expense => {
+    //                 itemsObj[expense._id] = false
+    //             })
+
+    //             setExpandItem(itemsObj)
+    //             // setSavedItems({ salaries: salaries, expenses: expenses })
+
+    //             // savedItems.salaries = salaries
+    //             // savedItems.expenses = expenses
+    //             // console.log(items)
+    //             // expenses.forEach(expense => {
+    //             //     setExpandItem({ ...expandItem, [expense._id]: false })
     //             // })
-    //             // plan.expenses.forEach(expense => {
-    //             //     expandObj[expense._id] = false
-    //             // })
-    //         })
-    //         console.log(expandObj)
+    //         }
+
+    //         const getPlans = async () => {
+    //             const res = await fetch(`${apiBaseUrl}/users/${currentUser._id}/plans`)
+
+    //             const plans = await res.json()
+
+
+    //             plans.forEach(async (plan) => {
+    //                 await getItems(plan._id)
+    //                 // plan.salaries = salaries
+    //                 // plan.expenses = expenses
+
+    //             })
+
+    //             setCurrentUserPlans(plans)
+    //         }
+    //         getPlans()
+
+
     //     }
-    // }, [currentUserPlans])
+
+    // }, [currentUser])
+
 
 
     return (
@@ -192,7 +165,7 @@ const TopBar = () => {
                     <div className='app-bar-div'>
                         <div>
                             <Typography variant="h6" className={classes.title}>
-                                Top Bar
+                                Chart Your Cash
                     </Typography>
                         </div>
                         <div className='plan-nav'>

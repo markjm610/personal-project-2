@@ -45,6 +45,8 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
+        backgroundColor: 'rgb(49, 48, 48)',
+        color: 'white'
     },
 }));
 
@@ -68,7 +70,7 @@ const LandingPage = ({ history }) => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="primary"
+
                     className={classes.submit}
                     onClick={() => loginWithRedirect({})}
                 >

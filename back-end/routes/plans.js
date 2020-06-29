@@ -32,7 +32,7 @@ router.post('/plans', asyncHandler(async (req, res) => {
 
     const newPlan = new Plan({ name, startDate, endDate, graphData, userId })
     await newPlan.save()
-    res.json(newPlan)
+    res.json({ name: newPlan.name, _id: newPlan._id })
 
 }))
 

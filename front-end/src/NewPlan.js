@@ -25,15 +25,18 @@ const useStyles = makeStyles((theme) => ({
 const NewPlan = () => {
     const classes = useStyles();
 
-    const { currentUser, setOpenNewPlan } = useContext(Context)
+    const { currentUser, setOpenNewPlan, currentUserPlans, setCurrentUserPlans } = useContext(Context)
+
+    const newDateArr = [new Date().getFullYear(), new Date().getMonth(), new Date().getDate()]
 
     const [name, setName] = useState('')
-    const [startDate, setStartDate] = useState(null)
-    const [endDate, setEndDate] = useState(null)
+    const [startDate, setStartDate] = useState(newDateArr)
+    const [endDate, setEndDate] = useState(newDateArr)
     const [startDateInput, setStartDateInput] = useState(new Date())
     const [endDateInput, setEndDateInput] = useState(new Date())
 
     const newPlanSubmit = async () => {
+        setOpenNewPlan(false)
         const res = await fetch(`${apiBaseUrl}/plans`, {
             method: 'POST',
             body: JSON.stringify({
@@ -44,7 +47,10 @@ const NewPlan = () => {
             }
         })
         if (res.ok) {
-            setOpenNewPlan(false)
+            const newPlan = await res.json()
+            const listOfPlans = [...currentUserPlans]
+            listOfPlans.push(newPlan)
+            setCurrentUserPlans(listOfPlans)
         }
     }
 

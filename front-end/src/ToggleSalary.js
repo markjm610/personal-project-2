@@ -69,8 +69,8 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
     const [endDateInput, setEndDateInput] = useState(endDateObj)
 
 
-    const startDateDisplay = new Date(startDate[0], startDate[1], startDate[2]).toString().slice(3, 15)
-    const endDateDisplay = new Date(endDate[0], endDate[1], endDate[2]).toString().slice(3, 15)
+    const currentStartDateDisplay = new Date(currentStartDateArr[0], currentStartDateArr[1], currentStartDateArr[2]).toString().slice(3, 15)
+    const currentEndDateDisplay = new Date(currentEndDateArr[0], currentEndDateArr[1], currentEndDateArr[2]).toString().slice(3, 15)
 
     const handleToggle = async () => {
         setBackdrop(true)
@@ -529,12 +529,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
 
     const handleSaveAmountClick = e => {
-        e.stopPropagation()
         handleSaveAmount()
     }
 
     const handleSaveDateClick = e => {
-        e.stopPropagation()
         handleSaveDate()
     }
 
@@ -564,9 +562,9 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                         >
                             <Typography className={classes.heading}>{name}</Typography>
                         </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                        <ExpansionPanelDetails onClick={(e) => e.stopPropagation()}>
                             <TableBody>
-                                <TableRow key={amountPerYear}>
+                                <TableRow key={'amountPerYear'}>
                                     <TableCell component="th" scope="row">
                                         Amount Per Year
                                             </TableCell>
@@ -576,11 +574,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align='right'>
                                             </TableCell>
-                                            <TableCell align="right">${amountPerYear}</TableCell>
+                                            <TableCell align="right">${currentAmountPerYear}</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
                                                     <EditIcon onClick={(e) => {
-                                                        e.stopPropagation()
                                                         editClick('amountPerYear')
                                                     }} />
                                                 </div>}
@@ -607,7 +604,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
                                         </>}
                                 </TableRow>
-                                <TableRow key={taxRate}>
+                                <TableRow key={'taxRate'}>
                                     <TableCell component="th" scope="row">
                                         Tax Rate
                         </TableCell>{!edit.taxRate
@@ -616,11 +613,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align='right'>
                                             </TableCell>
-                                            <TableCell align="right">{taxRate * 100}%</TableCell>
+                                            <TableCell align="right">{currentTaxRate * 100}%</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
                                                     <EditIcon onClick={(e) => {
-                                                        e.stopPropagation()
                                                         editClick('taxRate')
                                                     }} />
                                                 </div>}
@@ -647,7 +643,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
                                         </>}
                                 </TableRow>
-                                <TableRow key={afterTaxAmount}>
+                                <TableRow key={'afterTaxAmount'}>
                                     <TableCell component="th" scope="row">
                                         Amount After Tax
                         </TableCell>
@@ -659,7 +655,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                     <TableCell align="right"></TableCell>
 
                                 </TableRow>
-                                <TableRow key={startDateDisplay}>
+                                <TableRow key={'startDateDisplay'}>
                                     <TableCell component="th" scope="row">
                                         Start Date
                         </TableCell>
@@ -669,11 +665,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align='right'>
                                             </TableCell>
-                                            <TableCell align="right">{startDateDisplay}</TableCell>
+                                            <TableCell align="right">{currentStartDateDisplay}</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
                                                     <EditIcon onClick={(e) => {
-                                                        e.stopPropagation()
                                                         editClick('startDate')
                                                     }} />
                                                 </div>}
@@ -702,7 +697,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                         </>}
                                 </TableRow>
-                                <TableRow key={endDateDisplay}>
+                                <TableRow key={'endDateDisplay'}>
                                     <TableCell component="th" scope="row">
                                         End Date
                         </TableCell>
@@ -712,11 +707,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align='right'>
                                             </TableCell>
-                                            <TableCell align="right">{endDateDisplay}</TableCell>
+                                            <TableCell align="right">{currentEndDateDisplay}</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
                                                     <EditIcon onClick={(e) => {
-                                                        e.stopPropagation()
                                                         editClick('endDate')
                                                     }} />
                                                 </div>}

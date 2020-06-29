@@ -412,8 +412,34 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
 
     }
 
-    const editClick = (row) => {
-        setEdit({ ...edit, [row]: true })
+    const editClick = async (row) => {
+
+        if (edit.amount) {
+            await handleSaveAmount()
+        } else if (edit.date) {
+            await handleSaveDate()
+        }
+
+        if (row === 'amount') {
+            setEdit({
+                amount: true,
+                date: false,
+                repeatingInterval: false
+            })
+        } else if (row === 'date') {
+            setEdit({
+                amount: false,
+                date: true,
+                repeatingInterval: false
+            })
+        } else if (row === 'repeatingInterval') {
+            setEdit({
+                amount: false,
+                date: true,
+                repeatingInterval: false
+            })
+        }
+
 
     }
 
@@ -531,7 +557,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                     >
                         <Typography className={classes.heading}>{description}</Typography>
                     </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                    <ExpansionPanelDetails onClick={e => e.stopPropagation()}>
                         <TableBody className={classes.tableBody}>
                             <TableRow key={amount} className={classes.tableRow}>
                                 <TableCell component="th" scope="row">
@@ -572,9 +598,6 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                                 }}
                                             />
                                         </TableCell>
-                                        {/* <TableCell align="right">
-                                            <Button onClick={handleSaveAmount}>Save</Button>
-                                        </TableCell> */}
                                     </>}
                             </TableRow>
                             <TableRow key={currentDateDisplay}>
