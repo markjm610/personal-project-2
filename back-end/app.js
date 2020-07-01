@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false },);
@@ -22,6 +23,18 @@ app.use(usersRouter)
 app.use(plansRouter)
 app.use(salariesRouter)
 app.use(expensesRouter)
+
+
+
+app.use(express.static(path.join(__dirname, '/../front-end/build')));
+
+
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/../front-end/build/index.html'));
+});
+
+
 
 const port = process.env.PORT;
 

@@ -1,0 +1,21 @@
+{
+    "name": "react-project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "cd back-end && npm start",
+        "heroku-postbuild": "cd front-end && npm i && npm run build && cd ../back-end && npm i"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/markjm610/personal-project-2.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/markjm610/personal-project-2/issues"
+    },
+    "homepage": "https://github.com/markjm610/personal-project-2#readme"
+}
