@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
+    input: {
+        color: 'white'
+    }
 }));
 
 
@@ -598,7 +601,8 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                             <IconButton onClick={handleSaveAmountClick}>
                                                                 <CheckCircleIcon style={{ color: 'white' }} />
                                                             </IconButton>
-                                                        </InputAdornment>
+                                                        </InputAdornment>,
+                                                        className: classes.input
                                                     }}
                                                 />
                                             </TableCell>
@@ -638,7 +642,8 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                             <IconButton onClick={handleSaveAmountClick}>
                                                                 <CheckCircleIcon style={{ color: 'white' }} />
                                                             </IconButton>
-                                                        </InputAdornment>
+                                                        </InputAdornment>,
+                                                        className: classes.input
                                                     }}
                                                 />
                                             </TableCell>
@@ -690,9 +695,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
                                                             <IconButton onClick={handleSaveDateClick}>
-                                                                <CheckCircleIcon />
+                                                                <CheckCircleIcon style={{ color: 'white' }} />
                                                             </IconButton>
-                                                        </InputAdornment>
+                                                        </InputAdornment>,
+                                                        className: classes.input
                                                     }}
                                                     onChange={date => startDateChange(date)}
                                                 />
@@ -732,9 +738,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
                                                             <IconButton onClick={handleSaveDateClick}>
-                                                                <CheckCircleIcon />
+                                                                <CheckCircleIcon style={{ color: 'white' }} />
                                                             </IconButton>
-                                                        </InputAdornment>
+                                                        </InputAdornment>,
+                                                        className: classes.input
                                                     }}
                                                     onChange={date => endDateChange(date)}
                                                 />

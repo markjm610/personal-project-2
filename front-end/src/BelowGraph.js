@@ -19,7 +19,7 @@ const BelowGraph = () => {
                 <AddSalaryNav />
                 <AddExpenseNav />
                 <div className='zoom-out-button'>
-                    <Button variant='outlined' onClick={zoomOut}>Zoom Out</Button>
+                    <Button style={{ border: 'solid 1px white', color: 'white' }} variant='outlined' onClick={zoomOut}>Zoom Out</Button>
                 </div>
             </div>}
         </>

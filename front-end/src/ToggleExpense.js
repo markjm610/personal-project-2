@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     },
     tableRow: {
         width: '100%'
+    },
+    input: {
+        color: 'white'
     }
 }));
 
@@ -586,6 +589,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                     <>
                                         <TableCell align="right" colSpan={4}>
                                             <TextField
+                                                style={{ color: 'white' }}
                                                 type='number'
                                                 id="edit-amount"
                                                 value={amountInput}
@@ -595,7 +599,8 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                                         <IconButton onClick={handleSaveAmount}>
                                                             <CheckCircleIcon style={{ color: 'white' }} />
                                                         </IconButton>
-                                                    </InputAdornment>
+                                                    </InputAdornment>,
+                                                    className: classes.input
                                                 }}
                                             />
                                         </TableCell>
@@ -632,13 +637,13 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                                 format="MM/dd/yyyy"
                                                 value={dateInput}
                                                 InputAdornmentProps={{ position: "start" }}
-                                                // endAdornment={{}}
                                                 InputProps={{
                                                     endAdornment: <InputAdornment>
                                                         <IconButton onClick={handleSaveDate}>
                                                             <CheckCircleIcon style={{ color: 'white' }} />
                                                         </IconButton>
-                                                    </InputAdornment>
+                                                    </InputAdornment>,
+                                                    className: classes.input
                                                 }}
                                                 onChange={date => dateChange(date)}
                                             />
