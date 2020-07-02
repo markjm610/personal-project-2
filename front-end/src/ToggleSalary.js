@@ -553,10 +553,11 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                 </div>
                 <div className={classes.root} ref={drag}>
                     <ExpansionPanel
+                        style={{ backgroundColor: 'rgb(49, 48, 48)', color: 'white' }}
                         expanded={expandItem[id]}
                         onClick={clickExpansionPanel}>
                         <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
@@ -565,7 +566,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                         <ExpansionPanelDetails onClick={(e) => e.stopPropagation()}>
                             <TableBody>
                                 <TableRow key={'amountPerYear'}>
-                                    <TableCell component="th" scope="row">
+                                    <TableCell component="th" scope="row" style={{ color: 'white' }}>
                                         Amount Per Year
                                             </TableCell>
                                     {!edit.amountPerYear
@@ -574,10 +575,10 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align='right'>
                                             </TableCell>
-                                            <TableCell align="right">${currentAmountPerYear}</TableCell>
+                                            <TableCell align="right" style={{ color: 'white' }}>${currentAmountPerYear}</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
-                                                    <EditIcon onClick={(e) => {
+                                                    <EditIcon style={{ color: 'white' }} onClick={(e) => {
                                                         editClick('amountPerYear')
                                                     }} />
                                                 </div>}
@@ -595,7 +596,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
                                                             <IconButton onClick={handleSaveAmountClick}>
-                                                                <CheckCircleIcon />
+                                                                <CheckCircleIcon style={{ color: 'white' }} />
                                                             </IconButton>
                                                         </InputAdornment>
                                                     }}
@@ -605,7 +606,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                         </>}
                                 </TableRow>
                                 <TableRow key={'taxRate'}>
-                                    <TableCell component="th" scope="row">
+                                    <TableCell component="th" scope="row" style={{ color: 'white' }}>
                                         Tax Rate
                         </TableCell>{!edit.taxRate
                                         ? <>
@@ -613,12 +614,12 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align='right'>
                                             </TableCell>
-                                            <TableCell align="right">{currentTaxRate * 100}%</TableCell>
+                                            <TableCell align="right" style={{ color: 'white' }}>{currentTaxRate * 100}%</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
                                                     <EditIcon onClick={(e) => {
                                                         editClick('taxRate')
-                                                    }} />
+                                                    }} style={{ color: 'white' }} />
                                                 </div>}
 
                                             </TableCell>
@@ -627,6 +628,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                         <>
                                             <TableCell align="right" colSpan={4}>
                                                 <TextField
+                                                    style={{ color: 'white' }}
                                                     type='number'
                                                     id="edit-taxRate"
                                                     value={taxRateInput}
@@ -634,7 +636,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                                     InputProps={{
                                                         endAdornment: <InputAdornment>
                                                             <IconButton onClick={handleSaveAmountClick}>
-                                                                <CheckCircleIcon />
+                                                                <CheckCircleIcon style={{ color: 'white' }} />
                                                             </IconButton>
                                                         </InputAdornment>
                                                     }}
@@ -644,19 +646,19 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                         </>}
                                 </TableRow>
                                 <TableRow key={'afterTaxAmount'}>
-                                    <TableCell component="th" scope="row">
+                                    <TableCell component="th" scope="row" style={{ color: 'white' }}>
                                         Amount After Tax
                         </TableCell>
                                     <TableCell align='right'>
                                     </TableCell>
                                     <TableCell align='right'>
                                     </TableCell>
-                                    <TableCell align="right">${currentAfterTaxAmount}</TableCell>
+                                    <TableCell align="right" style={{ color: 'white' }}>${currentAfterTaxAmount}</TableCell>
                                     <TableCell align="right"></TableCell>
 
                                 </TableRow>
                                 <TableRow key={'startDateDisplay'}>
-                                    <TableCell component="th" scope="row">
+                                    <TableCell component="th" scope="row" style={{ color: 'white' }}>
                                         Start Date
                         </TableCell>
                                     {!edit.startDate
@@ -665,12 +667,12 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align='right'>
                                             </TableCell>
-                                            <TableCell align="right">{currentStartDateDisplay}</TableCell>
+                                            <TableCell align="right" style={{ color: 'white' }}>{currentStartDateDisplay}</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
                                                     <EditIcon onClick={(e) => {
                                                         editClick('startDate')
-                                                    }} />
+                                                    }} style={{ color: 'white' }} />
                                                 </div>}
 
                                             </TableCell>
@@ -698,7 +700,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                         </>}
                                 </TableRow>
                                 <TableRow key={'endDateDisplay'}>
-                                    <TableCell component="th" scope="row">
+                                    <TableCell component="th" scope="row" style={{ color: 'white' }}>
                                         End Date
                         </TableCell>
                                     {!edit.endDate
@@ -707,12 +709,12 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                             </TableCell>
                                             <TableCell align='right'>
                                             </TableCell>
-                                            <TableCell align="right">{currentEndDateDisplay}</TableCell>
+                                            <TableCell align="right" style={{ color: 'white' }}>{currentEndDateDisplay}</TableCell>
                                             <TableCell align="right">
                                                 {checked && <div className='edit-icon'>
                                                     <EditIcon onClick={(e) => {
                                                         editClick('endDate')
-                                                    }} />
+                                                    }} style={{ color: 'white' }} />
                                                 </div>}
 
                                             </TableCell>

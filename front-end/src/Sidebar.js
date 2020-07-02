@@ -21,8 +21,9 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
     },
     headings: {
-        padding: 5
-    }
+        padding: 5,
+        color: 'white'
+    },
 }));
 
 

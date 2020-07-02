@@ -308,7 +308,10 @@ const LineChart = () => {
                     <XAxis
                         animation
                         style={{
-                            userSelect: 'none'
+                            userSelect: 'none',
+                            text: {
+                                fill: 'white'
+                            }
                         }}
                         tickLabelAngle={15}
                         tickPadding={20}
@@ -316,7 +319,10 @@ const LineChart = () => {
                     <YAxis
                         animation
                         style={{
-                            userSelect: 'none'
+                            userSelect: 'none',
+                            text: {
+                                fill: 'white'
+                            }
                         }}
                     />
                     <LineSeries

@@ -41,7 +41,7 @@ const AddSalaryNav = () => {
         <div className='add-salary-button'>
             {selectedPlan._id && !singleMode &&
                 <>
-                    <Button variant='outlined' onClick={toggleDrawer}>Add Salary</Button>
+                    <Button variant='outlined' onClick={toggleDrawer} style={{ color: 'white', border: 'solid 1px rgb(110, 211, 43)' }}>Add Salary</Button>
                     <Drawer anchor='top' open={openAddSalary} onClose={toggleDrawer}>
                         {list('top')}
                     </Drawer>

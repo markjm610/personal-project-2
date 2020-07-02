@@ -40,7 +40,7 @@ const AddExpenseNav = () => {
         <div className='add-expense-button'>
             {selectedPlan._id && !singleMode &&
                 <>
-                    <Button variant='outlined' onClick={toggleDrawer}>Add Expense</Button>
+                    <Button variant='outlined' onClick={toggleDrawer} style={{ color: 'white', border: 'solid 1px rgb(240, 119, 119)' }}>Add Expense</Button>
                     <Drawer anchor='top' open={openAddExpense} onClose={toggleDrawer}>
                         {list('top')}
                     </Drawer>

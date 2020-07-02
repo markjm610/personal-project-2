@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,20 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useAuth0 } from "./react-auth0-spa";
+import { XYPlot, LineSeries, XAxis, YAxis, Highlight, Crosshair, AreaSeries } from 'react-vis';
 
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
-      </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -45,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-        backgroundColor: 'rgb(49, 48, 48)',
+        backgroundColor: 'rgb(110, 211, 43)',
         color: 'white'
     },
 }));
@@ -54,6 +42,7 @@ const LandingPage = ({ history }) => {
     const classes = useStyles();
 
     const { isAuthenticated, loginWithRedirect } = useAuth0();
+    // const [landingPageData, setLandingPageData] = useState([])
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -61,11 +50,64 @@ const LandingPage = ({ history }) => {
         }
     }, [isAuthenticated])
 
+
+    const landingPageData = []
+
+    for (let j = 0; j < 12; j++) {
+        landingPageData.push({ x: new Date(2020, j), y: j * 1100000 / 12 })
+    }
+
+
+
+
+
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                {/* <form className={classes.form} noValidate> */}
+        <div className='landing-page'>
+            <Typography style={{ color: 'white', display: 'flex', justifyContent: 'center' }} variant='h2'>Chart Your Cash</Typography>
+
+            <div className='landing-page-graph-container'>
+                <XYPlot
+                    // dontCheckIfEmpty
+
+                    margin={{ left: 70 }}
+                    height={650}
+                    width={1000}
+                    xType='time'
+                    animation
+                >
+                    <XAxis
+                        animation
+                        style={{
+                            userSelect: 'none'
+                        }}
+                        tickLabelAngle={15}
+                        tickPadding={20}
+                    />
+                    <YAxis
+                        animation
+                        style={{
+                            userSelect: 'none'
+                        }}
+                    />
+                    <LineSeries
+                        data={landingPageData}
+                        // onNearestX={handleNearestX}
+                        color='rgb(110, 211, 43)'
+                    />
+                    {/* {crosshair.length !== 0 && <Crosshair
+                        values={crosshair}
+                    >
+                        <div className='crosshair'>
+                            <div>{crosshair[0].x.toString().slice(0, 15)}</div>
+                            <div>${crosshair[0].y.toFixed(2)}</div>
+                        </div>
+                    </Crosshair>} */}
+                </XYPlot>
+            </div>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                {/* <div className={classes.paper}> */}
+
                 {!isAuthenticated && <Button
                     type="submit"
                     fullWidth
@@ -76,12 +118,10 @@ const LandingPage = ({ history }) => {
                 >
                     Log In or Sign Up
                     </Button>}
-                {/* </form> */}
-            </div>
-            <Box mt={8}>
-                <Copyright />
-            </Box>
-        </Container>
+                {/* </div> */}
+
+            </Container >
+        </div>
     );
 }
 
