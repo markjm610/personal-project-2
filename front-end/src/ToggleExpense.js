@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     },
     tableRow: {
         width: '100%'
+    },
+    input: {
+        color: 'white'
     }
 }));
 
@@ -542,16 +545,17 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                     onChange={handleToggle}
                     checked={checked}
                     inputProps={{ 'aria-labelledby': labelId }}
-                    style={{ marginRight: 10, color: 'rgb(49, 48, 48)' }}
+                    style={{ marginRight: 10, color: 'rgb(240, 119, 119)' }}
                 />
             </div>
             <div className={classes.root} ref={drag}>
                 <ExpansionPanel
+                    style={{ backgroundColor: 'rgb(49, 48, 48)', color: 'white' }}
                     expanded={expandItem[id]}
                     onClick={clickExpansionPanel}
                 >
                     <ExpansionPanelSummary
-                        expandIcon={<ExpandMoreIcon />}
+                        expandIcon={<ExpandMoreIcon style={{ color: 'white' }} />}
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
@@ -560,7 +564,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                     <ExpansionPanelDetails onClick={e => e.stopPropagation()}>
                         <TableBody className={classes.tableBody}>
                             <TableRow key={amount} className={classes.tableRow}>
-                                <TableCell component="th" scope="row">
+                                <TableCell component="th" scope="row" style={{ color: 'white' }}>
                                     Amount
                         </TableCell>
                                 {!edit.amount
@@ -569,13 +573,13 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                         </TableCell>
                                         <TableCell align='right'>
                                         </TableCell>
-                                        <TableCell align="right">
+                                        <TableCell align="right" style={{ color: 'white' }}>
                                             ${currentAmount}
                                         </TableCell>
                                         <TableCell align="right">
                                             {checked &&
                                                 <div className='edit-icon'>
-                                                    <EditIcon onClick={() => editClick('amount')} />
+                                                    <EditIcon onClick={() => editClick('amount')} style={{ color: 'white' }} />
                                                 </div>
                                             }
 
@@ -585,6 +589,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                     <>
                                         <TableCell align="right" colSpan={4}>
                                             <TextField
+                                                style={{ color: 'white' }}
                                                 type='number'
                                                 id="edit-amount"
                                                 value={amountInput}
@@ -592,16 +597,17 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                                 InputProps={{
                                                     endAdornment: <InputAdornment>
                                                         <IconButton onClick={handleSaveAmount}>
-                                                            <CheckCircleIcon />
+                                                            <CheckCircleIcon style={{ color: 'white' }} />
                                                         </IconButton>
-                                                    </InputAdornment>
+                                                    </InputAdornment>,
+                                                    className: classes.input
                                                 }}
                                             />
                                         </TableCell>
                                     </>}
                             </TableRow>
                             <TableRow key={currentDateDisplay}>
-                                <TableCell component="th" scope="row">
+                                <TableCell component="th" scope="row" style={{ color: 'white' }}>
                                     Date
                         </TableCell>
                                 {!edit.date
@@ -610,14 +616,14 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                         </TableCell>
                                         <TableCell align='right'>
                                         </TableCell>
-                                        <TableCell align="right">
+                                        <TableCell align="right" style={{ color: 'white' }}>
                                             {currentDateDisplay}
                                         </TableCell>
 
                                         <TableCell align="right">
                                             {checked &&
                                                 <div className='edit-icon'>
-                                                    <EditIcon onClick={() => editClick('date')} />
+                                                    <EditIcon onClick={() => editClick('date')} style={{ color: 'white' }} />
                                                 </div>}
                                         </TableCell>
                                     </>
@@ -631,13 +637,13 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                                 format="MM/dd/yyyy"
                                                 value={dateInput}
                                                 InputAdornmentProps={{ position: "start" }}
-                                                // endAdornment={{}}
                                                 InputProps={{
                                                     endAdornment: <InputAdornment>
                                                         <IconButton onClick={handleSaveDate}>
-                                                            <CheckCircleIcon />
+                                                            <CheckCircleIcon style={{ color: 'white' }} />
                                                         </IconButton>
-                                                    </InputAdornment>
+                                                    </InputAdornment>,
+                                                    className: classes.input
                                                 }}
                                                 onChange={date => dateChange(date)}
                                             />
@@ -648,7 +654,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                     </>}
                             </TableRow>
                             <TableRow key={repeatingInterval}>
-                                <TableCell component="th" scope="row">
+                                <TableCell component="th" scope="row" style={{ color: 'white' }}>
                                     Repeats?
                         </TableCell>
                                 <>
@@ -656,7 +662,7 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                                     </TableCell>
                                     <TableCell align='right'>
                                     </TableCell>
-                                    <TableCell align="right">{repeatingInterval ? repeatingInterval : 'No'}</TableCell>
+                                    <TableCell align="right" style={{ color: 'white' }}>{repeatingInterval ? repeatingInterval : 'No'}</TableCell>
                                     <TableCell align="right">
                                     </TableCell>
                                 </>
