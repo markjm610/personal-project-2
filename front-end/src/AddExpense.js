@@ -43,9 +43,31 @@ const AddExpense = () => {
     const [dateInput, setDateInput] = useState(dateInputDefault)
     const [repeatingInterval, setRepeatingInterval] = useState(null)
     const [checkedRepeat, setCheckedRepeat] = useState(false)
+    const [amountError, setAmountError] = useState(false)
+    const [descriptionError, setDescriptionError] = useState(false)
+
 
     const addExpenseSubmit = async (e) => {
         e.preventDefault()
+
+
+        if (!amount) {
+            setAmountError(true)
+        }
+
+        if (!description) {
+            setDescriptionError(true)
+
+        }
+
+
+        if (!amount || !description) {
+            return
+        }
+
+
+
+
         setOpenAddExpense(false)
         const res = await fetch(`${apiBaseUrl}/expenses`, {
             method: 'POST',
@@ -76,6 +98,9 @@ const AddExpense = () => {
 
     const descriptionChange = (e) => {
         setDescription(e.target.value)
+        if (descriptionError) {
+            setDescriptionError(false)
+        }
     }
 
     const amountChange = (e) => {
@@ -84,6 +109,9 @@ const AddExpense = () => {
         setAmount(amountFloat)
         setAmountInput(e.target.value)
 
+        if (amountError) {
+            setAmountError(false)
+        }
 
     }
 
@@ -111,9 +139,9 @@ const AddExpense = () => {
 
     return (
         <>
-            <Typography variant='h6'>Add Expense</Typography>
+            <Typography variant='h6' style={{ marginLeft: '5px' }}>Add Expense</Typography>
             <form className={classes.root} noValidate autoComplete="off">
-                <TextField id="name" label="Description" value={description} onChange={descriptionChange} />
+                <TextField id="name" error={descriptionError} label="Description" value={description} onChange={descriptionChange} />
                 <KeyboardDatePicker
                     autoOk
                     variant="inline"
@@ -124,7 +152,7 @@ const AddExpense = () => {
                     InputAdornmentProps={{ position: "start" }}
                     onChange={date => dateChange(date)}
                 />
-                <TextField type='number' id="amount" label="Amount" value={amountInput} onChange={amountChange} />
+                <TextField error={amountError} type='number' id="amount" label="Amount" value={amountInput} onChange={amountChange} />
                 <FormControlLabel
                     control={
                         <Checkbox

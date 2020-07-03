@@ -1,6 +1,7 @@
 const express = require('express');
 const Salary = require('../models/salary');
 const Plan = require('../models/plan');
+const Expense = require('../models/expense');
 
 const router = express.Router();
 
@@ -78,6 +79,7 @@ router.get('/plans/:planId/salaries', asyncHandler(async (req, res) => {
 }))
 
 router.put('/plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) => {
+    // Toggle
     const planId = req.params.planId
     const salaryId = req.params.salaryId
     const { displayed } = req.body
@@ -85,10 +87,11 @@ router.put('/plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) =>
 
     const plan = await Plan.findById(planId)
 
-    const graphDataArr = plan.graphData
+    let graphDataArr = plan.graphData
 
     const startMilliseconds = salary.startDateMilliseconds
     const endMilliseconds = salary.endDateMilliseconds
+
 
     let firstDayIndex;
 
@@ -97,6 +100,7 @@ router.put('/plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) =>
             firstDayIndex = i
         }
     })
+
 
     const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
 
@@ -128,6 +132,43 @@ router.put('/plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) =>
     }
 
     await salary.updateOne({ displayed: displayed })
+
+    if (!displayed) {
+
+        // Have to not include currently updating salary
+        let allToggledOff = true
+        const salaries = await Salary.find({ planId })
+        const expenses = await Expense.find({ planId })
+
+        salaries.forEach(({ displayed }) => {
+            if (displayed) {
+                console.log('salary displayed')
+                allToggledOff = false
+            } else {
+                return
+            }
+        })
+
+        expenses.forEach(({ displayed }) => {
+            if (displayed) {
+                allToggledOff = false
+            } else {
+                return
+            }
+        })
+
+        if (allToggledOff) {
+
+            graphDataArr = graphDataArr.map(datapoint => {
+                return { x: datapoint.x, y: 0 }
+            })
+
+        }
+
+    }
+
+
+
     await plan.updateOne({ graphData: graphDataArr })
 
     res.json(plan)

@@ -13,7 +13,27 @@ const useStyles = makeStyles((theme) => ({
             margin: theme.spacing(1),
             width: '25ch',
         },
-    },
+        //     '& label.Mui-focused': {
+        //         color: 'white',
+        //     },
+        //     '& .MuiInput-underline:after': {
+        //         borderBottomColor: 'white',
+        //     },
+        //     '& .MuiOutlinedInput-root': {
+        //         '& fieldset': {
+        //             borderColor: 'white',
+        //         },
+        //         '&:hover fieldset': {
+        //             borderColor: 'white',
+        //         },
+        //         '&.Mui-focused fieldset': {
+        //             borderColor: 'white',
+        //         },
+        //     },
+        // },
+        // input: {
+        //     color: 'white'
+    }
 }));
 
 
@@ -37,11 +57,34 @@ const AddSalary = () => {
     const [endDate, setEndDate] = useState(endDateDefault)
     const [startDateInput, setStartDateInput] = useState(startDateInputDefault)
     const [endDateInput, setEndDateInput] = useState(endDateInputDefault)
+    const [amountPerYearError, setAmountPerYearError] = useState(false)
+    const [nameError, setNameError] = useState(false)
+    const [taxRateError, setTaxRateError] = useState(false)
+
 
     const classes = useStyles();
 
     const addSalarySubmit = async (e) => {
         e.preventDefault()
+
+        if (!amountPerYear) {
+            setAmountPerYearError(true)
+        }
+
+        if (!name) {
+            setNameError(true)
+
+        }
+
+        if (!taxRate) {
+            setTaxRateError(true)
+
+        }
+
+        if (!amountPerYear || !name || !taxRate) {
+            return
+        }
+
         setOpenAddSalary(false)
         const res = await fetch(`${apiBaseUrl}/salaries`, {
             method: 'POST',
@@ -71,6 +114,9 @@ const AddSalary = () => {
 
     const nameChange = (e) => {
         setName(e.target.value)
+        if (nameError) {
+            setNameError(false)
+        }
     }
 
     const amountPerYearChange = (e) => {
@@ -79,11 +125,13 @@ const AddSalary = () => {
         setAmountPerYear(amountPerYearFloat)
         setAmountPerYearInput(e.target.value)
         if (taxRate && e.target.value) {
-            console.log(amountPerYear)
-            console.log(taxRate)
             setAfterTaxAmount(amountPerYearFloat - amountPerYearFloat * taxRate)
         } else {
             setAfterTaxAmount('')
+        }
+
+        if (amountPerYearError) {
+            setAmountPerYearError(false)
         }
     }
 
@@ -97,6 +145,9 @@ const AddSalary = () => {
             setAfterTaxAmount('')
         }
 
+        if (taxRateError) {
+            setTaxRateError(false)
+        }
     }
 
     const startDateChange = date => {
@@ -122,14 +173,48 @@ const AddSalary = () => {
 
     return (
         <>
-            <Typography variant='h6'>Add Salary</Typography>
+            <Typography variant='h6' style={{ marginLeft: '5px' }}>Add Salary</Typography>
             <form className={classes.root} noValidate autoComplete="off">
-                <TextField id="name" label="Name" value={name} onChange={nameChange} />
-                <TextField type='number' id="amount-per-year" label="Amount Per Year" value={amountPerYearInput} onChange={amountPerYearChange} />
-                <TextField type='number' id="tax" label="Tax Rate" value={taxRateInput} onChange={taxChange} />
-                <TextField type='number' id="after-tax-amount" label="Amount After Taxes" value={afterTaxAmount} />
+                <TextField
+                    error={nameError}
+                    id="name"
+                    label="Name"
+                    value={name}
+                    onChange={nameChange}
+                    InputProps={{
+                        className: classes.input
+                    }} />
+                <TextField
+                    error={amountPerYearError}
+                    InputProps={{
+                        className: classes.input
+                    }}
+                    type='number'
+                    id="amount-per-year"
+                    label="Amount Per Year"
+                    value={amountPerYearInput}
+                    onChange={amountPerYearChange} />
+                <TextField
+                    error={taxRateError}
+                    InputProps={{
+                        className: classes.input
+                    }}
+                    type='number'
+                    id="tax"
+                    label="Tax Rate"
+                    value={taxRateInput}
+                    onChange={taxChange} />
+                <TextField
+                    InputProps={{
+                        className: classes.input
+                    }}
+                    type='number'
+                    id="after-tax-amount"
+                    label="Amount After Taxes"
+                    value={afterTaxAmount} />
                 {/* <TextField type='date' id="start-date" value={startDateInput} onChange={startDateChange} /> */}
                 <KeyboardDatePicker
+                    required
                     autoOk
                     variant="inline"
                     inputVariant="outlined"
@@ -140,6 +225,7 @@ const AddSalary = () => {
                     onChange={date => startDateChange(date)}
                 />
                 <KeyboardDatePicker
+                    required
                     autoOk
                     variant="inline"
                     inputVariant="outlined"

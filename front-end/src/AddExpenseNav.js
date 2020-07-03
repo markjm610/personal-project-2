@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 const useStyles = makeStyles({
     list: {
         width: 'auto',
+        backgroundColor: 'lightgray'
     },
     fullList: {
         width: 'auto',

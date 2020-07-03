@@ -78,7 +78,10 @@ const LandingPage = ({ history }) => {
                     <XAxis
                         animation
                         style={{
-                            userSelect: 'none'
+                            userSelect: 'none',
+                            text: {
+                                fill: 'white'
+                            }
                         }}
                         tickLabelAngle={15}
                         tickPadding={20}
@@ -86,7 +89,10 @@ const LandingPage = ({ history }) => {
                     <YAxis
                         animation
                         style={{
-                            userSelect: 'none'
+                            userSelect: 'none',
+                            text: {
+                                fill: 'white'
+                            }
                         }}
                     />
                     <LineSeries

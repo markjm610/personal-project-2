@@ -21,7 +21,7 @@ router.post('/plans', asyncHandler(async (req, res) => {
     const startMonth = startDate[1]
     const startDay = startDate[2]
 
-    for (let i = 0; i < days; i++) {
+    for (let i = 0; i <= days; i++) {
 
         graphData.push({
             x: new Date(startYear, startMonth, i + startDay), y: 0

@@ -495,15 +495,6 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
     }
 
-    // const [currentAmountPerYear, setCurrentAmountPerYear] = useState(amountPerYear)
-    // const [amountPerYearInput, setAmountPerYearInput] = useState(amountPerYear.toString())
-    // const [currentTaxRate, setCurrentTaxRate] = useState(taxRate)
-    // const [taxRateInput, setTaxRateInput] = useState((taxRate * 100).toString())
-    // const [currentAfterTaxAmount, setCurrentAfterTaxAmount] = useState(afterTaxAmount)
-    // const [currentStartDateArr, setCurrentStartDateArr] = useState(startDate)
-    // const [currentEndDateArr, setCurrentEndDateArr] = useState(endDate)
-    // const [startDateInput, setStartDateInput] = useState(startDateObj)
-    // const [endDateInput, setEndDateInput] = useState(endDateObj)
 
 
     const [{ isDragging }, drag] = useDrag({

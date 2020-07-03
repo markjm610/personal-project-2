@@ -48,7 +48,8 @@
 
 body {
     margin: 0px;
-    background-color: rgb(49, 48, 48)
+    background-color: rgb(49, 48, 48);
+   /* color: lightgray */
 }
 
 .app-bar-div {

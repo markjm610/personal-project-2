@@ -13,6 +13,7 @@ import { IconButton } from '@material-ui/core';
 const useStyles = makeStyles({
     list: {
         width: 'auto',
+        backgroundColor: 'lightgray'
     },
     fullList: {
         width: 'auto',
@@ -42,7 +43,7 @@ const NewPlanNav = () => {
     );
 
     return (
-        <div>
+        <div style={{ marginBottom: '5px' }}>
             <IconButton color='inherit' onClick={toggleDrawer}><AddCircleOutlineIcon /></IconButton>
             <Drawer anchor='top' open={openNewPlan} onClose={toggleDrawer}>
                 {list('top')}

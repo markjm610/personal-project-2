@@ -11,6 +11,7 @@ import { ItemTypes } from './ItemTypes';
 import { useDrag, useDrop } from 'react-dnd';
 import apiBaseUrl from './config';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -275,6 +276,12 @@ const LineChart = () => {
         }),
     })
 
+    let graphData = selectedPlan.graphData
+
+    graphData = graphData.map(datapoint => {
+        return { x: datapoint.x, y: parseFloat(datapoint.y.toFixed(2)) }
+    })
+
     return (
         <div className='graph-container'>
             <div className='chart-drop-area' ref={drop}>
@@ -326,22 +333,22 @@ const LineChart = () => {
                         }}
                     />
                     <LineSeries
-                        data={selectedPlan.graphData}
+                        data={graphData}
                         onNearestX={handleNearestX}
                         color='rgb(110, 211, 43)'
                     />
                     <Highlight
-                        onBrush={() => {
-                            // console.log('on brush')
-                            // if (brushCounter < 1) {
-                            //     setBrushCounter(brushCounter + 1)
-                            // } else {
-                            //     console.log('disable layer')
-                            //     setDisableLayer(true)
-                            // }
+                        // onBrush={() => {
+                        //     // console.log('on brush')
+                        //     // if (brushCounter < 1) {
+                        //     //     setBrushCounter(brushCounter + 1)
+                        //     // } else {
+                        //     //     console.log('disable layer')
+                        //     //     setDisableLayer(true)
+                        //     // }
 
 
-                        }}
+                        // }}
                         onBrushEnd={area => {
                             // setBrushCounter(0)
                             if (area) {
@@ -354,8 +361,8 @@ const LineChart = () => {
                         values={crosshair}
                     >
                         <div className='crosshair'>
-                            <div>{crosshair[0].x.toString().slice(0, 15)}</div>
-                            <div>${crosshair[0].y.toFixed(2)}</div>
+                            <Typography>{crosshair[0].x.toString().slice(0, 15)}</Typography>
+                            <Typography>${crosshair[0].y.toFixed(2)}</Typography>
                         </div>
                     </Crosshair>}
                 </XYPlot>}
