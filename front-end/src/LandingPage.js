@@ -100,14 +100,6 @@ const LandingPage = ({ history }) => {
                         // onNearestX={handleNearestX}
                         color='rgb(110, 211, 43)'
                     />
-                    {/* {crosshair.length !== 0 && <Crosshair
-                        values={crosshair}
-                    >
-                        <div className='crosshair'>
-                            <div>{crosshair[0].x.toString().slice(0, 15)}</div>
-                            <div>${crosshair[0].y.toFixed(2)}</div>
-                        </div>
-                    </Crosshair>} */}
                 </XYPlot>
             </div>
             <Container component="main" maxWidth="xs">
@@ -122,7 +114,7 @@ const LandingPage = ({ history }) => {
                     className={classes.submit}
                     onClick={() => loginWithRedirect({})}
                 >
-                    Log In or Sign Up
+                    Continue
                     </Button>}
                 {/* </div> */}
 
