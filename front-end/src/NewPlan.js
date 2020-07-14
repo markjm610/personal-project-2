@@ -38,6 +38,11 @@ const NewPlan = () => {
 
 
     const newPlanSubmit = async () => {
+
+        if (dateError) {
+            return
+        }
+
         setOpenNewPlan(false)
         const res = await fetch(`${apiBaseUrl}/plans`, {
             method: 'POST',
@@ -66,12 +71,27 @@ const NewPlan = () => {
         setStartDateInput(date)
         if (date.c) {
 
+
+
             if (endDate[0] - date.c.year > 30) {
                 setDateError('plan too long')
             } else if (endDate[0] - date.c.year === 30 && date.c.month - 1 - endDate[1] < 0) {
                 setDateError('plan too long')
             } else if (endDate[0] - date.c.year === 30 && date.c.month - 1 - endDate[1] === 0 && date.c.day - endDate[2] < 0) {
                 setDateError('plan too long')
+            } else {
+                if (dateError === 'plan too long') {
+                    setDateError(null)
+                }
+            }
+            const startMilliseconds = new Date(date.c.year, date.c.month - 1, date.c.day).getTime()
+            const endMilliseconds = new Date(endDate[0], endDate[1], endDate[2])
+            if (startMilliseconds > endMilliseconds) {
+                setDateError('start after end')
+            } else {
+                if (dateError === 'start after end') {
+                    setDateError(null)
+                }
             }
 
             setStartDate([date.c.year, date.c.month - 1, date.c.day])
@@ -90,8 +110,21 @@ const NewPlan = () => {
                 setDateError('plan too long')
             } else if (date.c.year - startDate[0] === 30 && date.c.month - 1 - startDate[1] === 0 && date.c.day - startDate[2] > 0) {
                 setDateError('plan too long')
+            } else {
+                if (dateError === 'plan too long') {
+                    setDateError(null)
+                }
             }
 
+            const startMilliseconds = new Date(startDate[0], startDate[1], startDate[2])
+            const endMilliseconds = new Date(date.c.year, date.c.month - 1, date.c.day).getTime()
+            if (startMilliseconds > endMilliseconds) {
+                setDateError('start after end')
+            } else {
+                if (dateError === 'start after end') {
+                    setDateError(null)
+                }
+            }
 
             setEndDate([date.c.year, date.c.month - 1, date.c.day])
         }
@@ -102,7 +135,9 @@ const NewPlan = () => {
             <Typography variant='h6'>New Plan</Typography>
             <form className={classes.root} noValidate autoComplete="off">
                 <TextField id="name" label="Name" value={name} onChange={nameChange} />
+
                 <KeyboardDatePicker
+                    error={!!dateError}
                     autoOk
                     variant="inline"
                     inputVariant="outlined"
@@ -111,8 +146,14 @@ const NewPlan = () => {
                     value={startDateInput}
                     InputAdornmentProps={{ position: "start" }}
                     onChange={date => startDateChange(date)}
+                    helperText={
+                        dateError === 'plan too long' && 'Maximum length is 30 years'
+                        || dateError === 'start after end' && 'Start date must be before end date'
+                    }
                 />
+
                 <KeyboardDatePicker
+                    error={!!dateError}
                     autoOk
                     variant="inline"
                     inputVariant="outlined"
@@ -121,6 +162,10 @@ const NewPlan = () => {
                     value={endDateInput}
                     InputAdornmentProps={{ position: "start" }}
                     onChange={date => endDateChange(date)}
+                    helperText={
+                        dateError === 'plan too long' && 'Maximum length is 30 years'
+                        || dateError === 'start after end' && 'Start date must be before end date'
+                    }
                 />
                 <Button variant="contained" onClick={newPlanSubmit}>Submit</Button>
             </form>
