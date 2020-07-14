@@ -34,6 +34,8 @@ const NewPlan = () => {
     const [endDate, setEndDate] = useState(newDateArr)
     const [startDateInput, setStartDateInput] = useState(new Date())
     const [endDateInput, setEndDateInput] = useState(new Date())
+    const [dateError, setDateError] = useState(null)
+
 
     const newPlanSubmit = async () => {
         setOpenNewPlan(false)
@@ -60,10 +62,20 @@ const NewPlan = () => {
     }
 
     const startDateChange = date => {
-        setStartDateInput(date)
 
+        setStartDateInput(date)
         if (date.c) {
+
+            if (endDate[0] - date.c.year > 30) {
+                setDateError('plan too long')
+            } else if (endDate[0] - date.c.year === 30 && date.c.month - 1 - endDate[1] < 0) {
+                setDateError('plan too long')
+            } else if (endDate[0] - date.c.year === 30 && date.c.month - 1 - endDate[1] === 0 && date.c.day - endDate[2] < 0) {
+                setDateError('plan too long')
+            }
+
             setStartDate([date.c.year, date.c.month - 1, date.c.day])
+
         }
     }
 
@@ -71,6 +83,16 @@ const NewPlan = () => {
         setEndDateInput(date)
 
         if (date.c) {
+
+            if (date.c.year - startDate[0] > 30) {
+                setDateError('plan too long')
+            } else if (date.c.year - startDate[0] === 30 && date.c.month - 1 - startDate[1] > 0) {
+                setDateError('plan too long')
+            } else if (date.c.year - startDate[0] === 30 && date.c.month - 1 - startDate[1] === 0 && date.c.day - startDate[2] > 0) {
+                setDateError('plan too long')
+            }
+
+
             setEndDate([date.c.year, date.c.month - 1, date.c.day])
         }
     }
