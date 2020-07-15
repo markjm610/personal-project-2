@@ -34,12 +34,21 @@ const NewPlan = () => {
     const [endDate, setEndDate] = useState(newDateArr)
     const [startDateInput, setStartDateInput] = useState(new Date())
     const [endDateInput, setEndDateInput] = useState(new Date())
-    const [dateError, setDateError] = useState(null)
-
+    const [dateError, setDateError] = useState(false)
+    const [nameError, setNameError] = useState(false)
 
     const newPlanSubmit = async () => {
 
         if (dateError) {
+            return
+        }
+
+        if (!name) {
+            setNameError(true)
+        }
+
+        if (new Date(startDate[0], startDate[1], startDate[2]).getTime() === new Date(endDate[0], endDate[1], endDate[2]).getTime()) {
+            setDateError('start date === end date')
             return
         }
 
@@ -64,6 +73,9 @@ const NewPlan = () => {
 
     const nameChange = (e) => {
         setName(e.target.value)
+        if (nameError) {
+            setNameError(false)
+        }
     }
 
     const startDateChange = date => {
@@ -81,7 +93,7 @@ const NewPlan = () => {
                 setDateError('plan too long')
             } else {
                 if (dateError === 'plan too long') {
-                    setDateError(null)
+                    setDateError(false)
                 }
             }
             const startMilliseconds = new Date(date.c.year, date.c.month - 1, date.c.day).getTime()
@@ -90,10 +102,14 @@ const NewPlan = () => {
                 setDateError('start after end')
             } else {
                 if (dateError === 'start after end') {
-                    setDateError(null)
+                    setDateError(false)
                 }
             }
-
+            if (dateError === 'start date === end date') {
+                if (startMilliseconds !== endMilliseconds) {
+                    setDateError(false)
+                }
+            }
             setStartDate([date.c.year, date.c.month - 1, date.c.day])
 
         }
@@ -112,20 +128,26 @@ const NewPlan = () => {
                 setDateError('plan too long')
             } else {
                 if (dateError === 'plan too long') {
-                    setDateError(null)
+                    setDateError(false)
                 }
             }
 
             const startMilliseconds = new Date(startDate[0], startDate[1], startDate[2])
             const endMilliseconds = new Date(date.c.year, date.c.month - 1, date.c.day).getTime()
+
             if (startMilliseconds > endMilliseconds) {
                 setDateError('start after end')
             } else {
                 if (dateError === 'start after end') {
-                    setDateError(null)
+                    setDateError(false)
                 }
             }
 
+            if (dateError === 'start date === end date') {
+                if (startMilliseconds !== endMilliseconds) {
+                    setDateError(false)
+                }
+            }
             setEndDate([date.c.year, date.c.month - 1, date.c.day])
         }
     }
@@ -134,7 +156,15 @@ const NewPlan = () => {
         <>
             <Typography variant='h6'>New Plan</Typography>
             <form className={classes.root} noValidate autoComplete="off">
-                <TextField id="name" label="Name" value={name} onChange={nameChange} />
+
+                <TextField
+                    error={nameError}
+                    id="name"
+                    label="Name"
+                    value={name}
+                    onChange={nameChange}
+                    helperText={nameError && 'Must enter name'}
+                />
 
                 <KeyboardDatePicker
                     error={!!dateError}
@@ -149,6 +179,7 @@ const NewPlan = () => {
                     helperText={
                         dateError === 'plan too long' && 'Maximum length is 30 years'
                         || dateError === 'start after end' && 'Start date must be before end date'
+                        || dateError === 'start date === end date' && 'Start date must be before end date'
                     }
                 />
 
@@ -165,9 +196,12 @@ const NewPlan = () => {
                     helperText={
                         dateError === 'plan too long' && 'Maximum length is 30 years'
                         || dateError === 'start after end' && 'Start date must be before end date'
+                        || dateError === 'start date === end date' && 'Start date must be before end date'
                     }
                 />
+
                 <Button variant="contained" onClick={newPlanSubmit}>Submit</Button>
+
             </form>
         </>
     );
