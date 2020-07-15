@@ -39,16 +39,19 @@ const NewPlan = () => {
 
     const newPlanSubmit = async () => {
 
-        if (dateError) {
-            return
-        }
 
         if (!name) {
             setNameError(true)
         }
 
+
         if (new Date(startDate[0], startDate[1], startDate[2]).getTime() === new Date(endDate[0], endDate[1], endDate[2]).getTime()) {
             setDateError('start date === end date')
+        }
+
+        if (!name ||
+            dateError ||
+            new Date(startDate[0], startDate[1], startDate[2]).getTime() === new Date(endDate[0], endDate[1], endDate[2]).getTime()) {
             return
         }
 
