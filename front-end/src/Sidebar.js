@@ -12,6 +12,7 @@ import Context from './Context'
 import ToggleSalary from './ToggleSalary';
 import ToggleExpense from './ToggleExpense';
 import Typography from '@material-ui/core/Typography';
+import DeletePlan from './DeletePlan';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -99,7 +100,7 @@ const Sidebar = () => {
                     repeatingInterval={repeatingInterval}
                     amount={amount} />
             })}
-            {/* </List>} */}
+            <div style={{ justifySelf: 'end' }}><DeletePlan /></div>
         </div>
     )
 }

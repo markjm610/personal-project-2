@@ -44,7 +44,6 @@ const NewPlan = () => {
             setNameError(true)
         }
 
-
         if (new Date(startDate[0], startDate[1], startDate[2]).getTime() === new Date(endDate[0], endDate[1], endDate[2]).getTime()) {
             setDateError('start date === end date')
         }
@@ -157,7 +156,7 @@ const NewPlan = () => {
 
     return (
         <>
-            <Typography variant='h6'>New Plan</Typography>
+            <Typography variant='h6' style={{ marginLeft: '5px' }}>New Plan</Typography>
             <form className={classes.root} noValidate autoComplete="off">
 
                 <TextField

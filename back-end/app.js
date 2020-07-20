@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+// const bodyParser = require('body-parser')
+
+
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false },);
@@ -14,6 +17,9 @@ app = express();
 
 app.use(express.json());
 app.use(cors({ origin: true }));
+// app.use(bodyParser({ limit: '50mb' }))
+
+
 
 const usersRouter = require('./routes/users');
 const plansRouter = require('./routes/plans');

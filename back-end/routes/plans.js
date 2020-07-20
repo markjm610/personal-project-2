@@ -155,7 +155,14 @@ router.get('/plans/:planId/items', asyncHandler(async (req, res) => {
 
 }))
 
+router.delete('/plans/:planId', asyncHandler(async (req, res) => {
+    const planId = req.params.planId
 
+    await Plan.findByIdAndDelete(planId)
+
+    res.json('deleted')
+
+}))
 
 
 module.exports = router;

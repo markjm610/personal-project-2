@@ -142,7 +142,6 @@ router.put('/plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) =>
 
         salaries.forEach(({ displayed }) => {
             if (displayed) {
-                console.log('salary displayed')
                 allToggledOff = false
             } else {
                 return
@@ -178,21 +177,62 @@ router.put('/plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) =>
 router.patch('/plans/:planId/salaries/:salaryId/amount', asyncHandler(async (req, res) => {
     const salaryId = req.params.salaryId
     const planId = req.params.planId
-    const { amountPerYear, taxRate, afterTaxAmount, graphData } = req.body
+    const { amountPerYear, taxRate, afterTaxAmount } = req.body
 
-    const realGraphData = graphData.map(({ x, y }) => {
-        return { x: new Date(x), y }
-    })
+    const plan = await Plan.findById(planId)
 
-    await Salary.findByIdAndUpdate(salaryId, {
+    const salary = await Salary.findByIdAndUpdate(salaryId, {
         amountPerYear,
         taxRate,
         afterTaxAmount
     })
 
-    await Plan.findByIdAndUpdate(planId, { graphData: realGraphData })
+    let graphDataArr = plan.graphData
 
-    res.json('saved')
+    const startMilliseconds = salary.startDateMilliseconds
+    const endMilliseconds = salary.endDateMilliseconds
+
+
+    let firstDayIndex;
+
+    graphDataArr.forEach((datapoint, i) => {
+        if (datapoint.x.getTime() === startMilliseconds) {
+            firstDayIndex = i
+        }
+    })
+
+
+    const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+
+    let daysPassed = 0
+
+    for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+        if (i < firstDayIndex + dayDifference) {
+            daysPassed++
+            const amountToAdd = salary.afterTaxAmount / 365 * daysPassed
+            graphDataArr[i].y -= amountToAdd
+        } else {
+            graphDataArr[i].y -= salary.afterTaxAmount / 365 * daysPassed
+        }
+    }
+
+    daysPassed = 0
+
+    for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+        if (i < firstDayIndex + dayDifference) {
+            daysPassed++
+            const amountToAdd = afterTaxAmount / 365 * daysPassed
+            graphDataArr[i].y += amountToAdd
+        } else {
+            graphDataArr[i].y += afterTaxAmount / 365 * daysPassed
+        }
+    }
+
+    await plan.updateOne({ graphData: graphDataArr })
+
+    res.json(plan)
 
 }))
 
@@ -201,25 +241,87 @@ router.patch('/plans/:planId/salaries/:salaryId/amount', asyncHandler(async (req
 router.patch('/plans/:planId/salaries/:salaryId/date', asyncHandler(async (req, res) => {
     const salaryId = req.params.salaryId
     const planId = req.params.planId
-    const { startDate, endDate, graphData } = req.body
+    const { startDate, endDate } = req.body
 
     const newStartMilliseconds = new Date(startDate[0], startDate[1], startDate[2]).getTime()
     const newEndMilliseconds = new Date(endDate[0], endDate[1], endDate[2]).getTime()
 
-    await Salary.findByIdAndUpdate(salaryId, {
+    const salary = await Salary.findByIdAndUpdate(salaryId, {
         startDate,
         endDate,
         startDateMilliseconds: newStartMilliseconds,
         endDateMilliseconds: newEndMilliseconds
     })
 
-    const realGraphData = graphData.map(({ x, y }) => {
-        return { x: new Date(x), y }
+    const plan = await Plan.findById(planId)
+
+    const graphDataArr = plan.graphData
+
+    let firstDayIndex;
+
+    graphDataArr.forEach((datapoint, i) => {
+        if (datapoint.x.getTime() === salary.startDateMilliseconds) {
+            firstDayIndex = i
+        }
     })
 
-    await Plan.findById(planId, { graphData: realGraphData })
+    const dayDifference = (salary.endDateMilliseconds - salary.startDateMilliseconds) / (1000 * 60 * 60 * 24)
 
-    res.json('saved')
+    let daysPassed = 0
+
+    for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+        if (i < firstDayIndex + dayDifference) {
+
+            daysPassed++
+
+            const amountToAdd = salary.afterTaxAmount / 365 * daysPassed
+
+            graphDataArr[i].y -= amountToAdd
+
+
+        } else {
+
+            graphDataArr[i].y -= salary.afterTaxAmount / 365 * daysPassed
+
+        }
+
+
+    }
+
+
+
+    const newDayDifference = (newEndMilliseconds - newStartMilliseconds) / (1000 * 60 * 60 * 24)
+
+    let newFirstDayIndex;
+
+    graphDataArr.forEach((datapoint, i) => {
+        if (datapoint.x.getTime() === newStartMilliseconds) {
+            newFirstDayIndex = i
+        }
+    })
+
+    let newDaysPassed = 0
+
+
+    for (let i = newFirstDayIndex; i < graphDataArr.length; i++) {
+
+        if (i < newFirstDayIndex + newDayDifference) {
+
+            newDaysPassed++
+
+            const amountToAdd = salary.afterTaxAmount / 365 * newDaysPassed
+
+            graphDataArr[i].y += amountToAdd
+        } else {
+
+            graphDataArr[i].y += salary.afterTaxAmount / 365 * newDaysPassed
+        }
+    }
+
+    await plan.updateOne({ graphData: graphDataArr })
+
+    res.json(plan)
 
 }))
 

@@ -10,16 +10,18 @@ import Sidebar from './Sidebar';
 import { useAuth0 } from "./react-auth0-spa";
 
 
-const MainPage = () => {
+const MainPage = ({ history }) => {
 
-    const { setLastDrawLocation, currentUserPlans, setCurrentUserPlans, currentUser, expandItem, setExpandItem } = useContext(Context)
+    const { setSelectedPlan, setHistory, currentUserPlans, setCurrentUserPlans, currentUser, expandItem, setExpandItem } = useContext(Context)
     const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
+    useEffect(() => {
+        setHistory(history)
+    }, [])
 
     useEffect(() => {
         if (currentUser) {
-            // let salaries;
-            // let expenses;
+
             let itemsObj = {}
             const getItems = async (planId) => {
                 const res = await fetch(`${apiBaseUrl}/plans/${planId}/items`)
@@ -34,14 +36,7 @@ const MainPage = () => {
                 })
 
                 setExpandItem(itemsObj)
-                // setSavedItems({ salaries: salaries, expenses: expenses })
 
-                // savedItems.salaries = salaries
-                // savedItems.expenses = expenses
-                // console.log(items)
-                // expenses.forEach(expense => {
-                //     setExpandItem({ ...expandItem, [expense._id]: false })
-                // })
             }
 
             const getPlans = async () => {
@@ -52,8 +47,7 @@ const MainPage = () => {
 
                 plans.forEach(async (plan) => {
                     await getItems(plan._id)
-                    // plan.salaries = salaries
-                    // plan.expenses = expenses
+
 
                 })
 
@@ -65,6 +59,26 @@ const MainPage = () => {
         }
 
     }, [currentUser])
+
+    useEffect(() => {
+        if (currentUserPlans.length) {
+            async function getFirstPlan() {
+
+                const res = await fetch(`${apiBaseUrl}/plans/${currentUserPlans[0]._id}`)
+                const plan = await res.json()
+
+
+                const dateObjData = plan.graphData.map(datapoint => {
+                    return { x: new Date(datapoint.x), y: datapoint.y }
+                })
+
+                plan.graphData = dateObjData
+
+                setSelectedPlan(plan)
+            }
+            getFirstPlan()
+        }
+    }, [currentUserPlans])
 
     return (
         <>

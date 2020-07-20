@@ -23,6 +23,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
+import { Tabs } from '@material-ui/core';
 
 
 const drawerWidth = 'auto';
@@ -77,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
     toolbar: {
         display: 'flex',
         justifyContent: 'center'
+    },
+    indicator: {
+        backgroundColor: 'white'
     }
 }));
 
@@ -88,7 +92,7 @@ const TopBar = () => {
     const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
-
+    const [selectedTab, setSelectedTab] = useState(0)
 
     const handleDrawerOpen = () => {
         setDrawerOpen(true);
@@ -104,60 +108,6 @@ const TopBar = () => {
 
     const [savedItems, setSavedItems] = useState({})
 
-    // useEffect(() => {
-    //     if (currentUser) {
-    //         // let salaries;
-    //         // let expenses;
-    //         let itemsObj = {}
-    //         const getItems = async (planId) => {
-    //             const res = await fetch(`${apiBaseUrl}/plans/${planId}/items`)
-    //             const items = await res.json()
-    //             const salaries = [...items.salaries]
-    //             const expenses = [...items.expenses]
-    //             salaries.forEach(salary => {
-    //                 itemsObj[salary._id] = false
-    //             })
-    //             expenses.forEach(expense => {
-    //                 itemsObj[expense._id] = false
-    //             })
-
-    //             setExpandItem(itemsObj)
-    //             // setSavedItems({ salaries: salaries, expenses: expenses })
-
-    //             // savedItems.salaries = salaries
-    //             // savedItems.expenses = expenses
-    //             // console.log(items)
-    //             // expenses.forEach(expense => {
-    //             //     setExpandItem({ ...expandItem, [expense._id]: false })
-    //             // })
-    //         }
-
-    //         const getPlans = async () => {
-    //             const res = await fetch(`${apiBaseUrl}/users/${currentUser._id}/plans`)
-
-    //             const plans = await res.json()
-
-
-    //             plans.forEach(async (plan) => {
-    //                 await getItems(plan._id)
-    //                 // plan.salaries = salaries
-    //                 // plan.expenses = expenses
-
-    //             })
-
-    //             setCurrentUserPlans(plans)
-    //         }
-    //         getPlans()
-
-
-    //     }
-
-    // }, [currentUser])
-
-
-
-
-
 
     return (
         <div className={classes.root}>
@@ -172,10 +122,25 @@ const TopBar = () => {
                     </Typography>
                         </div>
                         <div className='plan-nav'>
-                            {currentUserPlans.map(plan => {
-                                return <PlanNav key={plan._id} id={plan._id} name={plan.name} />
-                            })}
-
+                            <Tabs
+                                variant='scrollable'
+                                value={selectedTab}
+                                classes={{
+                                    indicator: classes.indicator
+                                }}
+                            >
+                                {currentUserPlans.map((plan, i) => {
+                                    return (
+                                        <PlanNav
+                                            key={plan._id}
+                                            id={plan._id}
+                                            name={plan.name}
+                                            setSelectedTab={setSelectedTab}
+                                            i={i}
+                                        />
+                                    )
+                                })}
+                            </Tabs>
                             <div className='new-plan-nav'><NewPlanNav /></div>
                         </div>
 

@@ -451,21 +451,20 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
         const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/expenses/${id}/amount`, {
             method: 'PATCH',
             body: JSON.stringify({
-                amount: currentAmount,
-                graphData: selectedPlan.graphData
+                amount: currentAmount
             }),
             headers: {
                 "Content-Type": 'application/json',
             }
         })
         if (res.ok) {
-            // const plan = await res.json()
-            // const dateObjData = plan.graphData.map(datapoint => {
-            //     return { x: new Date(datapoint.x), y: datapoint.y }
-            // })
+            const plan = await res.json()
+            const dateObjData = plan.graphData.map(datapoint => {
+                return { x: new Date(datapoint.x), y: datapoint.y }
+            })
 
-            // plan.graphData = dateObjData
-            // setSelectedPlan(plan)
+            plan.graphData = dateObjData
+            setSelectedPlan(plan)
 
             setEdit({
                 ...edit,
@@ -480,21 +479,20 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
         const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}/expenses/${id}/date`, {
             method: 'PATCH',
             body: JSON.stringify({
-                date: currentDate,
-                graphData: selectedPlan.graphData
+                date: currentDate
             }),
             headers: {
                 "Content-Type": 'application/json',
             }
         })
         if (res.ok) {
-            // const plan = await res.json()
-            // const dateObjData = plan.graphData.map(datapoint => {
-            //     return { x: new Date(datapoint.x), y: datapoint.y }
-            // })
+            const plan = await res.json()
+            const dateObjData = plan.graphData.map(datapoint => {
+                return { x: new Date(datapoint.x), y: datapoint.y }
+            })
 
-            // plan.graphData = dateObjData
-            // setSelectedPlan(plan)
+            plan.graphData = dateObjData
+            setSelectedPlan(plan)
 
             setEdit({
                 ...edit,
@@ -562,112 +560,119 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
                         <Typography className={classes.heading}>{description}</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails onClick={e => e.stopPropagation()}>
-                        <TableBody className={classes.tableBody}>
-                            <TableRow key={amount} className={classes.tableRow}>
-                                <TableCell component="th" scope="row" style={{ color: 'white' }}>
-                                    Amount
+                        <Table>
+                            <TableBody className={classes.tableBody}>
+                                <TableRow key={amount} className={classes.tableRow}>
+                                    <TableCell component="th" scope="row" style={{ color: 'white' }}>
+                                        Amount
                         </TableCell>
-                                {!edit.amount
-                                    ? <>
-                                        <TableCell align='right'>
-                                        </TableCell>
-                                        <TableCell align='right'>
-                                        </TableCell>
-                                        <TableCell align="right" style={{ color: 'white' }}>
-                                            ${currentAmount}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {checked &&
-                                                <div className='edit-icon'>
-                                                    <EditIcon onClick={() => editClick('amount')} style={{ color: 'white' }} />
-                                                </div>
-                                            }
+                                    {!edit.amount
+                                        ? <>
+                                            <TableCell align='right'>
+                                            </TableCell>
+                                            <TableCell align='right'>
+                                            </TableCell>
+                                            <TableCell align="right" style={{ color: 'white' }}>
+                                                ${parseFloat(currentAmount).toFixed(2)}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                {checked &&
+                                                    <div className='edit-icon'>
+                                                        <EditIcon onClick={() => editClick('amount')} style={{ color: 'white' }} />
+                                                    </div>
+                                                }
 
-                                        </TableCell>
-                                    </>
-                                    :
-                                    <>
-                                        <TableCell align="right" colSpan={4}>
-                                            <TextField
-                                                style={{ color: 'white' }}
-                                                type='number'
-                                                id="edit-amount"
-                                                value={amountInput}
-                                                onChange={amountChange}
-                                                InputProps={{
-                                                    endAdornment: <InputAdornment>
-                                                        <IconButton onClick={handleSaveAmount}>
-                                                            <CheckCircleIcon style={{ color: 'white' }} />
-                                                        </IconButton>
-                                                    </InputAdornment>,
-                                                    className: classes.input
-                                                }}
-                                            />
-                                        </TableCell>
-                                    </>}
-                            </TableRow>
-                            <TableRow key={currentDateDisplay}>
-                                <TableCell component="th" scope="row" style={{ color: 'white' }}>
-                                    Date
+                                            </TableCell>
+                                        </>
+                                        :
+                                        <>
+                                            <TableCell align="right" colSpan={4}>
+                                                <TextField
+                                                    style={{ color: 'white' }}
+                                                    type='number'
+                                                    id="edit-amount"
+                                                    value={amountInput}
+                                                    onChange={amountChange}
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment>
+                                                            <IconButton onClick={handleSaveAmount}>
+                                                                <CheckCircleIcon style={{ color: 'white' }} />
+                                                            </IconButton>
+                                                        </InputAdornment>,
+                                                        className: classes.input,
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                $
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                            </TableCell>
+                                        </>}
+                                </TableRow>
+                                <TableRow key={currentDateDisplay}>
+                                    <TableCell component="th" scope="row" style={{ color: 'white' }}>
+                                        Date
                         </TableCell>
-                                {!edit.date
-                                    ? <>
-                                        <TableCell align='right'>
-                                        </TableCell>
-                                        <TableCell align='right'>
-                                        </TableCell>
-                                        <TableCell align="right" style={{ color: 'white' }}>
-                                            {currentDateDisplay}
-                                        </TableCell>
+                                    {!edit.date
+                                        ? <>
+                                            <TableCell align='right'>
+                                            </TableCell>
+                                            <TableCell align='right'>
+                                            </TableCell>
+                                            <TableCell align="right" style={{ color: 'white' }}>
+                                                {currentDateDisplay}
+                                            </TableCell>
 
-                                        <TableCell align="right">
-                                            {checked &&
-                                                <div className='edit-icon'>
-                                                    <EditIcon onClick={() => editClick('date')} style={{ color: 'white' }} />
-                                                </div>}
-                                        </TableCell>
-                                    </>
-                                    :
-                                    <>
-                                        <TableCell align="right" colSpan={4}>
-                                            <KeyboardDatePicker
-                                                autoOk
-                                                variant="inline"
-                                                inputVariant="outlined"
-                                                format="MM/dd/yyyy"
-                                                value={dateInput}
-                                                InputAdornmentProps={{ position: "start" }}
-                                                InputProps={{
-                                                    endAdornment: <InputAdornment>
-                                                        <IconButton onClick={handleSaveDate}>
-                                                            <CheckCircleIcon style={{ color: 'white' }} />
-                                                        </IconButton>
-                                                    </InputAdornment>,
-                                                    className: classes.input
-                                                }}
-                                                onChange={date => dateChange(date)}
-                                            />
-                                        </TableCell>
-                                        {/* <TableCell align="right">
+                                            <TableCell align="right">
+                                                {checked &&
+                                                    <div className='edit-icon'>
+                                                        <EditIcon onClick={() => editClick('date')} style={{ color: 'white' }} />
+                                                    </div>}
+                                            </TableCell>
+                                        </>
+                                        :
+                                        <>
+                                            <TableCell align="right" colSpan={4}>
+                                                <KeyboardDatePicker
+                                                    autoOk
+                                                    variant="inline"
+                                                    inputVariant="outlined"
+                                                    format="MM/dd/yyyy"
+                                                    value={dateInput}
+                                                    InputAdornmentProps={{ position: "start" }}
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment>
+                                                            <IconButton onClick={handleSaveDate}>
+                                                                <CheckCircleIcon style={{ color: 'white' }} />
+                                                            </IconButton>
+                                                        </InputAdornment>,
+                                                        className: classes.input
+                                                    }}
+                                                    onChange={date => dateChange(date)}
+                                                />
+                                            </TableCell>
+                                            {/* <TableCell align="right">
                                             <Button onClick={handleSaveDate}>Save</Button>
                                         </TableCell> */}
-                                    </>}
-                            </TableRow>
-                            <TableRow key={repeatingInterval}>
-                                <TableCell component="th" scope="row" style={{ color: 'white' }}>
-                                    Repeats?
+                                        </>}
+                                </TableRow>
+                                <TableRow key={repeatingInterval}>
+                                    <TableCell component="th" scope="row" style={{ color: 'white' }}>
+                                        Repeats?
                         </TableCell>
-                                <>
-                                    <TableCell align='right'>
-                                    </TableCell>
-                                    <TableCell align='right'>
-                                    </TableCell>
-                                    <TableCell align="right" style={{ color: 'white' }}>{repeatingInterval ? repeatingInterval : 'No'}</TableCell>
-                                    <TableCell align="right">
-                                    </TableCell>
-                                </>
-                            </TableRow>
-                        </TableBody>
+                                    <>
+                                        <TableCell align='right'>
+                                        </TableCell>
+                                        <TableCell align='right'>
+                                        </TableCell>
+                                        <TableCell align="right" style={{ color: 'white' }}>{repeatingInterval ? repeatingInterval : 'No'}</TableCell>
+                                        <TableCell align="right">
+                                        </TableCell>
+                                    </>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
             </div>

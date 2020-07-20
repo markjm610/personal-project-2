@@ -3,16 +3,17 @@ import { VictoryChart, VictoryLine, VictoryZoomContainer } from 'victory';
 import apiBaseUrl from './config';
 import Context from './Context';
 import Button from '@material-ui/core/Button';
+import { Tab } from '@material-ui/core';
 
 
-const PlanNav = ({ id, name }) => {
+const PlanNav = ({ id, name, setSelectedTab, i }) => {
 
-    const { graphData, setGraphData, setSelectedPlan, currentUser } = useContext(Context);
+    const { setSelectedPlan } = useContext(Context);
 
     const getPlan = async () => {
-        // await fetch(`${apiBaseUrl}/users/userId/plans`)
 
 
+        setSelectedTab(i)
 
         const res = await fetch(`${apiBaseUrl}/plans/${id}`)
         const plan = await res.json()
@@ -30,10 +31,12 @@ const PlanNav = ({ id, name }) => {
 
 
     return (
-        <>
-            <Button color="inherit" onClick={getPlan}>{name}</Button>
+        <Tab
+            onClick={getPlan}
+            label={name}
+            textColor='primary'
+        />
 
-        </>
     )
 }
 

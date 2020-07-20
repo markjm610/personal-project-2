@@ -8,10 +8,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { Typography } from '@material-ui/core';
+import { Typography, InputAdornment } from '@material-ui/core';
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
 
@@ -45,7 +44,7 @@ const AddExpense = () => {
     const [checkedRepeat, setCheckedRepeat] = useState(false)
     const [amountError, setAmountError] = useState(false)
     const [descriptionError, setDescriptionError] = useState(false)
-
+    const [negativeAmount, setNegativeAmount] = useState(false)
 
     const addExpenseSubmit = async (e) => {
         e.preventDefault()
@@ -60,8 +59,12 @@ const AddExpense = () => {
 
         }
 
+        if (negativeAmount) {
+            setAmountError(true)
+        }
 
-        if (!amount || !description) {
+
+        if (!amount || !description || negativeAmount) {
             return
         }
 
@@ -112,7 +115,12 @@ const AddExpense = () => {
         if (amountError) {
             setAmountError(false)
         }
-
+        if (amountFloat < 0) {
+            setNegativeAmount(true)
+        }
+        if (amountFloat > 0 && negativeAmount) {
+            setNegativeAmount(false)
+        }
     }
 
     const dateChange = date => {
@@ -120,6 +128,7 @@ const AddExpense = () => {
         if (date.c) {
             setDate([date.c.year, date.c.month - 1, date.c.day])
         }
+
     }
 
     const checkChange = e => {
@@ -141,7 +150,13 @@ const AddExpense = () => {
         <>
             <Typography variant='h6' style={{ marginLeft: '5px' }}>Add Expense</Typography>
             <form className={classes.root} noValidate autoComplete="off">
-                <TextField id="name" error={descriptionError} label="Description" value={description} onChange={descriptionChange} />
+                <TextField
+                    id="name"
+                    error={descriptionError}
+                    label="Description"
+                    value={description}
+                    onChange={descriptionChange}
+                />
                 <KeyboardDatePicker
                     autoOk
                     variant="inline"
@@ -152,7 +167,22 @@ const AddExpense = () => {
                     InputAdornmentProps={{ position: "start" }}
                     onChange={date => dateChange(date)}
                 />
-                <TextField error={amountError} type='number' id="amount" label="Amount" value={amountInput} onChange={amountChange} />
+                <TextField
+                    error={amountError}
+                    type='number'
+                    id="amount"
+                    label="Amount"
+                    value={amountInput}
+                    onChange={amountChange}
+                    helperText={negativeAmount && 'Amount cannot be negative'}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                $
+                            </InputAdornment>
+                        ),
+                    }}
+                />
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -179,7 +209,7 @@ const AddExpense = () => {
                             <MenuItem value={'Yearly'}>Yearly</MenuItem>
                         </Select>
                     </FormControl>
-                    // <TextField type='number' id="repeating-interval" label="How often does it repeat?" value={repeatingIntervalInput} onChange={repeatingIntervalChange} />
+
                 }
                 <Button variant="contained" onClick={addExpenseSubmit}>Submit</Button>
             </form>

@@ -4,40 +4,22 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Context from './Context';
-import { Typography } from '@material-ui/core';
+import { Typography, InputAdornment } from '@material-ui/core';
 import { KeyboardDatePicker } from "@material-ui/pickers";
-
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
             margin: theme.spacing(1),
             width: '25ch',
         },
-        //     '& label.Mui-focused': {
-        //         color: 'white',
-        //     },
-        //     '& .MuiInput-underline:after': {
-        //         borderBottomColor: 'white',
-        //     },
-        //     '& .MuiOutlinedInput-root': {
-        //         '& fieldset': {
-        //             borderColor: 'white',
-        //         },
-        //         '&:hover fieldset': {
-        //             borderColor: 'white',
-        //         },
-        //         '&.Mui-focused fieldset': {
-        //             borderColor: 'white',
-        //         },
-        //     },
-        // },
-        // input: {
-        //     color: 'white'
+
     }
 }));
 
 
 const AddSalary = () => {
+    const classes = useStyles();
 
     const { selectedPlan, setSelectedPlan, setOpenAddSalary, expandItem, setExpandItem } = useContext(Context)
 
@@ -60,9 +42,14 @@ const AddSalary = () => {
     const [amountPerYearError, setAmountPerYearError] = useState(false)
     const [nameError, setNameError] = useState(false)
     const [taxRateError, setTaxRateError] = useState(false)
+    const [negativeAmount, setNegativeAmount] = useState(false)
+    const [negativeTaxRate, setNegativeTaxRate] = useState(false)
+    const [taxRateOver100, setTaxRateOver100] = useState(false)
+    const [startAfterEnd, setStartAfterEnd] = useState(false)
+    const [startDateError, setStartDateError] = useState(false)
+    const [endDateError, setEndDateError] = useState(false)
 
 
-    const classes = useStyles();
 
     const addSalarySubmit = async (e) => {
         e.preventDefault()
@@ -80,10 +67,30 @@ const AddSalary = () => {
             setTaxRateError(true)
 
         }
+        if (negativeAmount) {
+            setAmountPerYearError(true)
 
-        if (!amountPerYear || !name || !taxRate) {
+        }
+
+        if (negativeTaxRate) {
+            setTaxRateError(true)
+
+        }
+        if (taxRateOver100) {
+            setTaxRateError(true)
+
+        }
+
+        if (startAfterEnd) {
+            setStartDateError(true)
+            setEndDateError(true)
+        }
+
+
+        if (!amountPerYear || !name || !taxRate || negativeAmount || negativeTaxRate || taxRateOver100 || startAfterEnd) {
             return
         }
+
 
         setOpenAddSalary(false)
         const res = await fetch(`${apiBaseUrl}/salaries`, {
@@ -122,10 +129,22 @@ const AddSalary = () => {
     const amountPerYearChange = (e) => {
 
         const amountPerYearFloat = parseFloat(e.target.value)
+
+        if (amountPerYearFloat < 0) {
+            setNegativeAmount(true)
+        }
+        if (amountPerYearFloat > 0 && negativeAmount) {
+            setNegativeAmount(false)
+        }
         setAmountPerYear(amountPerYearFloat)
         setAmountPerYearInput(e.target.value)
         if (taxRate && e.target.value) {
-            setAfterTaxAmount(amountPerYearFloat - amountPerYearFloat * taxRate)
+            if (taxRate < 0 || parseFloat(e.target.value) < 0 || taxRateOver100) {
+                setAfterTaxAmount('')
+            } else {
+                setAfterTaxAmount(amountPerYearFloat - amountPerYearFloat * taxRate)
+            }
+
         } else {
             setAfterTaxAmount('')
         }
@@ -138,9 +157,30 @@ const AddSalary = () => {
     const taxChange = (e) => {
         setTaxRateInput(e.target.value)
         const taxRateToDecimal = parseFloat(e.target.value) / 100
+        if (parseFloat(e.target.value) < 0) {
+            setNegativeTaxRate(true)
+        }
+        if (parseFloat(e.target.value) > 0 && negativeTaxRate) {
+            setNegativeTaxRate(false)
+        }
+        if (parseFloat(e.target.value) > 100) {
+            setTaxRateOver100(true)
+        } else {
+            if (taxRateOver100) {
+                setTaxRateOver100(false)
+            }
+        }
+
+
         setTaxRate(taxRateToDecimal)
+
         if (amountPerYear && e.target.value) {
-            setAfterTaxAmount(amountPerYear - amountPerYear * taxRateToDecimal)
+            if (amountPerYear < 0 || parseFloat(e.target.value) < 0 || parseFloat(e.target.value) > 100) {
+                setAfterTaxAmount('')
+            } else {
+                setAfterTaxAmount(amountPerYear - amountPerYear * taxRateToDecimal)
+            }
+
         } else {
             setAfterTaxAmount('')
         }
@@ -148,25 +188,55 @@ const AddSalary = () => {
         if (taxRateError) {
             setTaxRateError(false)
         }
+
     }
 
     const startDateChange = date => {
-        // console.log(typeof date.c.month)
-
         setStartDateInput(date)
+
+        if (startDateError) {
+            setStartDateError(false)
+        }
 
         if (date.c) {
             setStartDate([date.c.year, date.c.month - 1, date.c.day])
+
+            const startMilliseconds = new Date(date.c.year, date.c.month - 1, date.c.day).getTime()
+            const endMilliseconds = new Date(endDate[0], endDate[1], endDate[2])
+            if (startMilliseconds > endMilliseconds) {
+                setStartAfterEnd(true)
+            } else {
+                if (startAfterEnd) {
+                    setStartAfterEnd(false)
+                }
+            }
+
+
         }
-
-
     }
 
     const endDateChange = date => {
         setEndDateInput(date)
 
+        if (endDateError) {
+            setEndDateError(false)
+        }
+
         if (date.c) {
             setEndDate([date.c.year, date.c.month - 1, date.c.day])
+
+            const startMilliseconds = new Date(startDate[0], startDate[1], startDate[2]).getTime()
+            const endMilliseconds = new Date(date.c.year, date.c.month - 1, date.c.day)
+            if (startMilliseconds > endMilliseconds) {
+                setStartAfterEnd(true)
+            } else {
+                if (startAfterEnd) {
+                    setStartAfterEnd(false)
+                }
+            }
+
+
+
         }
 
     }
@@ -183,7 +253,9 @@ const AddSalary = () => {
                     onChange={nameChange}
                     InputProps={{
                         className: classes.input
-                    }} />
+                    }}
+
+                />
                 <TextField
                     error={amountPerYearError}
                     InputProps={{
@@ -193,7 +265,17 @@ const AddSalary = () => {
                     id="amount-per-year"
                     label="Amount Per Year"
                     value={amountPerYearInput}
-                    onChange={amountPerYearChange} />
+                    onChange={amountPerYearChange}
+                    helperText={negativeAmount && 'Amount cannot be negative'}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                $
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+
                 <TextField
                     error={taxRateError}
                     InputProps={{
@@ -203,18 +285,36 @@ const AddSalary = () => {
                     id="tax"
                     label="Tax Rate"
                     value={taxRateInput}
-                    onChange={taxChange} />
-                <TextField
+                    onChange={taxChange}
+                    helperText={negativeTaxRate && 'Tax rate cannot be negative' || taxRateOver100 && 'Invalid tax rate'}
                     InputProps={{
-                        className: classes.input
+                        endAdornment: (
+                            <InputAdornment position="start">
+                                %
+                            </InputAdornment>
+                        ),
                     }}
+                />
+
+
+                <TextField
+
                     type='number'
                     id="after-tax-amount"
                     label="Amount After Taxes"
-                    value={afterTaxAmount} />
-                {/* <TextField type='date' id="start-date" value={startDateInput} onChange={startDateChange} /> */}
+                    value={parseFloat(afterTaxAmount).toFixed(2)}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                $
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+
                 <KeyboardDatePicker
                     required
+                    error={startDateError}
                     autoOk
                     variant="inline"
                     inputVariant="outlined"
@@ -223,9 +323,13 @@ const AddSalary = () => {
                     value={startDateInput}
                     InputAdornmentProps={{ position: "start" }}
                     onChange={date => startDateChange(date)}
+                    helperText={
+                        startAfterEnd && 'Start date must be before end date'
+                    }
                 />
                 <KeyboardDatePicker
                     required
+                    error={endDateError}
                     autoOk
                     variant="inline"
                     inputVariant="outlined"
@@ -234,8 +338,12 @@ const AddSalary = () => {
                     value={endDateInput}
                     InputAdornmentProps={{ position: "start" }}
                     onChange={date => endDateChange(date)}
+                    helperText={
+                        startAfterEnd && 'Start date must be before end date'
+                    }
                 />
-                {/* <TextField type='date' id="end-date" value={endDateInput} onChange={endDateChange} /> */}
+
+
                 <Button variant="contained" onClick={addSalarySubmit}>Submit</Button>
             </form>
         </>
