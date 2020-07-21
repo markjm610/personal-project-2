@@ -44,8 +44,8 @@ const LandingPage = ({ history }) => {
 
     const landingPageData = []
 
-    for (let j = 0; j < 12; j++) {
-        landingPageData.push({ x: new Date(2020, j), y: j * 1100000 / 12 })
+    for (let i = 0; i < 12; i++) {
+        landingPageData.push({ x: new Date(2020, i), y: i * 1100000 / 12 })
     }
 
 

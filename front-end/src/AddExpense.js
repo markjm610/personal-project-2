@@ -35,6 +35,13 @@ const AddExpense = () => {
     const dateDefault = [selectedPlan.startDate[0], selectedPlan.startDate[1], selectedPlan.startDate[2]]
     const dateInputDefault = new Date(selectedPlan.startDate[0], selectedPlan.startDate[1], selectedPlan.startDate[2])
 
+
+
+    const planStartDateMilliseconds = new Date(selectedPlan.startDate[0], selectedPlan.startDate[1], selectedPlan.startDate[2]).getTime()
+    const planEndDateMilliseconds = new Date(selectedPlan.endDate[0], selectedPlan.endDate[1], selectedPlan.endDate[2]).getTime()
+
+
+
     const [description, setDescription] = useState('')
     const [amount, setAmount] = useState(null)
     const [amountInput, setAmountInput] = useState('')
@@ -45,6 +52,10 @@ const AddExpense = () => {
     const [amountError, setAmountError] = useState(false)
     const [descriptionError, setDescriptionError] = useState(false)
     const [negativeAmount, setNegativeAmount] = useState(false)
+    const [dateOutOfRange, setDateOutOfRange] = useState(false)
+    const [dateError, setDateError] = useState(false)
+    const [moreThanTwoDecimalPlaces, setMoreThanTwoDecimalPlaces] = useState(false)
+
 
     const addExpenseSubmit = async (e) => {
         e.preventDefault()
@@ -63,8 +74,15 @@ const AddExpense = () => {
             setAmountError(true)
         }
 
+        if (dateOutOfRange) {
+            setDateError(true)
+        }
 
-        if (!amount || !description || negativeAmount) {
+        if (moreThanTwoDecimalPlaces) {
+            setAmountError(true)
+        }
+
+        if (!amount || !description || negativeAmount || dateOutOfRange || moreThanTwoDecimalPlaces) {
             return
         }
 
@@ -121,12 +139,28 @@ const AddExpense = () => {
         if (amountFloat > 0 && negativeAmount) {
             setNegativeAmount(false)
         }
+        const splitOnDecimal = e.target.value.split('.')
+
+        if (splitOnDecimal[1] && splitOnDecimal[1].length > 2) {
+            setMoreThanTwoDecimalPlaces(true)
+        } else if (moreThanTwoDecimalPlaces) {
+            setMoreThanTwoDecimalPlaces(false)
+        }
     }
 
     const dateChange = date => {
         setDateInput(date)
         if (date.c) {
             setDate([date.c.year, date.c.month - 1, date.c.day])
+            const compareDate = new Date(date.c.year, date.c.month - 1, date.c.day).getTime()
+            if (compareDate < planStartDateMilliseconds || compareDate > planEndDateMilliseconds) {
+                setDateOutOfRange(true)
+            } else if (dateOutOfRange) {
+                setDateOutOfRange(false)
+                if (dateError) {
+                    setDateError(false)
+                }
+            }
         }
 
     }
@@ -158,6 +192,7 @@ const AddExpense = () => {
                     onChange={descriptionChange}
                 />
                 <KeyboardDatePicker
+                    error={dateError}
                     autoOk
                     variant="inline"
                     inputVariant="outlined"
@@ -166,6 +201,7 @@ const AddExpense = () => {
                     value={dateInput}
                     InputAdornmentProps={{ position: "start" }}
                     onChange={date => dateChange(date)}
+                    helperText={dateOutOfRange && 'Date must be during plan'}
                 />
                 <TextField
                     error={amountError}
@@ -174,7 +210,7 @@ const AddExpense = () => {
                     label="Amount"
                     value={amountInput}
                     onChange={amountChange}
-                    helperText={negativeAmount && 'Amount cannot be negative'}
+                    helperText={negativeAmount && 'Amount cannot be negative' || moreThanTwoDecimalPlaces && 'Maximum of 2 decimal places'}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">

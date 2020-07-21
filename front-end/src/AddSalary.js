@@ -48,7 +48,8 @@ const AddSalary = () => {
     const [startAfterEnd, setStartAfterEnd] = useState(false)
     const [startDateError, setStartDateError] = useState(false)
     const [endDateError, setEndDateError] = useState(false)
-
+    const [startDateOutOfRange, setStartDateOutOfRange] = useState(false)
+    const [endDateOutOfRange, setEndDateOutOfRange] = useState(false)
 
 
     const addSalarySubmit = async (e) => {
@@ -86,8 +87,25 @@ const AddSalary = () => {
             setEndDateError(true)
         }
 
+        if (startDateOutOfRange) {
+            setStartDateError(true)
+        }
 
-        if (!amountPerYear || !name || !taxRate || negativeAmount || negativeTaxRate || taxRateOver100 || startAfterEnd) {
+        if (endDateOutOfRange) {
+            setEndDateError(true)
+        }
+
+        if (
+            !amountPerYear
+            || !name
+            || !taxRate
+            || negativeAmount
+            || negativeTaxRate
+            || taxRateOver100
+            || startAfterEnd
+            || startDateOutOfRange
+            || endDateOutOfRange
+        ) {
             return
         }
 
@@ -209,9 +227,16 @@ const AddSalary = () => {
                 if (startAfterEnd) {
                     setStartAfterEnd(false)
                 }
+
+
+
             }
 
-
+            if (startMilliseconds < startDateInputDefault || startMilliseconds > endDateInputDefault) {
+                setStartDateOutOfRange(true)
+            } else if (startDateOutOfRange) {
+                setStartDateOutOfRange(false)
+            }
         }
     }
 
@@ -235,7 +260,11 @@ const AddSalary = () => {
                 }
             }
 
-
+            if (endMilliseconds < startDateInputDefault || endMilliseconds > endDateInputDefault) {
+                setEndDateOutOfRange(true)
+            } else if (endDateOutOfRange) {
+                setEndDateOutOfRange(false)
+            }
 
         }
 
@@ -324,7 +353,7 @@ const AddSalary = () => {
                     InputAdornmentProps={{ position: "start" }}
                     onChange={date => startDateChange(date)}
                     helperText={
-                        startAfterEnd && 'Start date must be before end date'
+                        startAfterEnd && 'Start date must be before end date' || startDateOutOfRange && 'Dates must be during plan'
                     }
                 />
                 <KeyboardDatePicker
@@ -339,7 +368,7 @@ const AddSalary = () => {
                     InputAdornmentProps={{ position: "start" }}
                     onChange={date => endDateChange(date)}
                     helperText={
-                        startAfterEnd && 'Start date must be before end date'
+                        startAfterEnd && 'Start date must be before end date' || endDateOutOfRange && 'Dates must be during plan'
                     }
                 />
 

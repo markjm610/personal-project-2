@@ -58,6 +58,10 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
 
     const { selectedPlan, setSelectedPlan, expandItem, setExpandItem } = useContext(Context)
 
+    const planStartDateMilliseconds = new Date(selectedPlan.startDate[0], selectedPlan.startDate[1], selectedPlan.startDate[2]).getTime()
+    const planEndDateMilliseconds = new Date(selectedPlan.endDate[0], selectedPlan.endDate[1], selectedPlan.endDate[2]).getTime()
+
+
     const [checked, setChecked] = useState(displayed)
     const [backdrop, setBackdrop] = useState(false)
     const [edit, setEdit] = useState({
@@ -527,6 +531,11 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
 
     const clickExpansionPanel = () => {
         setExpandItem({ ...expandItem, [id]: !expandItem[id] })
+        let editCopy = { ...edit }
+        for (const key in editCopy) {
+            editCopy[key] = false
+        }
+        setEdit(editCopy)
     }
 
 

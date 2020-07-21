@@ -76,31 +76,35 @@ const Sidebar = () => {
 
     return (
         <div className='sidebar-container'>
-            {salaries.length !== 0 && <Typography className={classes.headings} variant='h6'>Salaries</Typography>}
-            {salaries.map(({ _id, name, displayed, amountPerYear, afterTaxAmount, taxRate, startDate, endDate }) => {
-                return <ToggleSalary
-                    key={_id}
-                    id={_id}
-                    name={name}
-                    displayed={displayed}
-                    amountPerYear={amountPerYear}
-                    afterTaxAmount={afterTaxAmount}
-                    taxRate={taxRate}
-                    startDate={startDate}
-                    endDate={endDate} />
-            })}
-            {expenses.length !== 0 && <Typography className={classes.headings} variant='h6'>Expenses</Typography>}
-            {expenses.map(({ description, _id, displayed, date, repeatingInterval, amount }) => {
-                return <ToggleExpense
-                    key={_id}
-                    id={_id}
-                    description={description}
-                    displayed={displayed}
-                    date={date}
-                    repeatingInterval={repeatingInterval}
-                    amount={amount} />
-            })}
-            <div style={{ justifySelf: 'end' }}><DeletePlan /></div>
+            <div>
+                {salaries.length !== 0 && <Typography className={classes.headings} variant='h6'>Salaries</Typography>}
+                {salaries.map(({ _id, name, displayed, amountPerYear, afterTaxAmount, taxRate, startDate, endDate }) => {
+                    return <ToggleSalary
+                        key={_id}
+                        id={_id}
+                        name={name}
+                        displayed={displayed}
+                        amountPerYear={amountPerYear}
+                        afterTaxAmount={afterTaxAmount}
+                        taxRate={taxRate}
+                        startDate={startDate}
+                        endDate={endDate} />
+                })}
+            </div>
+            <div>
+                {expenses.length !== 0 && <Typography className={classes.headings} variant='h6'>Expenses</Typography>}
+                {expenses.map(({ description, _id, displayed, date, repeatingInterval, amount }) => {
+                    return <ToggleExpense
+                        key={_id}
+                        id={_id}
+                        description={description}
+                        displayed={displayed}
+                        date={date}
+                        repeatingInterval={repeatingInterval}
+                        amount={amount} />
+                })}
+            </div>
+            <div style={{ height: '100%', display: 'flex', alignItems: 'flex-end', marginLeft: '10px' }}><DeletePlan /></div>
         </div>
     )
 }

@@ -518,6 +518,11 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
     const clickExpansionPanel = () => {
         setExpandItem({ ...expandItem, [id]: !expandItem[id] })
+        let editCopy = { ...edit }
+        for (const key in editCopy) {
+            editCopy[key] = false
+        }
+        setEdit(editCopy)
     }
 
 
@@ -608,7 +613,8 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                                     <TableRow key={'taxRate'}>
                                         <TableCell component="th" scope="row" style={{ color: 'white' }}>
                                             Tax Rate
-                        </TableCell>{!edit.taxRate
+                        </TableCell>
+                                        {!edit.taxRate
                                             ? <>
                                                 <TableCell align='right'>
                                                 </TableCell>
