@@ -50,10 +50,16 @@ const AddSalary = () => {
     const [endDateError, setEndDateError] = useState(false)
     const [startDateOutOfRange, setStartDateOutOfRange] = useState(false)
     const [endDateOutOfRange, setEndDateOutOfRange] = useState(false)
+    const [amountPerYearNaN, setAmountPerYearNaN] = useState(false)
+    const [taxRateNaN, setTaxRateNaN] = useState(false)
+    const [moreThanTwoDecimalPlacesAmount, setMoreThanTwoDecimalPlacesAmount] = useState(false)
+    const [moreThanTwoDecimalPlacesTax, setMoreThanTwoDecimalPlacesTax] = useState(false)
 
 
     const addSalarySubmit = async (e) => {
         e.preventDefault()
+
+
 
         if (!amountPerYear) {
             setAmountPerYearError(true)
@@ -95,6 +101,15 @@ const AddSalary = () => {
             setEndDateError(true)
         }
 
+        if (moreThanTwoDecimalPlacesAmount) {
+            setAmountPerYearError(true)
+        }
+
+        if (moreThanTwoDecimalPlacesTax) {
+            setTaxRateError(true)
+        }
+
+
         if (
             !amountPerYear
             || !name
@@ -105,6 +120,8 @@ const AddSalary = () => {
             || startAfterEnd
             || startDateOutOfRange
             || endDateOutOfRange
+            || moreThanTwoDecimalPlacesAmount
+            || moreThanTwoDecimalPlacesTax
         ) {
             return
         }
@@ -148,6 +165,12 @@ const AddSalary = () => {
 
         const amountPerYearFloat = parseFloat(e.target.value)
 
+        if (amountPerYearFloat === NaN) {
+            setAmountPerYearNaN(true)
+        } else if (amountPerYearNaN) {
+            setAmountPerYearNaN(false)
+        }
+
         if (amountPerYearFloat < 0) {
             setNegativeAmount(true)
         }
@@ -170,11 +193,29 @@ const AddSalary = () => {
         if (amountPerYearError) {
             setAmountPerYearError(false)
         }
+
+        const splitOnDecimal = e.target.value.split('.')
+
+        if (splitOnDecimal[1] && splitOnDecimal[1].length > 2) {
+            setMoreThanTwoDecimalPlacesAmount(true)
+        } else if (moreThanTwoDecimalPlacesAmount) {
+            setMoreThanTwoDecimalPlacesAmount(false)
+        }
+
+
+
     }
 
     const taxChange = (e) => {
         setTaxRateInput(e.target.value)
         const taxRateToDecimal = parseFloat(e.target.value) / 100
+
+        if (taxRateToDecimal === NaN) {
+            setTaxRateNaN(true)
+        } else if (taxRateNaN) {
+            setTaxRateNaN(false)
+        }
+
         if (parseFloat(e.target.value) < 0) {
             setNegativeTaxRate(true)
         }
@@ -206,6 +247,15 @@ const AddSalary = () => {
         if (taxRateError) {
             setTaxRateError(false)
         }
+
+        const splitOnDecimal = e.target.value.split('.')
+
+        if (splitOnDecimal[1] && splitOnDecimal[1].length > 2) {
+            setMoreThanTwoDecimalPlacesTax(true)
+        } else if (moreThanTwoDecimalPlacesTax) {
+            setMoreThanTwoDecimalPlacesTax(false)
+        }
+
 
     }
 
@@ -295,7 +345,7 @@ const AddSalary = () => {
                     label="Amount Per Year"
                     value={amountPerYearInput}
                     onChange={amountPerYearChange}
-                    helperText={negativeAmount && 'Amount cannot be negative'}
+                    helperText={negativeAmount && 'Amount cannot be negative' || amountPerYearNaN && 'Invalid amount' || moreThanTwoDecimalPlacesAmount && 'Maximum 2 decimal places'}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
@@ -315,7 +365,7 @@ const AddSalary = () => {
                     label="Tax Rate"
                     value={taxRateInput}
                     onChange={taxChange}
-                    helperText={negativeTaxRate && 'Tax rate cannot be negative' || taxRateOver100 && 'Invalid tax rate'}
+                    helperText={negativeTaxRate && 'Tax rate cannot be negative' || (taxRateOver100 || taxRateNaN) && 'Invalid tax rate' || moreThanTwoDecimalPlacesTax && 'Maximum 2 decimal places'}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="start">
