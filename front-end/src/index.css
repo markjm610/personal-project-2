@@ -70,9 +70,12 @@ body {
 }
 
 .checkbox-container {
-    align-self: flex-start
+    /* align-self: flex-start; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
-
 
 .click-salary-info {
     margin-right: 50px;
@@ -88,10 +91,15 @@ body {
 
 .sidebar-container {
     height: 90vh;
-    overflow-y: auto;
-    width: 800px;
+    width: 1000px;
     display: flex;
     flex-direction: column;
+}
+
+.sidebar-scroll-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 1000vh;
 }
 
 .below-graph {

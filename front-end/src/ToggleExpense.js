@@ -516,7 +516,8 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
             currentDate,
             repeatingInterval,
             expense: true,
-            id
+            id,
+            displayed
         },
         begin: () => {
 

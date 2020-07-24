@@ -15,6 +15,7 @@ import { Typography } from '@material-ui/core';
 const useStyles = makeStyles({
     table: {
         minWidth: 650,
+        backgroundColor: 'lightgray'
     },
 
 });
@@ -100,9 +101,9 @@ const InfoDisplay = () => {
                                     <TableCell component="th" scope="row">
                                         {salary.name}
                                     </TableCell>
-                                    <TableCell align="right">${salary.amountPerYear}</TableCell>
-                                    <TableCell align="right">{salary.taxRate * 100}%</TableCell>
-                                    <TableCell align="right">${salary.afterTaxAmount}</TableCell>
+                                    <TableCell align="right">${parseFloat(salary.amountPerYear).toFixed(2)}</TableCell>
+                                    <TableCell align="right">{parseFloat(salary.taxRate * 100).toFixed(2)}%</TableCell>
+                                    <TableCell align="right">${parseFloat(salary.afterTaxAmount).toFixed(2)}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -125,7 +126,7 @@ const InfoDisplay = () => {
                                     <TableCell component="th" scope="row">
                                         {expense.description}
                                     </TableCell>
-                                    <TableCell align="right">${expense.amount}</TableCell>
+                                    <TableCell align="right">${parseFloat(expense.amount).toFixed(2)}</TableCell>
                                     <TableCell align="right">{expense.repeatingInterval ? expense.repeatingInterval : 'No'}</TableCell>
                                 </TableRow>
                             ))}
@@ -135,7 +136,7 @@ const InfoDisplay = () => {
             </div>
             {expenseState && salaryState && salaryState.length === 0 && expenseState.length === 0 &&
                 <Typography variant='h4'>
-                    No items found.
+                    No items found
                 </Typography>}
 
         </>

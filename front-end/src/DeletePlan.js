@@ -22,6 +22,7 @@ const DeletePlan = () => {
     return (
         <>
             {selectedPlan._id && <Button variant='outlined' style={{ color: 'white' }} onClick={deletePlanClick}>Delete Plan</Button>}
+
         </>
     )
 }

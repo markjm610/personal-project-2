@@ -503,7 +503,8 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
             currentStartDateArr,
             currentEndDateArr,
             salary: true,
-            id
+            id,
+            displayed
         },
         begin: () => {
 
@@ -549,6 +550,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
                         style={{ marginRight: 10, color: 'rgb(110, 211, 43)' }}
                     />
                 </div>
+
                 <div className={classes.root} ref={drag}>
                     <ExpansionPanel
                         style={{ backgroundColor: 'rgb(49, 48, 48)', color: 'white' }}

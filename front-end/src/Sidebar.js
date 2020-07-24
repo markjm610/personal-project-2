@@ -13,7 +13,7 @@ import ToggleSalary from './ToggleSalary';
 import ToggleExpense from './ToggleExpense';
 import Typography from '@material-ui/core/Typography';
 import DeletePlan from './DeletePlan';
-
+import DeleteItem from './DeleteItem';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -76,35 +76,40 @@ const Sidebar = () => {
 
     return (
         <div className='sidebar-container'>
-            <div>
-                {salaries.length !== 0 && <Typography className={classes.headings} variant='h6'>Salaries</Typography>}
-                {salaries.map(({ _id, name, displayed, amountPerYear, afterTaxAmount, taxRate, startDate, endDate }) => {
-                    return <ToggleSalary
-                        key={_id}
-                        id={_id}
-                        name={name}
-                        displayed={displayed}
-                        amountPerYear={amountPerYear}
-                        afterTaxAmount={afterTaxAmount}
-                        taxRate={taxRate}
-                        startDate={startDate}
-                        endDate={endDate} />
-                })}
+            <div className='sidebar-scroll-container'>
+                <div>
+                    {salaries.length !== 0 && <Typography className={classes.headings} variant='h6'>Salaries</Typography>}
+                    {salaries.map(({ _id, name, displayed, amountPerYear, afterTaxAmount, taxRate, startDate, endDate }) => {
+                        return <ToggleSalary
+                            key={_id}
+                            id={_id}
+                            name={name}
+                            displayed={displayed}
+                            amountPerYear={amountPerYear}
+                            afterTaxAmount={afterTaxAmount}
+                            taxRate={taxRate}
+                            startDate={startDate}
+                            endDate={endDate} />
+                    })}
+                </div>
+                <div>
+                    {expenses.length !== 0 && <Typography className={classes.headings} variant='h6'>Expenses</Typography>}
+                    {expenses.map(({ description, _id, displayed, date, repeatingInterval, amount }) => {
+                        return <ToggleExpense
+                            key={_id}
+                            id={_id}
+                            description={description}
+                            displayed={displayed}
+                            date={date}
+                            repeatingInterval={repeatingInterval}
+                            amount={amount} />
+                    })}
+                </div>
             </div>
-            <div>
-                {expenses.length !== 0 && <Typography className={classes.headings} variant='h6'>Expenses</Typography>}
-                {expenses.map(({ description, _id, displayed, date, repeatingInterval, amount }) => {
-                    return <ToggleExpense
-                        key={_id}
-                        id={_id}
-                        description={description}
-                        displayed={displayed}
-                        date={date}
-                        repeatingInterval={repeatingInterval}
-                        amount={amount} />
-                })}
+            <div style={{ height: '100%', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginLeft: '10px' }}>
+                <DeletePlan />
+                <DeleteItem />
             </div>
-            <div style={{ height: '100%', display: 'flex', alignItems: 'flex-end', marginLeft: '10px' }}><DeletePlan /></div>
         </div>
     )
 }

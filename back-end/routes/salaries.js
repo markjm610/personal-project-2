@@ -326,6 +326,97 @@ router.patch('/plans/:planId/salaries/:salaryId/date', asyncHandler(async (req, 
 }))
 
 
+router.delete('/plans/:planId/salaries/:salaryId', asyncHandler(async (req, res) => {
+
+    const planId = req.params.planId
+    const salaryId = req.params.salaryId
+    const { displayed } = req.body
+
+    const salary = await Salary.findByIdAndDelete(salaryId)
+
+    const plan = await Plan.findById(planId)
+
+    let graphDataArr = plan.graphData
+
+    const startMilliseconds = salary.startDateMilliseconds
+    const endMilliseconds = salary.endDateMilliseconds
+
+
+    let firstDayIndex;
+
+    graphDataArr.forEach((datapoint, i) => {
+        if (datapoint.x.getTime() === startMilliseconds) {
+            firstDayIndex = i
+        }
+    })
+
+
+    const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
+
+    let daysPassed = 0
+
+    for (let i = firstDayIndex; i < graphDataArr.length; i++) {
+
+        if (i < firstDayIndex + dayDifference) {
+
+            daysPassed++
+
+            const amountToAdd = salary.afterTaxAmount / 365 * daysPassed
+            if (displayed) {
+                graphDataArr[i].y -= amountToAdd
+            }
+
+
+
+        } else {
+            if (displayed) {
+
+                graphDataArr[i].y -= salary.afterTaxAmount / 365 * daysPassed
+
+            }
+
+        }
+
+
+    }
+
+
+
+    // Have to make sure recently deleted item is not part of list
+    let allToggledOff = true
+    const salaries = await Salary.find({ planId })
+    const expenses = await Expense.find({ planId })
+
+    salaries.forEach(({ displayed }) => {
+        if (displayed) {
+            allToggledOff = false
+        } else {
+            return
+        }
+    })
+
+    expenses.forEach(({ displayed }) => {
+        if (displayed) {
+            allToggledOff = false
+        } else {
+            return
+        }
+    })
+
+    if (allToggledOff) {
+
+        graphDataArr = graphDataArr.map(datapoint => {
+            return { x: datapoint.x, y: 0 }
+        })
+
+    }
+
+
+    await plan.updateOne({ graphData: graphDataArr })
+
+    res.json({ plan })
+
+}))
 
 
 module.exports = router;

@@ -43,7 +43,9 @@ const NewPlanNav = () => {
     );
 
     return (
-        <div style={{ marginBottom: '5px' }}>
+        <div
+        // style={{ marginBottom: '10px' }}
+        >
             <IconButton color='inherit' onClick={toggleDrawer}><AddCircleOutlineIcon /></IconButton>
             <Drawer anchor='top' open={openNewPlan} onClose={toggleDrawer}>
                 {list('top')}

@@ -268,9 +268,6 @@ const LineChart = () => {
         drop: (item) => {
             handleDrop(item);
         },
-        hover: (item) => {
-            console.log(item)
-        },
         collect: monitor => ({
             isOver: !!monitor.isOver(),
         }),
