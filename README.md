@@ -17,9 +17,10 @@ Chart Your Cash is a financial planner that shows a complete picture of a user's
 - Express
 - MongoDB
 - Node
+
+## Third-Party APIs
+
 - Auth0
 - Material-UI
 - React-Vis
 - React-DnD
-- CSS3
-- HTML5
