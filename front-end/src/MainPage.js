@@ -8,11 +8,12 @@ import AddSalaryNav from './AddSalaryNav';
 import BelowGraph from './BelowGraph';
 import Sidebar from './Sidebar';
 import { useAuth0 } from "./react-auth0-spa";
+import Instructions from './Instructions';
 
 
 const MainPage = ({ history }) => {
 
-    const { setSelectedPlan, setHistory, currentUserPlans, setCurrentUserPlans, currentUser, expandItem, setExpandItem } = useContext(Context)
+    const { selectedPlan, setSelectedPlan, setHistory, currentUserPlans, setCurrentUserPlans, currentUser, expandItem, setExpandItem } = useContext(Context)
     const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
     useEffect(() => {
@@ -83,13 +84,23 @@ const MainPage = ({ history }) => {
     return (
         <>
             <TopBar />
-            <div className='middle'>
-                <Sidebar />
-                <div className='chart-and-buttons'>
-                    <LineChart />
-                    <BelowGraph />
+
+            {selectedPlan._id ?
+                <div className='middle'>
+                    <Sidebar />
+                    <div className='chart-and-buttons'>
+                        <LineChart />
+                        <BelowGraph />
+                    </div>
                 </div>
-            </div>
+                :
+                <>
+                    <Instructions />
+                </>
+            }
+
+
+
         </>
     )
 }

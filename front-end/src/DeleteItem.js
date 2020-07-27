@@ -84,11 +84,13 @@ const DeleteItem = () => {
 
 
     return (
-        <Tooltip arrow title='Drag an item here to delete it'>
-            <div ref={drop}>
-                <DeleteIcon style={{ color: isOver ? 'red' : 'white' }} fontSize='large' />
-            </div>
-        </Tooltip>
+        <>
+            {selectedPlan._id && <Tooltip arrow title='Drag an item here to delete it'>
+                <div ref={drop}>
+                    <DeleteIcon style={{ color: isOver ? 'red' : 'white' }} fontSize='large' />
+                </div>
+            </Tooltip>}
+        </>
     )
 }
 

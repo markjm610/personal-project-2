@@ -7,7 +7,7 @@ import Context from './Context'
 
 const DeletePlan = () => {
 
-    const { selectedPlan, history } = useContext(Context)
+    const { selectedPlan } = useContext(Context)
 
     const deletePlanClick = async () => {
         const res = await fetch(`${apiBaseUrl}/plans/${selectedPlan._id}`, {
