@@ -10,29 +10,38 @@ const Instructions = () => {
     return (
         <>
             {!selectedPlan._id &&
-                <>
-                    <Typography variant='h4' style={{ color: 'white' }}>
-                        Instructions
+                <div className='instructions-container'>
+                    <Typography variant='h5' className='instruction'>
+                        Welcome!
                     </Typography>
-                    <Typography variant='h6' style={{ color: 'white' }}>
-                        Click the + in the middle of the top bar to add a new plan.
+                    <Typography variant='h6' className='instruction'>
+                        Making a plan:
                     </Typography>
-                    <Typography variant='h6' style={{ color: 'white' }}>
-                        Once a plan is made, click the add salary and add expense buttons to add items to the plan.
+                    <Typography className='instruction'>
+                        1. Click the + in the middle of the top bar to add a new plan.
                     </Typography>
-                    <Typography variant='h6' style={{ color: 'white' }}>
-                        Items can be dragged onto the graph to look at that item's graph data only. Click the graph to go back to normal.
+                    <Typography className='instruction'>
+                        2. Once a plan is made, click the add salary and add expense buttons to add items to the plan.
                     </Typography>
-                    <Typography variant='h6' style={{ color: 'white' }}>
-                        Drag an item onto the trash can icon to delete the item.
+                    <Typography variant='h6' className='instruction'>
+                        Items:
                     </Typography>
-                    <Typography variant='h6' style={{ color: 'white' }}>
-                        Items can be toggled on and off by clicking the checkbox next to the name.
+                    <Typography className='instruction'>
+                        1. Drag an item onto the graph to look at that item's graph data only. Click the graph to go back to normal.
                     </Typography>
-                    <Typography variant='h6' style={{ color: 'white' }}>
-                        Click an item to expand its information.
+                    <Typography className='instruction'>
+                        2. Drag an item onto the trash can icon to delete the item.
                     </Typography>
-                </>
+                    <Typography className='instruction'>
+                        3. Items can be toggled on and off by clicking the checkbox next to the name.
+                    </Typography>
+                    <Typography className='instruction'>
+                        4. Click an item to expand its information.
+                    </Typography>
+                    <Typography className='instruction'>
+                        5. Once an item is expanded, click the edit buttons to edit the item if you want.
+                    </Typography>
+                </div>
             }
 
         </>
