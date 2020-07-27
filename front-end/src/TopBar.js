@@ -14,15 +14,7 @@ import { useAuth0 } from "./react-auth0-spa";
 import { Link } from "react-router-dom";
 import NewPlanNav from './NewPlanNav';
 import PlanNav from './PlanNav';
-import apiBaseUrl from './config';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import clsx from 'clsx';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
 import { Tabs } from '@material-ui/core';
 
 
@@ -37,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
+        '&:hover': {
+            cursor: 'pointer'
+        }
     },
     fullList: {
         width: 'auto',
@@ -88,7 +83,7 @@ const TopBar = () => {
     const classes = useStyles();
     const theme = useTheme();
 
-    const { setLastDrawLocation, currentUserPlans, setCurrentUserPlans, currentUser, expandItem, setExpandItem } = useContext(Context)
+    const { setSelectedPlan, setLastDrawLocation, currentUserPlans, setCurrentUserPlans, currentUser, expandItem, setExpandItem } = useContext(Context)
     const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -108,6 +103,10 @@ const TopBar = () => {
 
     const [savedItems, setSavedItems] = useState({})
 
+    const clickTitle = () => {
+        setSelectedPlan({})
+        setSelectedTab(null)
+    }
 
     return (
         <div className={classes.root}>
@@ -117,7 +116,7 @@ const TopBar = () => {
                 <Toolbar className={classes.toolbar}>
                     <div className='app-bar-div'>
                         <div>
-                            <Typography variant="h6" className={classes.title}>
+                            <Typography variant="h6" className={classes.title} onClick={clickTitle}>
                                 Chart Your Cash
                     </Typography>
                         </div>

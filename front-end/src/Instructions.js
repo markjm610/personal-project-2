@@ -11,9 +11,7 @@ const Instructions = () => {
         <>
             {!selectedPlan._id &&
                 <div className='instructions-container'>
-                    <Typography variant='h5' className='instruction'>
-                        Welcome!
-                    </Typography>
+
                     <Typography variant='h6' className='instruction'>
                         Making a plan:
                     </Typography>
@@ -40,6 +38,9 @@ const Instructions = () => {
                     </Typography>
                     <Typography className='instruction'>
                         5. Once an item is expanded, click the edit buttons to edit the item if you want.
+                    </Typography>
+                    <Typography className='instruction' style={{ marginTop: '10px' }}>
+                        These instructions will go away when you make a plan, but you can click "Chart Your Cash" in the top left at any point to see them again.
                     </Typography>
                 </div>
             }
