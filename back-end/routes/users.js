@@ -102,6 +102,6 @@ router.post('/users', asyncHandler(async (req, res) => {
 
 }))
 
-router.post()
+
 
 module.exports = router

@@ -32,7 +32,6 @@ const Instructions = () => {
                     <Typography variant='h6' style={{ color: 'white' }}>
                         Click an item to expand its information.
                     </Typography>
-
                 </>
             }
 
