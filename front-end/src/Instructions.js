@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
 import Context from './Context'
 import { Typography } from '@material-ui/core'
+import GitHubIcon from '@material-ui/icons/GitHub';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
 
 
 const Instructions = () => {
@@ -42,6 +44,20 @@ const Instructions = () => {
                     <Typography className='instruction' style={{ marginTop: '10px' }}>
                         These instructions will go away when you make a plan, but you can click "Chart Your Cash" in the top left at any point to see them again.
                     </Typography>
+                    <div className='links'>
+                        <div>
+                            <Typography style={{ color: 'white' }}>Developed by Mark Mansolino</Typography>
+                        </div>
+                        <div className='links-icons-container'>
+
+                            <a href='https://github.com/markjm610'>
+                                <GitHubIcon className='links-icon' />
+                            </a>
+                            <a href='https://www.linkedin.com/in/markmansolino/'>
+                                <LinkedInIcon className='links-icon' />
+                            </a>
+                        </div>
+                    </div>
                 </div>
             }
 
