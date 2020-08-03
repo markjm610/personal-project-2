@@ -464,7 +464,9 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
         if (res.ok) {
             const plan = await res.json()
             const dateObjData = plan.graphData.map(datapoint => {
-                return { x: new Date(datapoint.x), y: datapoint.y }
+                const date = new Date(datapoint.x)
+                const dateToAdd = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+                return { x: dateToAdd, y: datapoint.y }
             })
 
             plan.graphData = dateObjData
@@ -492,7 +494,9 @@ const ToggleExpense = ({ id, amount, description, displayed, date, repeatingInte
         if (res.ok) {
             const plan = await res.json()
             const dateObjData = plan.graphData.map(datapoint => {
-                return { x: new Date(datapoint.x), y: datapoint.y }
+                const date = new Date(datapoint.x)
+                const dateToAdd = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+                return { x: dateToAdd, y: datapoint.y }
             })
 
             plan.graphData = dateObjData

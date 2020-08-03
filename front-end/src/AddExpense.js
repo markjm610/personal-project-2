@@ -104,7 +104,9 @@ const AddExpense = () => {
 
             const parsedRes = await res.json()
             const dateObjData = parsedRes.plan.graphData.map(datapoint => {
-                return { x: new Date(datapoint.x), y: datapoint.y }
+                const date = new Date(datapoint.x)
+                const dateToAdd = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+                return { x: dateToAdd, y: datapoint.y }
             })
 
             parsedRes.plan.graphData = dateObjData

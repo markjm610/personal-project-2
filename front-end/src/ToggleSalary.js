@@ -174,8 +174,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
             const endMilliseconds = new Date(currentEndDateArr[0], currentEndDateArr[1], currentEndDateArr[2]).getTime()
             // console.log(currentStartDateArr)
             let firstDayIndex;
-            console.log('graphDataArr[1]', graphDataArr[1])
-            console.log('startMilliseconds', startMilliseconds)
+
             graphDataArr.forEach((datapoint, i) => {
                 // console.log('datapoint.x.getTime()', datapoint.x.getTime())
                 // console.log('startMilliseconds', startMilliseconds)
@@ -454,7 +453,9 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
         if (res.ok) {
             const plan = await res.json()
             const dateObjData = plan.graphData.map(datapoint => {
-                return { x: new Date(datapoint.x), y: datapoint.y }
+                const date = new Date(datapoint.x)
+                const dateToAdd = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+                return { x: dateToAdd, y: datapoint.y }
             })
 
             plan.graphData = dateObjData
@@ -485,7 +486,9 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
         if (res.ok) {
             const plan = await res.json()
             const dateObjData = plan.graphData.map(datapoint => {
-                return { x: new Date(datapoint.x), y: datapoint.y }
+                const date = new Date(datapoint.x)
+                const dateToAdd = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+                return { x: dateToAdd, y: datapoint.y }
             })
 
             plan.graphData = dateObjData
