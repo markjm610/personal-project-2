@@ -18,9 +18,10 @@ const PlanNav = ({ id, name, setSelectedTab, i }) => {
         const res = await fetch(`${apiBaseUrl}/plans/${id}`)
         const plan = await res.json()
 
-
         const dateObjData = plan.graphData.map(datapoint => {
-            return { x: new Date(datapoint.x), y: datapoint.y }
+            const date = new Date(datapoint.x)
+            const dateToAdd = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+            return { x: dateToAdd, y: datapoint.y }
         })
 
         plan.graphData = dateObjData
