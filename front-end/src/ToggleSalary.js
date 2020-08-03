@@ -153,6 +153,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
         setAmountPerYearInput(e.target.value)
 
         if (e.target.value !== '') {
+
             const previousAfterTaxAmount = currentAfterTaxAmount
 
             const amountPerYearFloat = parseFloat(e.target.value)
@@ -171,11 +172,15 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
             const startMilliseconds = new Date(currentStartDateArr[0], currentStartDateArr[1], currentStartDateArr[2]).getTime()
             const endMilliseconds = new Date(currentEndDateArr[0], currentEndDateArr[1], currentEndDateArr[2]).getTime()
-
+            // console.log(currentStartDateArr)
             let firstDayIndex;
-
+            console.log('graphDataArr[1]', graphDataArr[1])
+            console.log('startMilliseconds', startMilliseconds)
             graphDataArr.forEach((datapoint, i) => {
+                // console.log('datapoint.x.getTime()', datapoint.x.getTime())
+                // console.log('startMilliseconds', startMilliseconds)
                 if (datapoint.x.getTime() === startMilliseconds) {
+                    // console.log('if')
                     firstDayIndex = i
                 }
             })
@@ -183,15 +188,16 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
             const dayDifference = (endMilliseconds - startMilliseconds) / (1000 * 60 * 60 * 24)
 
             let daysPassed = 0
-
+            // console.log(dayDifference)
+            // console.log(firstDayIndex)
             for (let i = firstDayIndex; i < graphDataArr.length; i++) {
-
+                console.log('for')
                 if (i < firstDayIndex + dayDifference) {
                     // For every day in salary period, add that day's proportion of salary to total
                     daysPassed++
 
                     const amountToAdd = afterTaxAmountDifference / 365 * daysPassed
-
+                    // console.log('i < firstDayIndex + dayDifference')
                     graphDataArr[i].y += amountToAdd
                 } else {
                     // Once salary period is over, add full amount every day to total
@@ -200,6 +206,7 @@ const ToggleSalary = ({ id, name, displayed, amountPerYear, afterTaxAmount, taxR
 
 
             }
+
             setSelectedPlan(planCopy)
         }
 

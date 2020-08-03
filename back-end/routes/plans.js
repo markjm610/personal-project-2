@@ -24,11 +24,10 @@ router.post('/plans', asyncHandler(async (req, res) => {
     for (let i = 0; i <= days; i++) {
 
         graphData.push({
-            x: new Date(startYear, startMonth, i + startDay), y: 0
+            x: new Date(startYear, startMonth, i + startDay, 0), y: 0
         })
 
     }
-
 
     const newPlan = new Plan({ name, startDate, endDate, graphData, userId })
     await newPlan.save()
