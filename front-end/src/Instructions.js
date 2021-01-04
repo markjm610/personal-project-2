@@ -13,15 +13,20 @@ const Instructions = () => {
         <>
             {!selectedPlan._id &&
                 <div className='instructions-container'>
-
+                    <Typography className='instruction'>
+                        Click on one of the tabs in the middle of the top bar to view a plan. If there are no tabs, or you want to make your own plan:
+                    </Typography>
                     <Typography variant='h6' className='instruction'>
-                        Making a plan:
+                        Making a new plan:
                     </Typography>
                     <Typography className='instruction'>
                         1. Click the + in the middle of the top bar to add a new plan.
                     </Typography>
                     <Typography className='instruction'>
                         2. Once a plan is made, click the add salary and add expense buttons to add items to the plan.
+                    </Typography>
+                    <Typography className='instruction'>
+                        3. Click the graph at any point in time to view the items from the last 30 days.
                     </Typography>
                     <Typography variant='h6' className='instruction'>
                         Items:

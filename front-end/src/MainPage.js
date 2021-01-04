@@ -61,28 +61,28 @@ const MainPage = ({ history }) => {
 
     }, [currentUser])
 
-    useEffect(() => {
-        if (currentUserPlans.length) {
-            async function getFirstPlan() {
+    // useEffect(() => {
+    //     if (currentUserPlans.length) {
+    //         async function getFirstPlan() {
 
-                const res = await fetch(`${apiBaseUrl}/plans/${currentUserPlans[0]._id}`)
-                const plan = await res.json()
-
-
-                const dateObjData = plan.graphData.map(datapoint => {
-                    const date = new Date(datapoint.x)
-                    const dateToAdd = new Date(date.getFullYear(), date.getMonth(), date.getDate())
-                    return { x: dateToAdd, y: datapoint.y }
-                })
+    //             const res = await fetch(`${apiBaseUrl}/plans/${currentUserPlans[0]._id}`)
+    //             const plan = await res.json()
 
 
-                plan.graphData = dateObjData
+    //             const dateObjData = plan.graphData.map(datapoint => {
+    //                 const date = new Date(datapoint.x)
+    //                 const dateToAdd = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+    //                 return { x: dateToAdd, y: datapoint.y }
+    //             })
 
-                setSelectedPlan(plan)
-            }
-            getFirstPlan()
-        }
-    }, [currentUserPlans])
+
+    //             plan.graphData = dateObjData
+
+    //             setSelectedPlan(plan)
+    //         }
+    //         getFirstPlan()
+    //     }
+    // }, [currentUserPlans])
 
     return (
         <>

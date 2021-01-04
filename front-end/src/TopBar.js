@@ -87,7 +87,7 @@ const TopBar = () => {
     const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [selectedTab, setSelectedTab] = useState(0)
+    const [selectedTab, setSelectedTab] = useState(null)
 
     const handleDrawerOpen = () => {
         setDrawerOpen(true);
