@@ -89,13 +89,13 @@ const TopBar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [selectedTab, setSelectedTab] = useState(null)
 
-    const handleDrawerOpen = () => {
-        setDrawerOpen(true);
-    };
+    // const handleDrawerOpen = () => {
+    //     setDrawerOpen(true);
+    // };
 
-    const handleDrawerClose = () => {
-        setDrawerOpen(false);
-    };
+    // const handleDrawerClose = () => {
+    //     setDrawerOpen(false);
+    // };
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);

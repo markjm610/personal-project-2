@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { VictoryChart, VictoryLine, VictoryZoomContainer } from 'victory';
-import apiBaseUrl from './config';
+import { apiBaseUrl } from './config';
 import Context from './Context';
 import Button from '@material-ui/core/Button';
 import { Tab } from '@material-ui/core';

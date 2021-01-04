@@ -3,7 +3,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { useDrop } from 'react-dnd';
 import { ItemTypes } from './ItemTypes';
-import apiBaseUrl from './config';
+import { apiBaseUrl } from './config';
 import Context from './Context';
 import Tooltip from '@material-ui/core/Tooltip';
 

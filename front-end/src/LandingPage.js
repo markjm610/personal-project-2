@@ -53,64 +53,66 @@ const LandingPage = ({ history }) => {
 
 
     return (
-        <div className='landing-page'>
-            <Typography style={{ color: 'white', display: 'flex', justifyContent: 'center' }} variant='h2'>Chart Your Cash</Typography>
+        <>
 
-            <div className='landing-page-graph-container'>
-                <XYPlot
-                    // dontCheckIfEmpty
+            <div className='landing-page'>
+                <Typography style={{ color: 'white', display: 'flex', justifyContent: 'center' }} variant='h2'>Chart Your Cash</Typography>
 
-                    margin={{ left: 70 }}
-                    height={650}
-                    width={1000}
-                    xType='time'
-                    animation
-                >
-                    <XAxis
+                <div className='landing-page-graph-container'>
+                    <XYPlot
+                        // dontCheckIfEmpty
+                        margin={{ left: 70 }}
+                        height={650}
+                        width={1000}
+                        xType='time'
                         animation
-                        style={{
-                            userSelect: 'none',
-                            text: {
-                                fill: 'white'
-                            }
-                        }}
-                        tickLabelAngle={15}
-                        tickPadding={20}
-                    />
-                    <YAxis
-                        animation
-                        style={{
-                            userSelect: 'none',
-                            text: {
-                                fill: 'white'
-                            }
-                        }}
-                    />
-                    <LineSeries
-                        data={landingPageData}
-                        // onNearestX={handleNearestX}
-                        color='rgb(110, 211, 43)'
-                    />
-                </XYPlot>
-            </div>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                {/* <div className={classes.paper}> */}
+                    >
+                        <XAxis
+                            animation
+                            style={{
+                                userSelect: 'none',
+                                text: {
+                                    fill: 'white'
+                                }
+                            }}
+                            tickLabelAngle={15}
+                            tickPadding={20}
+                        />
+                        <YAxis
+                            animation
+                            style={{
+                                userSelect: 'none',
+                                text: {
+                                    fill: 'white'
+                                }
+                            }}
+                        />
+                        <LineSeries
+                            data={landingPageData}
+                            // onNearestX={handleNearestX}
+                            color='rgb(110, 211, 43)'
+                        />
+                    </XYPlot>
+                </div>
+                <Container component="main" maxWidth="xs">
+                    <CssBaseline />
+                    {/* <div className={classes.paper}> */}
 
-                {!isAuthenticated && <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
+                    {!isAuthenticated && <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
 
-                    className={classes.submit}
-                    onClick={() => loginWithRedirect({})}
-                >
-                    Continue
+                        className={classes.submit}
+                        onClick={() => loginWithRedirect({})}
+                    >
+                        Continue
                     </Button>}
-                {/* </div> */}
+                    {/* </div> */}
 
-            </Container >
-        </div>
+                </Container >
+            </div>
+        </>
     );
 }
 

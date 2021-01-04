@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Button } from '@material-ui/core'
-import apiBaseUrl from './config';
+import { apiBaseUrl } from './config';
 import Context from './Context'
 
 

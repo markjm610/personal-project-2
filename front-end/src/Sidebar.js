@@ -7,7 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
-import apiBaseUrl from './config';
+import { apiBaseUrl } from './config';
 import Context from './Context'
 import ToggleSalary from './ToggleSalary';
 import ToggleExpense from './ToggleExpense';

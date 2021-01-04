@@ -11,7 +11,7 @@ import config from "./auth_config.json";
 import * as serviceWorker from './serviceWorker';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import LuxonUtils from '@date-io/luxon';
-
+import { clientBaseUrl } from './config'
 
 const onRedirectCallback = appState => {
   history.push(
@@ -24,12 +24,12 @@ const onRedirectCallback = appState => {
 
 function App() {
 
-
   return (
     <Auth0Provider
       domain={config.domain}
       client_id={config.clientId}
-      redirect_uri={window.location.origin}
+      // redirect_uri={window.location.origin}
+      redirect_uri={`${clientBaseUrl}/main`}
       onRedirectCallback={onRedirectCallback}
     >
       <MuiPickersUtilsProvider utils={LuxonUtils}>
@@ -42,7 +42,6 @@ function App() {
         </Router>
       </MuiPickersUtilsProvider>
     </Auth0Provider>
-
   );
 }
 

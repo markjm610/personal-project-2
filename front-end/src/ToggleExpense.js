@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import Checkbox from '@material-ui/core/Checkbox';
-import apiBaseUrl from './config';
+import { apiBaseUrl } from './config';
 import Context from './Context';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';

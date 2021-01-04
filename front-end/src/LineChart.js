@@ -9,7 +9,7 @@ import Layer from './Layer'
 import Button from '@material-ui/core/Button';
 import { ItemTypes } from './ItemTypes';
 import { useDrag, useDrop } from 'react-dnd';
-import apiBaseUrl from './config';
+import { apiBaseUrl } from './config';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
 
